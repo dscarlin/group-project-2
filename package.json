@@ -1,0 +1,41 @@
+{
+  "name": "project-2-fullstack",
+  "version": "1.0.0",
+  "description": "Coding Bootcamp App with Vue.js, Node.js, Express, MySQL, and Sequelize",
+  "main": "server.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "install": "cd client && npm install",
+    "client": "cd client && npm run serve",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dscarlin/group-project-2.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Node",
+    "JavaScript",
+    "MySQL",
+    "Express",
+    "Vue.js",
+    "Sequelize"
+  ],
+  "author": "David Carlin, Lindsey Fahys, Elvin Eng, Pierce Lusk",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.7"
+  },
+  "bugs": {
+    "url": "https://github.com/dscarlin/group-project-2/issues"
+  },
+  "homepage": "https://github.com/dscarlin/group-project-2#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "if-env": "^1.0.4"
+  }
+}
