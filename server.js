@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
 
 // Sample API
 app.get('/api/test', function(req, res) {
-  res.json({ greeting: ' is topping teamPizza.slice()' });
+  res.json({ greeting: 'There is no topping teamPizza.slice()' });
 });
 
 app.listen(PORT, function() {

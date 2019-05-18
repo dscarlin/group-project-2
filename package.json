@@ -36,6 +36,8 @@
   "homepage": "https://github.com/dscarlin/group-project-2#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "if-env": "^1.0.4"
+    "if-env": "^1.0.4",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.8.6"
   }
 }
