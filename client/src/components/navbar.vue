@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg static-top">
+    <nav class="navbar navbar-expand-lg navbar-fixed-top sticky">
       <div class="container">
         <a class="navbar-brand" href="#">
           <router-link to="/">
@@ -21,19 +21,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link">
-                <router-link to="/about">About us</router-link>
-              </a>
+              <router-link to="/about" class="nav-link">About us</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link">
-                <router-link to="/login">Log in</router-link>
-              </a>
+              <router-link to="/login" class="nav-link">Log in</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link">
-                <router-link to="/signup">Sign up</router-link>
-              </a>
+              <router-link to="/signup" class="nav-link">Sign up</router-link>
             </li>
           </ul>
         </div>
