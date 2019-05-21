@@ -40,7 +40,7 @@ export default {
     font-weight: bold;
     color: black;
     &.router-link-exact-active {
-      color: #42b983;
+      color: #ff585b;
     }
   }
 }
