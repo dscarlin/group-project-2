@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg static-top">
       <div class="container">
         <a class="navbar-brand" href="#">
           <img src="http://placehold.it/150x50?text=Logo" alt>
@@ -19,10 +19,14 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <router-link to="/about">About Us</router-link>
+              <a class="nav-link" href="#">About us</a>
             </li>
-            <router-link to="/about">Log in</router-link>
-            <router-link to="/about">Sign up</router-link>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Log in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Sign up</a>
+            </li>
           </ul>
         </div>
       </div>
