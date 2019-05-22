@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-fixed-top sticky">
       <div class="container">
-        <a v-if="loggedIn" class="navbar-brand">
+<a v-if="loggedIn" class="navbar-brand">
           <router-link  :to="{ name: 'groups', params: { id: userId } }">
             <img src="http://placehold.it/150x50?text=Logo" alt>
           </router-link>
@@ -48,6 +48,7 @@
             <li class="nav-item">
               <router-link to="/signup" class="nav-link">Sign up</router-link>
             </li>
+            <hr>
           </ul>
 
         </div>
@@ -77,3 +78,37 @@ export default {
   
 };
 </script>
+
+<style lang="scss">
+#nav {
+  nav {
+    background-color: none;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("https://mdbootstrap.com/img/svg/hamburger7.svg?color=ff585b");
+  }
+
+  .nav-link {
+    font-family: "Quicksand", sans-serif;
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    &.router-link-exact-active {
+      color: #ff585b;
+    }
+  }
+  .nav-link::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 3px;
+    background: #ff585b;
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+    transition: width 0.3s;
+  }
+}
+</style>
