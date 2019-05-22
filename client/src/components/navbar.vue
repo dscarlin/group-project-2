@@ -2,8 +2,13 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-fixed-top sticky">
       <div class="container">
-        <a class="navbar-brand" href="#">
-          <router-link to="/">
+        <a v-if="loggedIn" class="navbar-brand">
+          <router-link  :to="{ name: 'groups', params: { id: userId } }">
+            <img src="http://placehold.it/150x50?text=Logo" alt>
+          </router-link>
+        </a>
+        <a v-else class="navbar-brand">
+          <router-link  to="/">
             <img src="http://placehold.it/150x50?text=Logo" alt>
           </router-link>
         </a>
@@ -24,10 +29,13 @@
               <router-link :to="{ name: 'groups', params: { id: userId } }" class="nav-link">My Groups</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/login" class="nav-link">Create Group</router-link>
+              <router-link to="/create" class="nav-link">Create Group</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/signup" class="nav-link">My Profile</router-link>
+              <router-link to="/profile" class="nav-link">My Profile</router-link>
+            </li>
+            <li class="nav-item">
+              <a @click="logMeOut" class="nav-link">Log Out</a>
             </li>
           </ul>
           <ul v-else class="navbar-nav ml-auto">
@@ -35,7 +43,7 @@
               <router-link to="/about" class="nav-link">About us</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/login" class="nav-link">Log in</router-link>
+              <router-link to="/login"  class="nav-link">Log in</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/signup" class="nav-link">Sign up</router-link>
@@ -60,6 +68,12 @@ export default {
       
 
     }
+  },
+  methods: {
+    logMeOut: function(){
+      this.$emit('logOut', false)
+    }
   }
+  
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <div class="landing">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld :msg="msg.greeting"/>
+    <HelloWorld />
     <input v-model="range" type="range">
     <div>{{range}}</div>
 
@@ -15,7 +15,7 @@ import {notify} from '@/services/notify.js'
 import axios from 'axios';
 
 export default {
-  name: 'home',
+  name: 'landing',
   components: {
     HelloWorld
   },
@@ -32,12 +32,12 @@ export default {
     let message = this.notification
     this.notifyMe(message);
     
-    axios.get('api/test').then(
-      (response) => {
-        console.log(response.data);
-      this.msg = response.data;
-      }
-    );
+    // axios.get('api/test').then(
+    //   (response) => {
+    //     console.log(response.data);
+    //   this.msg = response.data;
+    //   }
+    // );
   },
   methods: {
   notifyMe: function(mess) {

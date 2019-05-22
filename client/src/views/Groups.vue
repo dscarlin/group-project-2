@@ -7,7 +7,7 @@
 
 <script>
 // @ is an alias to /src
-import {notify} from '@/services/notify.js'
+
 import axios from 'axios';
 
 export default {
