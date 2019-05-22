@@ -10,8 +10,14 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Sample API
-app.get('/api/test', function(req, res) {
-  res.json({ greeting: 'There is no topping teamPizza.slice()' });
+app.get('/api/userId', (req, res) => {
+  console.log('requested user id')
+  res.json({id: 1  });
+});
+
+app.get('/api/groups/:id', (req,res) => {
+  console.log('requested user groups')
+  res.json({request: 'groups has been requested'})
 });
 
 app.listen(PORT, function() {

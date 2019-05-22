@@ -19,7 +19,18 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
+          <ul v-if="loggedIn" class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <router-link :to="{ name: 'groups', params: { id: userId } }" class="nav-link">My Groups</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/login" class="nav-link">Create Group</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/signup" class="nav-link">My Profile</router-link>
+            </li>
+          </ul>
+          <ul v-else class="navbar-nav ml-auto">
             <li class="nav-item">
               <router-link to="/about" class="nav-link">About us</router-link>
             </li>
@@ -30,6 +41,7 @@
               <router-link to="/signup" class="nav-link">Sign up</router-link>
             </li>
           </ul>
+
         </div>
       </div>
     </nav>
@@ -38,6 +50,16 @@
 
 <script>
 export default {
-  name: "navbar"
+  name: "navbar",
+  props: {
+    loggedIn: Boolean,
+    userId: Number
+  },
+  data: function() {
+    return {
+      
+
+    }
+  }
 };
 </script>

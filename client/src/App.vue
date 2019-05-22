@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <navbar></navbar>
+      <navbar 
+      v-bind:loggedIn="loggedIn" 
+      v-bind:userId="userId.id"
+      ></navbar>
     </div>
     <router-view/>
   </div>
@@ -9,10 +12,34 @@
 
 <script>
 import navbar from "./components/navbar.vue";
+import axios from "axios";
 export default {
   name: "app",
   components: {
     navbar
+  },
+  data: function() {
+    return {
+      loggedIn: false,
+      userId: {id: 1}
+    }
+  },
+  created: function(){
+    this.onLogin()//this is just because we are not logging in yet
+  },
+  methods: {
+    onLogin: function() {
+      this.loggedIn = true;
+      this.getUserId();
+    },
+    getUserId: function(){
+      axios.get('api/userId').then(
+      (response) => {
+      console.log(response.data);
+      this.userInfo = response.data.id;//this will change slightly
+      }
+    );
+    }
   }
 };
 </script>
