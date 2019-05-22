@@ -7,8 +7,10 @@
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "test": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client:test\"", 
     "install": "cd client && npm install",
     "client": "cd client && npm run serve",
+    "client:test": "cd client && npm run test:unit",
     "build": "cd client && npm run build"
   },
   "repository": {
@@ -35,9 +37,11 @@
   },
   "homepage": "https://github.com/dscarlin/group-project-2#readme",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "if-env": "^1.0.4",
     "mysql2": "^1.6.5",
-    "sequelize": "^5.8.6"
+    "sequelize": "^5.8.6",
+    "twilio": "^3.31.0"
   }
 }
