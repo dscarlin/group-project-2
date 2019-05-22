@@ -7,7 +7,8 @@
 
 <script>
 // @ is an alias to /src
-import axios from 'axios'
+import {notify} from '@/services/notify.js'
+import axios from 'axios';
 
 export default {
   name: 'groups',
@@ -32,6 +33,13 @@ export default {
       this.msg = response.data.request;
       }
     );
+  },
+  methods: {
+  notifyMe: function() {
+
+    notify(this.notification);
+    
+    }
   }
 }
 </script>
