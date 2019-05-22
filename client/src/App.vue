@@ -25,23 +25,4 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
-#nav {
-  nav {
-    background-color: none;
-    // opacity:
-  }
-
-  .navbar-toggler-icon {
-    background-image: url("https://mdbootstrap.com/img/svg/hamburger7.svg?color=ff585b");
-  }
-  
-  a {
-    font-family: "Quicksand", sans-serif;
-    color: black;
-    &.router-link-exact-active {
-      color: #ff585b;
-    }
-  }
-}
 </style>
