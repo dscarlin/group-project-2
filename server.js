@@ -1,10 +1,15 @@
+//Express vars
 const express = require("express");
-
 const PORT = process.env.PORT || 3001;
-
 const app = express();
 
-//twilio vars
+//Database Vars
+const db = require('./models')
+//test db
+db.sequelize.sync({ force: true }).then(()=>{require('./relationshipTester')(db)})
+
+
+//Twilio vars
 require('dotenv').config()
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;

@@ -29,7 +29,9 @@ export default {
     }
   },
   created: function() {
-    this.notifyMe();
+    let message = this.notification
+    this.notifyMe(message);
+    
     axios.get('api/test').then(
       (response) => {
         console.log(response.data);
@@ -38,10 +40,9 @@ export default {
     );
   },
   methods: {
-  notifyMe: function() {
-
-    notify(this.notification);
-    
+  notifyMe: function(mess) {
+    console.log(mess)
+    notify(mess);
     }
   }
 }
