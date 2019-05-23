@@ -65,7 +65,7 @@
           <a class="btn btn-danger" href="login.html">Register</a>
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" href="Login.vue">Login Page</a>
+          <a class="d-block small mt-3" href="/login">Login Page</a>
         </div>
       </div>
     </div>
