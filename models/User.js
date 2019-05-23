@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Users = sequelize.define("Users", {
+    let User = sequelize.define("User", {
       user_name: {
         type: DataTypes.STRING,
         allowNull: false, 
@@ -38,15 +38,15 @@ module.exports = (sequelize, DataTypes) => {
           validate: {
             isBoolean:function (val) {
               return (typeof(val)=='boolean')
-                 }
+            }
           }
       } 
-
     });
 
-  
-    Users.associate = (models) => {
-      Users.belongsToMany(models.Groups, { through: 'UserGroups', foreignKey: 'userId', as: 'groups'});
+    User.associate = (models) => {
+      User.belongsToMany(models.Group, { through: 'UserGroup', unique: "id" } );
+     
     };  
-    return Users;
+    
+    return User;
 }

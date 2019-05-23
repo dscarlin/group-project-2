@@ -10,34 +10,35 @@ module.exports = (app,db) => {
     //get for groups page
     app.get('/api/groups/:id', (req,res) => {
         console.log('requested user groups')
+        res.json({id: 1})
         let id = req.params.id;
-        db.UserGroup
-        .findAll({where: {userId: id }, attributes: [], include: [{model: db.Group}] })
+        db.UserGroups
+        .findAll({where: {userId: id }, attributes: [], include: [{model: db.Groups}] })
         .then(response => {
             let groupIdArray = new Array(), groupNameAndIdArray = new Array();
             response.forEach(item => {
-                let name = item.get().Group.get().group_name
+                let name = item.get().Group.get().name
                 let id = item.get().Group.get().id
-                groupIdArray.push({GroupId: id})
+                groupIdArray.push({groupId: id})
                 groupNameAndIdArray.push({id, name, memberStatusArray: []});
             })
-            // console.log(groupNameAndIdArray)
-            // db.UserGroup.findAll({
-            //     where: { [Op.and]: groupIdArray }, 
-            //     attributes: ['groupId'], 
-            //     include: [{model: db.User, attributes: ['status'] }] 
-            // })
-            // .then(response => {
-            //     response.forEach(group => {
-            //         for(let i=0; i < groupNameAndIdArray.length; i++){
-            //             if (group.get().groupId == groupNameAndIdArray[i].id)
+            console.log(groupNameAndIdArray)
+            db.UserGroups.findAll({
+                where: { [Op.and]: groupIdArray }, 
+                attributes: ['groupId'], 
+                include: [{model: db.Users, attributes: ['status'] }] 
+            })
+            .then(response => {
+                response.forEach(group => {
+                    for(let i=0; i < groupNameAndIdArray.length; i++){
+                        if (group.get().groupId == groupNameAndIdArray[i].id)
 
-            //                 return groupNameAndIdArray[i].memberStatusArray.push(group.get().User.get().status)
-            //         }
-            //     })
-            //     console.log(groupNameAndIdArray)
-            //     res.json(groupNameAndIdArray)
-            // });
+                            return groupNameAndIdArray[i].memberStatusArray.push(group.get().User.get().status)
+                    }
+                })
+                console.log(groupNameAndIdArray)
+                // res.json(groupNameAndIdArray)
+            });
         });
     });
 }
