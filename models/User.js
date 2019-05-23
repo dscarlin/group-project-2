@@ -1,17 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-    let User = sequelize.define("User", {
+    let Users = sequelize.define("Users", {
       user_name: {
         type: DataTypes.STRING,
         allowNull: false, 
+        unique: true,
         validate: {
-          notNull: true,
+          notEmpty: true,
         }
       },
       email: {
         type: DataTypes.STRING, 
-        allowNull: false, 
+        allowNull: false,
+        unique: true, 
           validate: {
-            notNull: true,
             isEmail: true
           }
       },
@@ -19,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING, 
         allowNull: false,
           validate: {
-            notNull: true,
-            len: [15]
+            not: ['[a-z]','i']
           }
       },
       status: {
@@ -45,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
   
-    User.associate = (models) => {
-      User.belongsToMany(models.Group, { through: 'UserGroup', foreignKey: 'userId'});
+    Users.associate = (models) => {
+      Users.belongsToMany(models.Groups, { through: 'UserGroups', foreignKey: 'userId', as: 'groups'});
     };  
-    return User;
+    return Users;
 }

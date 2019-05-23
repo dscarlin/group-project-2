@@ -1,23 +1,22 @@
 <template>
   <div class="groups">
-  <!-- <div>{{msg}}</div> -->
-   <section class="groups py-5">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card mb-5 mb-lg-0">
-          <div class="card-body">
-            <h5 class="card-title text-center">Basketball Group</h5>
-            <hr>
-            <p>10 Members 👨‍👨‍👧‍👧</p>
-            <p>3 Members Available to Chat 👁️‍🗨️</p>
-            <a href="#" class="btn view-groups-btn btn-block text-uppercase">View Group</a>
+    <section class="groups py-5">
+      <div v-for="(group,i) in groupsArray" :key="i"  class="col-md-4">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card mb-5 mb-lg-0">
+              <div class="card-body">
+                <h5 class="card-title text-center">Basketball Group</h5>
+                <hr>
+                <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
+                <p>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+                <a @click="checkOutGroup(i)" class="btn view-groups-btn btn-block text-uppercase">View Group</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
   </div>
 </template>
 
@@ -34,25 +33,24 @@ export default {
   },
   data: function() {
     return {
-     msg: ''
+     groupsArray: []
 
     }
   },
+  computed: {
+
+  },
   created: function() {
     let id = this.$route.params.id
-    console.log('params id: ',id)
-    axios.get(`api/groups/:${id}`).then(
+    axios.get(`api/groups/${id}`).then(
       (response) => {
-      console.log(response.data);
-      this.msg = response.data.request;
+      this.groupsArray = response.data;
       }
     );
   },
   methods: {
-  notifyMe: function() {
-
-    notify(this.notification);
-    
+    checkOutGroup: function(i){
+      let groupData = this.groupsArray[i]
     }
   }
 }

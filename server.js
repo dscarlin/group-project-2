@@ -3,10 +3,11 @@ const express = require("express");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+
 //Database Vars
 const db = require('./models')
 //test db
-db.sequelize.sync({ force: true }).then(()=>{require('./relationshipTester')(db)})
+// db.sequelize.sync({ force: true }).then(()=>{require('./relationshipTester')(db)})
 
 
 //Twilio vars
@@ -25,16 +26,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Sample API
-app.get('/api/userId', (req, res) => {
-  console.log('requested user id')
-  res.json({id: 1  });
-});
-
-app.get('/api/groups/:id', (req,res) => {
-  console.log('requested user groups')
-  res.json({request: 'groups has been requested'})
-});
+require('./db_routes/get_db.js')(app,db);
 
 app.post('/twilio',function(req,res){
   let body = req.body.message
@@ -46,6 +38,9 @@ app.post('/twilio',function(req,res){
   //   }).then(message => res.json(message.sid))
 })
 
-app.listen(PORT, function() {
-  console.log(`🌎 ==> API server now on port ${PORT}!`);
+db.sequelize.sync({ force: true }).then(()=>{
+  require('./db_seeds2')(db)
+  app.listen(PORT, function() { 
+    console.log(`🌎 ==> API server now on port ${PORT}!`);
+  });
 });
