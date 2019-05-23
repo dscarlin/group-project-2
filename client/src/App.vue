@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <navbar
-      @logOut="logMeInOrOut"
-      v-bind:loggedIn="loggedIn" 
-      v-bind:userId="userId.id" ></navbar>
+      <navbar @logOut="logMeInOrOut" v-bind:userId="userId" v-bind:loggedIn="loggedIn" ></navbar>
     </div>
     <router-view @loggingIn="logMeInOrOut"/>
   </div>
@@ -21,7 +18,7 @@ export default {
   data: function() {
     return {
       loggedIn: false,
-      userId: {id: null}
+      userId: null
     }
   },
   created: function(){
@@ -29,18 +26,16 @@ export default {
   },
   methods: {
     onLoginOrOut: function(value) {
-      this.loggedIn = value;
       if (value){
         this.getUserId().then(response => {
+          this.loggedIn = value;
           this.userId = response.data.id;
           this.$router.push({name: 'groups', params: { id: this.userId }})
         });
       }
     },
-
     getUserId: function() {
-      return axios.get('api/userId').then(
-      response => response);
+      return axios.get('api/userId')
     },
 
     logMeInOrOut: function(boolean) {
