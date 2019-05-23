@@ -60,7 +60,7 @@
                   </div>
                 </div>
                 <button
-                  @click="signMeIn"
+                  @click="signMeUp"
                   class="btn btn-lg register btn-block text-uppercase"
                   type="submit"
                 >Register</button>
@@ -80,7 +80,12 @@
 
 <script>
 export default {
-  name: "signup"
+  name: "signup",
+  methods: {
+    signMeUp: function() {
+      this.$emit("signedUp", true);
+    }
+  }
 };
 </script>
 
