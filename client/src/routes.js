@@ -30,7 +30,7 @@ export default [
       component: () => import(/* webpackChunkName: "groups" */ './views/Groups.vue')
     },
     {
-      path: '/group/:id',
+      path: '/group/:id/:name',
       name: 'group',
       component: () => import(/* webpackChunkName: "group" */ './views/Group.vue')
     },

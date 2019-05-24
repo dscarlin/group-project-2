@@ -6,6 +6,12 @@ module.exports = (app,db) => {
     console.log('requested user id')
     res.json({id: 1  });
     });
+
+    //get for group page
+    app.get('/api/group/:id/:name', (req, res) => {
+    console.log('requested group')
+    
+    });
   
     //get for groups page
     app.get('/api/groups/:id', (req,res) => {

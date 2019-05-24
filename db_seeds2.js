@@ -41,42 +41,27 @@ module.exports = (db) => {
     setTimeout(()=> {
         
         db.UserGroup.findAll({
-            where: { UserId: 1 }, 
+            where: { GroupId: 1 }, 
             include: {
-                model: db.Group,
-                attributes: ['name','id'],
-                include: {
-                    model: db.UserGroup,
-                    attributes: ['GroupId'],
-                    include: {
-                        model: db.User,
-                        attributes: ['status','id'],
-                        where: {
-                            id: {
-                                [Op.ne]: 1
-                            }
-                        }
-                    }   
+                model: db.User,
+                attributes: ['user_name','status','id', 'phone_number'],
+                where: {
+                    id: {
+                        [Op.ne]: 1
+                    }
                 }
-            } 
+            }   
+        }).then(res => {
+            let userArray = new Array();
+            res.forEach(userGroup => {
+            // console.log(userGroup.User.get());
+            userArray.push(userGroup.User.get())
+            });
+            console.table(userArray)
+
         })
-        .then(result => {
-            console.log(result)
-            let groupsArray = new Array;
-            result.forEach(item => {
-                let statusArray = new Array;
-                item.Group.UserGroups.forEach(userGroup => {
-                    let user = userGroup.User
-                    statusArray.push(user)
-                    console.log('Status:',user.status)
-                })
-                let group = {
-                    name: item.Group.name,
-                    id: item.Group.id,
-                    status: statusArray
-                }
-                groupsArray.push(group)
-            })});
+            
+
     }, 2000);
 
       

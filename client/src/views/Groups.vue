@@ -50,7 +50,8 @@ export default {
   },
   methods: {
     checkOutGroup: function(i){
-      let groupData = this.groupsArray[i]
+      let groupData = this.groupsArray[i];
+      this.$router.push({name: 'group', prams: { id: groupData.id, name: groupData.name } })
     }
   }
 }
