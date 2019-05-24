@@ -1,24 +1,82 @@
 module.exports = (db) => { 
    
+    
+   
     const Op = db.Sequelize.Op;
     //create some example users
-    db.User.create(
-        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: true}
-    )
-    .then(user => {
-        //log data values for each user
-        console.log(user.get());
-        //get data values for one user by email search for testing
-    })
-    db.Group.create({name: 'Basketball Bros'})
-        .then(newGroup => {
-            console.log('################ new Group: ',newGroup.get());
-        })
-    // const UserGroup = db.sequelize.model('UserGroup');
-    db.Group.prototype.getUsers().then(res => console.log(res))
+    let userArray = [
+        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: false},
+        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: true},
+        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: true},
+        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: true}
+    ]
+    let groupName = ['Basketball Team','Tennis Group','Friend Group','Church Peeps']
+    for (let i=0; i < userArray.length; i++){
+        let x = userArray[i]
+     
+        Promise.all([
+            db.User.create(
+                {user_name: x.user_name, email: x.email, text_enabled: x.text_enabled, phone_number: '(839) 394 2994', status: x.status}
+            ),
+        ])
+        .then(res => console.log(res)) 
+    };
 
-    // UserGroup.findAll().then(res => console.log('*************',res))
-    // UserGroup.create({UserId: 1, GroupId: 1}).then(res => console.log(res))
-    console.log(Object.keys(db.User.prototype));
-    console.log(Object.keys(db.Group.prototype));
+    setTimeout(() => {
+        for (let i=0; i < groupName.length; i++){
+            db.Group.create({name: groupName[i]}).then(res => console.log(res))
+        };
+    }, 300);
+
+    let ids = [[1,1],[1,2],[1,3],[1,4],[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]]
+    for (let i=0; i < ids.length; i++){
+        setTimeout(function(){
+            let x = ids[i]
+            db.UserGroup.create({UserId: x[0] , GroupId: x[1]}).then(res => {
+                console.log(res);
+              
+            });
+        },500)
+    }
+    setTimeout(()=> {
+        let groups = new Object
+        db.UserGroup.findAll({
+            where: { UserId: 1 }, 
+            include: {
+                model: db.Group,
+                attributes: ['name','id'],
+                include: {
+                    model: db.UserGroup,
+                    attributes: ['GroupId'],
+                    include: {
+                        model: db.User,
+                        attributes: ['status','id'],
+                        where: {
+                            id: {
+                                [Op.ne]: 1
+                            }
+                        }
+                    }   
+                }
+            } 
+        })
+        .then(result => result.forEach(item => {
+            let group = item.Group
+            // let userGroups = group.
+            // let userGroups = 
+            console.log('Group Name:',group.name)
+            console.log('Group Id:',group.id)
+            group.UserGroups.forEach(userGroup => {
+                let user = userGroup.User
+                console.log('Status:',user.status)
+            })
+        }));
+    }, 2000);
+
+      
+    
+       
+        
+        
+    
 }

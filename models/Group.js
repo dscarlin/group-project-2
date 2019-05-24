@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
     Group.associate = (models) => {
-      Group.belongsToMany(models.User, { through: 'UserGroup', unique: 'id'});
-     
+      Group.hasMany(models.UserGroup);
     };  
+    
     return Group;
   }

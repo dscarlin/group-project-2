@@ -42,11 +42,10 @@ module.exports = (sequelize, DataTypes) => {
           }
       } 
     });
-
     User.associate = (models) => {
-      User.belongsToMany(models.Group, { through: 'UserGroup', unique: "id" } );
-     
+      User.hasMany(models.UserGroup);
     };  
+    
     
     return User;
 }
