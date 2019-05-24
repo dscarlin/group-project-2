@@ -7,9 +7,10 @@
           <div class="card card-register mx-auto mt-5">
             <div class="card-body">
               <h5 class="card-title text-center">Register an Account</h5>
-              <form class="form-register">
+              <form @submit.prevent="signMeUp">
                 <div class="form-label-group">
                   <input
+                    v-model="name"
                     type="text"
                     id="firstLastName"
                     class="form-control"
@@ -22,6 +23,7 @@
                 <div class="form-group">
                   <div class="form-label-group">
                     <input
+                      v-model="email"
                       type="email"
                       id="inputEmail"
                       class="form-control"
@@ -36,6 +38,7 @@
                     <div class="col-md-6">
                       <div class="form-label-group">
                         <input
+                          v-model="password"
                           type="password"
                           id="inputPassword"
                           class="form-control"
@@ -48,6 +51,7 @@
                     <div class="col-md-6">
                       <div class="form-label-group">
                         <input
+                          v-model="confirmPassword"
                           type="password"
                           id="confirmPassword"
                           class="form-control"
@@ -85,6 +89,14 @@ export default {
     signMeUp: function() {
       this.$emit("signedUp", true);
     }
+  },
+  data: function() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+      confrimPassword: ""
+    };
   }
 };
 </script>
