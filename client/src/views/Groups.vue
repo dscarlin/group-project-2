@@ -1,12 +1,12 @@
 <template>
   <div class="groups">
     <section class="groups py-5">
-      <div v-for="(group,i) in groupsArray" :key="i"  class="col-md-4">
+      <div class="container">
         <div class="row">
-          <div class="col-lg-4">
+          <div class="col-lg-4 mg-top"  v-for="(group,i) in groupsArray" :key="group.id">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
-                <h5 class="card-title text-center">Basketball Group</h5>
+                <h5 class="card-title text-center">{{group.name}}</h5>
                 <hr>
                 <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
                 <p>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
@@ -60,6 +60,10 @@ section.groups {
   background: lightgrey;
   height: 100vh;
   /* background: linear-gradient(to right, #0062E6, #33AEFF); */
+}
+
+.mg-top {
+  margin-top: 2em;
 }
 
 .groups .card {

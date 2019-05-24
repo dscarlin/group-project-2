@@ -7,7 +7,7 @@ module.exports = (db) => {
     let userArray = [
         {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: false},
         {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: true},
-        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: true},
+        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: false},
         {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: true}
     ]
     let groupName = ['Basketball Team','Tennis Group','Friend Group','Church Peeps']
@@ -39,7 +39,7 @@ module.exports = (db) => {
         },500)
     }
     setTimeout(()=> {
-        let groups = new Object
+        
         db.UserGroup.findAll({
             where: { UserId: 1 }, 
             include: {
@@ -60,17 +60,23 @@ module.exports = (db) => {
                 }
             } 
         })
-        .then(result => result.forEach(item => {
-            let group = item.Group
-            // let userGroups = group.
-            // let userGroups = 
-            console.log('Group Name:',group.name)
-            console.log('Group Id:',group.id)
-            group.UserGroups.forEach(userGroup => {
-                let user = userGroup.User
-                console.log('Status:',user.status)
-            })
-        }));
+        .then(result => {
+            console.log(result)
+            let groupsArray = new Array;
+            result.forEach(item => {
+                let statusArray = new Array;
+                item.Group.UserGroups.forEach(userGroup => {
+                    let user = userGroup.User
+                    statusArray.push(user)
+                    console.log('Status:',user.status)
+                })
+                let group = {
+                    name: item.Group.name,
+                    id: item.Group.id,
+                    status: statusArray
+                }
+                groupsArray.push(group)
+            })});
     }, 2000);
 
       
