@@ -7,7 +7,7 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Sign In</h5>
-              <form class="form-signin">
+              <form @submit.prevent="logMeIn()" class="form-signin" autocomplete="on" >
                 <div class="form-label-group">
                   <input
                     type="email"
@@ -16,6 +16,7 @@
                     placeholder="Email address"
                     required
                     autofocus
+                    autocomplete="on"
                   >
                   <label for="inputEmail">Email address</label>
                 </div>
@@ -27,6 +28,7 @@
                     class="form-control"
                     placeholder="Password"
                     required
+                    autocomplete="on"
                   >
                   <label for="inputPassword">Password</label>
                 </div>
@@ -36,7 +38,6 @@
                   <label class="custom-control-label" for="customCheck1">Remember password</label>
                 </div>
                 <button
-                  @click="logMeIn"
                   class="btn btn-lg sign-in btn-block text-uppercase"
                   type="submit"
                 >Sign in</button>
@@ -55,6 +56,7 @@ export default {
   name: "login",
   methods: {
     logMeIn: function() {
+     
       this.$emit("loggingIn", true);
     }
   }

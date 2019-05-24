@@ -33,6 +33,10 @@ export default {
           this.$router.push({name: 'groups', params: { id: this.userId }})
         });
       }
+      else{
+        this.loggedIn = value;
+        this.userId = null
+      }
     },
     getUserId: function() {
       return axios.get('api/userId')

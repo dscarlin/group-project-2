@@ -1,15 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
     let Group = sequelize.define("Group", {
-      group_name: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false, 
         validate: {
-          notNull: true,
+          notEmpty: true,
         }
       }
     });
     Group.associate = (models) => {
-      Group.belongsToMany(models.User, { through: 'UserGroups', foreignKey: 'groupId' });
+      Group.hasMany(models.UserGroup);
     };  
+    
     return Group;
-}
+  }
