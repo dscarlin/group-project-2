@@ -18,18 +18,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       phone_number: {
         type: DataTypes.STRING, 
-        allowNull: false,
+        allowNull: true,
           validate: {
             not: ['[a-z]','i']
           }
       },
       status: {
-        type: DataTypes.BOOLEAN, 
-        defaultValue: false,
+        type: DataTypes.INTEGER, 
+        defaultValue: 0,
           validate: {
-            isBoolean:function (val) {
-              return (typeof(val)=='boolean')
-                 }
+            min: 0,
+            max: 1
           }
       },
       text_enabled: {
