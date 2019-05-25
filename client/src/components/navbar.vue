@@ -35,7 +35,7 @@
               <router-link to="/create" class="nav-link">Create Group</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/profile" class="nav-link">My Profile</router-link>
+              <router-link :to="{ name: 'profile', params: {id: userId}}" class="nav-link">My Profile</router-link>
             </li>
             <li class="nav-item">
               <a @click="logMeOut" class="nav-link">Log Out</a>

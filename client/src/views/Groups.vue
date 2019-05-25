@@ -61,7 +61,7 @@ export default {
 section.groups {
   background: lightgrey;
   height: 100vh;
-  /* background: linear-gradient(to right, #0062E6, #33AEFF); */
+  /* background: linear-gradient(to right, #0062E6, #33AEFF) */
 }
 
 .mg-top {
