@@ -4,9 +4,10 @@
       <div class="container"> 
         <h1>{{name}}</h1>
         <div class="row">
-          <div v-for="(member, i) in groupInfo" :key="member.id" class="col-md-4 mg-top float in-l">
+          <div v-for="(member, i) in groupInfo" :key="i" class="col-md-4 mg-top float in-l">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
+                <img v-bind:src="member.picture_ref"/>
                 <h5 class="card-title text-center">{{member.user_name}}</h5>
                 <hr>
                 <p :style="statusColor(i)">{{ member.status ? 'available to talk' : 'not available'}}</p>

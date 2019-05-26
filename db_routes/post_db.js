@@ -1,6 +1,10 @@
 module.exports = (app,db) => {
     const Op = db.Sequelize.Op;
 
+
+   
+
+
     //create user
     app.post('api/user', (req, res) => {
         console.log('called post on user')
@@ -11,6 +15,7 @@ module.exports = (app,db) => {
             text_enabled: r.text_enabled,
             phone_number: r.phone_number,
             status: r.status
+
         };
         db.User.create(userInfo).then(result => res.json(result));
     })

@@ -1,9 +1,18 @@
 module.exports = (app,db) => {
     const Op = db.Sequelize.Op;
 
+
+    
     //mock login
     app.get('/api/userId', (req, res) => {
         res.json({id: 1})
+    });
+
+    app.get('/api/user/:id', (req, res) => {
+        let id = req.params.id
+        db.User.findOne({where : { id: id } }).then(result => {
+            res.send(result);
+        });
     });
 
     // name and id of all users for searching to add user
@@ -28,7 +37,7 @@ module.exports = (app,db) => {
             include: {
                 order: [['status','DESC']],
                 model: db.User,
-                attributes: ['user_name','status','id', 'phone_number'],
+                attributes: ['user_name','status','id', 'phone_number','picture_ref'],
                 where: {
                     id: {
                         [Op.ne]: 1

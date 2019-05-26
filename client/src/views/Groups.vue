@@ -1,9 +1,9 @@
 <template>
   <div class="groups">
-    <section class="groups py-5">
+    <section class="groups py-5 groups-bg">
       <div class="container">
         <div class="row">
-          <div class="col-md-4 mg-top"  v-for="(group,i) in groupsArray" :key="group.id">
+          <div class="col-md-4 mg-top"  v-for="(group,i) in groupsArray" :key="i">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
                 <h5 class="card-title text-center">{{group.name}}</h5>
@@ -58,6 +58,7 @@ export default {
 }
 </script>
 <style>
+
 section.groups {
   background: lightgrey;
   height: 100vh;
