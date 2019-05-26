@@ -27,16 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 require('./db_routes/get_db.js')(app,db);
+require('./db_routes/post_db.js')(app,db);
+require('./db_routes/put_db.js')(app,db);
+require('./db_routes/delete_db.js')(app,db);
 
-app.post('/twilio',function(req,res){
-  let body = req.body.message
-  console.log('twilio post')
-  // twilio.messages.create({
-  //   body: body,
-  //   from: trialNumber,
-  //   to: '+19193682008'
-  //   }).then(message => res.json(message.sid))
-})
+
 
 db.sequelize.sync({ force: true }).then(()=>{
   require('./db_seeds2')(db)
