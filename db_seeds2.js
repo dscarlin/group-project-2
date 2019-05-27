@@ -5,10 +5,10 @@ module.exports = (db) => {
     const Op = db.Sequelize.Op;
     //create some example users
     let userArray = [
-        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: 0},
-        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: 1},
-        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: 0},
-        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: 1}
+        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394-2994', status: 0},
+        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394-2994', status: 1},
+        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394-2994', status: 0},
+        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394-2994', status: 1}
     ]
     let groupName = ['Basketball Team','Tennis Group','Friend Group','Church Peeps']
     for (let i=0; i < userArray.length; i++){

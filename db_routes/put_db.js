@@ -15,12 +15,12 @@ module.exports = (app,db) => {
         let userInfo = { 
             user_name: r.user_name,
             email: r.email,
-            // tex_enabled: r.text_enabled,
+            tex_enabled: r.text_enabled,
             phone_number: r.phone_number
         }
         if(req.files){
             if(r.picture_ref && r.picture_ref!== 'null')
-            fs.unlinkSync(`${__dirname}/../client/public/images/upload_images/${r.picture_ref}`);
+                fs.unlinkSync(`${__dirname}/../client/public/images/upload_images/${r.picture_ref}`);
             let pictureFile = req.files.picture;
             userInfo['picture_ref'] = pictureFile.name;
             pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, err => {

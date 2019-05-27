@@ -5,7 +5,7 @@ module.exports = (app,db) => {
     
     //mock login
     app.get('/api/userId', (req, res) => {
-        res.json({id: 1})
+        res.json({id: 2})
     });
 
     app.get('/api/user/:id', (req, res) => {
