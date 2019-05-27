@@ -1,5 +1,5 @@
 const fs = require('fs');
-module.exports = (app,db) => {
+module.exports = (app,db,bcrypt) => {
     const Op = db.Sequelize.Op;
 
 

@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
-      <navbar @logOut="logMeInOrOut" v-bind:userId="userId" v-bind:loggedIn="loggedIn" ></navbar>
+      <navbar @loggedOUt="logMeInOrOut" v-bind:userId="userId" v-bind:loggedIn="loggedIn" ></navbar>
     </div>
-    <router-view @loggingIn="logMeInOrOut"/>
+    <router-view @loggedIn="logMeInOrOut"/>
   </div>
 </template>
 
@@ -22,29 +22,30 @@ export default {
     }
   },
   created: function(){
-    
+    get('/loginStatus').then(res => {
+      this.userId = res.user.id || null
+      this.loggedIn = res.user.id ? true : false
+        
+    })
   },
   methods: {
-    onLoginOrOut: function(value) {
-      if (value){
-        this.getUserId().then(response => {
-          this.loggedIn = value;
-          this.userId = response.data.id;
-          this.$router.push({name: 'groups', params: { id: this.userId }})
-        });
-      }
-      else{
-        this.loggedIn = value;
-        this.userId = null
-      }
+    onLoginOrOut: function(loggedIn, id) {
+      
+      this.loggedIn = loggedIn;
+      this.userId = id || null;
+      if (loggedIn)
+      this.$router.push({name: 'groups', params: { id: this.userId }})
+        
+      
+      
     },
-    getUserId: function() {
-      return axios.get('api/userId')
-    },
+   
 
-    logMeInOrOut: function(boolean) {
-      this.onLoginOrOut(boolean);
-      if(!boolean)
+    logMeInOrOut: function(object) {
+      let loggedIn = object.loggedIn
+      let id = object.id
+      this.onLoginOrOut(loggedIn, id);
+      if(!loggedIn)
         this.$router.push({name: 'landing'})
     },
     

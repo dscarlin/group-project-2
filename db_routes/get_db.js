@@ -3,9 +3,20 @@ module.exports = (app,db) => {
 
 
     
-    //mock login
-    app.get('/api/userId', (req, res) => {
-        res.json({id: 1})
+    //mlogin
+    app.get('/loginStatus', (req, res) => {
+        console.log('is auth ',res.isAuthenticated())
+        if(res.isauthenticted())
+            res.send(res.user)
+        else
+            res.sendStatus(400)
+       
+    });
+    
+    app.get('/logout', (req, res) => {
+        req.logout();
+        req.session.destroy();
+        res.redirect('/');
     });
 
     app.get('/api/user/:id', (req, res) => {
@@ -30,6 +41,8 @@ module.exports = (app,db) => {
         
         
     // })
+
+
 
     // name and id of all users for searching to add user
     app.get('/api/search/users', (req, res) => {

@@ -1,27 +1,33 @@
-module.exports = (db) => { 
+module.exports = (db, bcrypt) => { 
    
     
    
     const Op = db.Sequelize.Op;
     //create some example users
     let userArray = [
-        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: 0},
-        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: 1},
-        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: 0},
-        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: 1}
+        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: 0, password: 'pass'},
+        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: 1, password: 'pass'},
+        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: 0, password: 'pass'},
+        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994', status: 1, password: 'pass'}
     ]
     let groupName = ['Basketball Team','Tennis Group','Friend Group','Church Peeps']
+    
+    
+    
     for (let i=0; i < userArray.length; i++){
         let x = userArray[i]
-     
-        Promise.all([
-            db.User.create(
-                {user_name: x.user_name, email: x.email, text_enabled: x.text_enabled, phone_number: '(839) 394 2994', status: x.status}
-            ),
-        ])
-        .then(res => {
-            // console.log(res[0].get())
-        });
+     bcrypt.hash('pass',8, (err, hash) => {
+
+         Promise.all([
+             db.User.create(
+                 
+                 {user_name: x.user_name, email: x.email, text_enabled: x.text_enabled, phone_number: '(839) 394 2994', status: x.status, password: hash}
+             ),
+         ])
+         .then(res => {
+             // console.log(res[0].get())
+         });
+     })
     };
 
     setTimeout(() => {

@@ -1,24 +1,44 @@
-module.exports = (app,db) => {
+
+module.exports = (LocalStrategy,passport,app,db,bcrypt) => {
     const Op = db.Sequelize.Op;
+    const saltRounds = 8
 
+    
+    // passport.use(new LocalStrategy({
+    //     usernameField: "email",
+    //     passwordField: "password"
+    // }, function(username, password, done) {
+    //     console.log(username);
+    //     console.log(password);
+    //     return done(null, "done")
+    
+    // }));
 
-   
+    //login
+    app.post('/login',passport.authenticate("local"), (req, res) => {
+        console.log(req.body)
+        console.log(req.user.get())
+        console.log(req.isAuthenticated())
+        res.json(req.user.id)
 
+        // res.send('')
+    })
 
     //create user
-    app.post('api/user', (req, res) => {
+    app.post('/api/user',  (req, res) => {
         console.log('called post on user')
-        let r = request.body;
-        let userInfo = { 
-            user_name: r.user_name,
-            email: r.email,
-            text_enabled: r.text_enabled,
-            phone_number: r.phone_number,
-            status: r.status
-
-        };
-        db.User.create(userInfo).then(result => res.json(result));
-    })
+        let r = req.body;
+        bcrypt.hash(r.password, saltRounds, (err, hash) => {
+            let userInfo = { 
+                user_name: r.user_name,
+                email: r.email,
+                password: hash,
+                phone_number: r.phone_number
+            };
+            console.log(userInfo.password)
+            db.User.create(userInfo).then(result => res.json(result));
+        });
+    });
 
     app.post('api/group', (req, res) => {
         console.log('called post on group')
