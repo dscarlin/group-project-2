@@ -41,7 +41,7 @@
                       id="inputPhoneNumber"
                       v-model="phoneNumber"
                       class="form-control"
-                      placeholder="Phone Number (555) 555 5555"
+                      placeholder="Phone Number"
                       required
                       autocomplete="on"
                     >
@@ -53,6 +53,7 @@
                     <input
                       type="file"
                       ref="picture"
+                      accept="*/image"
                       v-on:change="handleFileUpload()"
                       id="inputPicture"
                       class="form-control"
@@ -78,6 +79,12 @@
                     <input type="checkbox" class="custom-control-input" id="customCheck1">
                     <label class="custom-control-label" for="customCheck1">Remember password</label>
                   </div>
+
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" v-model="textEnabled" class="custom-control-input" id="inputEnableText">
+                    <label class="custom-control-label"  for="inputEnableText">Enable Text Notifications</label>
+                  </div>
+
                   <button
                     class="btn btn-lg sign-in btn-block text-uppercase"
                     type="submit"
@@ -106,28 +113,53 @@ export default {
       email: '',
       phoneNumber: '',
       password: '',
-      picture_ref: null
+      picture_ref: null,
+      suggestText: false,
+      textEnabled: false
 
     }
   },
   created: function() {
+    // this.checkWindowNotification();
+
     let id = this.$route.params.id
     axios.get(`/api/user/${id}`).then(res => {
       console.log(res)
       this.name = res.data.user_name;
       this.email = res.data.email;
       this.phoneNumber = res.data.phone_number;
-      this.picture_ref = res.data.picture_ref
+      this.picture_ref = res.data.picture_ref;
+      this.textEnabled = res.data.text_enabled;
     })
     // axios.get(`/api/user/${id}/image`).then(res => {
     //   console.log(res)
     //   this.$refs.picture.file = res.data
       // })
   },
-  computed: {
-    // checkWindowNotification: function() {
+  watch: {
+    phoneNumber: function() {
+      this.phoneNumber = this.phoneNumber.split('').filter(char => char.match(/[0-9]/g));
+      if (this.phoneNumber.length > 9){
+        this.phoneNumber.splice(0,0,'(');
+        this.phoneNumber.splice(4,0,')');
+        this.phoneNumber.splice(5,0,' ');
+        this.phoneNumber.splice(9,0,'-');
+      }
+      this.phoneNumber = this.phoneNumber.join('').slice(0,14);
+    
       
-    // }
+    
+      
+    }
+  },
+  computed: {
+    checkWindowNotification: function() {
+      if(!'Notification' in window)
+        return false
+      else 
+        return true
+        
+    }
   },
   methods: {
     handleFileUpload: function() {
@@ -143,11 +175,13 @@ export default {
       formData.append('email',this.email)
       formData.append('phone_number',this.phoneNumber)
       formData.append('picture_ref',this.picture_ref)
+      formData.append('text_enabled, this.text_enabled')
 
       
       let headers = {headers: { 'content-type': 'multipart/form-data' } };
       axios.put(`/api/user/${this.$route.params.id}`,formData,headers).then(res => console.log(res))
-    }
+    },
+
     
   }
 };
