@@ -17,8 +17,8 @@
                   <div class="col-lg-2"></div>
                 </div>
                 <hr>
-                <p :style="statusColor(i)">{{ member.status ? 'available to talk' : 'not available'}}</p>
-                <p><a :style="phoneNumberColor(i)" :href='"tel:+1"+formattedTelNumber(i)'> {{member.phone_number}}</a></p>
+                <p :style="member.status ? 'color: green' : 'color: red; opacity: .5'">{{ member.status ? 'available to talk' : 'not available'}}</p>
+                <p><a :style="member.status ? '' : 'color: grey; opacity: .5'" :href='"tel:+1"+formattedTelNumber(i)'> {{member.phone_number}}</a></p>
                 <a @click="checkOutMember(i)" class="btn view-member-btn btn-block text-uppercase">View Member Info</a>
               </div>
             </div>
@@ -56,19 +56,9 @@ export default {
     );
   },
   methods: {
-    statusColor: function(i) {
-        if (this.groupInfo[i].status)
-          return 'color: green'
-        else 
-          return 'color: red; opacity: .5'
-    },
+    
   
-    phoneNumberColor: function(i) {
-        if (this.groupInfo[i].status)
-          return ""
-        else
-          return "color: grey; opacity: .5"
-    },
+   
     formattedTelNumber: function(i) {
       return this.groupInfo[i].phone_number.split('').filter(char => char.match(/[0-9]/g)).join('')
     },
@@ -90,15 +80,17 @@ h5 {
 }
 
 #profileThumbnail {
-  height: auto;
+  height: 100%;
   width: 100%;
   max-width: 6em;
   margin: auto;
+  border-radius: 10em;
 }
 
 section.group {
   background: lightgrey;
-  /* height: 100vh; */
+  background-size:contain;
+  min-height: 100vh;
   /* background: linear-gradient(to right, #0062E6, #33AEFF); */
 }
 
