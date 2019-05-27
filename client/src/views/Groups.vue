@@ -1,9 +1,9 @@
 <template>
   <div class="groups">
-    <section class="groups py-5">
+    <section class="groups py-5 groups-bg">
       <div class="container">
         <div class="row">
-          <div class="col-md-4 mg-top"  v-for="(group,i) in groupsArray" :key="group.id">
+          <div class="col-md-4 mg-top"  v-for="(group,i) in groupsArray" :key="i">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
                 <h5 class="card-title text-center">{{group.name}}</h5>
@@ -42,6 +42,7 @@ export default {
   },
   created: function() {
     let id = this.$route.params.id
+    console.log('route id: ',id)
     axios.get(`api/groups/${id}`).then(
       (response) => {
       this.groupsArray = response.data;
@@ -52,15 +53,16 @@ export default {
   methods: {
     checkOutGroup: function(i){
       let groupData = this.groupsArray[i];
-      this.$router.push({name: 'group', params: { id: groupData.id, name: groupData.name } })
+      this.$router.push({name: 'group', params: { id: groupData.id, name: groupData.name , uid: this.$route.params.id} })
     }
   }
 }
 </script>
 <style>
+
 section.groups {
   background: lightgrey;
-  height: 100vh;
+  /* height: 100vh; */
   /* background: linear-gradient(to right, #0062E6, #33AEFF) */
 }
 

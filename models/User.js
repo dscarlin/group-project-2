@@ -31,6 +31,13 @@ module.exports = (sequelize, DataTypes) => {
             max: 1
           }
       },
+      picture_ref: {
+        type: DataTypes.STRING, 
+        defaultValue: null,
+          validate: {
+            
+          }
+      },
       text_enabled: {
         type: DataTypes.BOOLEAN, 
         defaultValue: false,

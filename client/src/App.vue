@@ -13,7 +13,7 @@ import axios from "axios";
 export default {
   name: "app",
   components: {
-    navbar
+    navbar,
   },
   data: function() {
     return {
@@ -47,6 +47,7 @@ export default {
       if(!boolean)
         this.$router.push({name: 'landing'})
     },
+    
     
   }
 };
