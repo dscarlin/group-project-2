@@ -34,6 +34,19 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <div class="form-label-group">
+                    <input
+                      v-model="phoneNumber"
+                      type="text"
+                      id="inputPhoneNumber"
+                      class="form-control"
+                      placeholder="Phone Number"
+                      required="required"
+                    >
+                    <label for="inputPhoneNumber">Phone Number</label>
+                  </div>
+                </div>
+                <div class="form-group">
                   <div class="form-row">
                     <div class="col-md-6">
                       <div class="form-label-group">
@@ -64,7 +77,6 @@
                   </div>
                 </div>
                 <button
-                  @click="signMeUp"
                   class="btn btn-lg register btn-block text-uppercase"
                   type="submit"
                 >Register</button>
@@ -81,13 +93,25 @@
 </div>
 </template>
 
-
 <script>
+import axios from 'axios'
 export default {
   name: "signup",
   methods: {
     signMeUp: function() {
-      this.$emit("signedUp", true);
+      // need check confirm password
+      console.log('sign me up')
+      let data = {
+        user_name: this.name,
+        email: this.email,
+        password: this.password,
+        phone_number: this.phoneNumber
+        }
+      console.log(data)
+      axios.post('/api/user', data).then(response => {
+        console.log(response)
+      })
+      
     }
   },
   data: function() {
@@ -95,9 +119,12 @@ export default {
       name: "",
       email: "",
       password: "",
-      confrimPassword: ""
+      confrimPassword: "",
+      phoneNumber: ''
     };
   }
+ 
+
 };
 </script>
 

@@ -12,6 +12,7 @@
                   <input
                     type="email"
                     id="inputEmail"
+                    v-model="email"
                     class="form-control"
                     placeholder="Email address"
                     required
@@ -25,6 +26,7 @@
                   <input
                     type="password"
                     id="inputPassword"
+                    v-model="password"
                     class="form-control"
                     placeholder="Password"
                     required
@@ -52,12 +54,27 @@
 </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: "login",
   methods: {
     logMeIn: function() {
-     
-      this.$emit("loggingIn", true);
+      let data = {
+        email: this.email,
+        password: this.password
+      }
+      axios.post('/login',data).then(res => {
+        console.log(res);
+        this.$emit('loggedIn', {loggedIn: true, id: res.data });
+
+        
+      })
+    }
+  },
+  data: function() {
+    return {
+      email: '',
+      password: ''
     }
   }
 };

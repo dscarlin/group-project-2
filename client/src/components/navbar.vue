@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "navbar",
   props: {
@@ -71,7 +73,9 @@ export default {
   },
   methods: {
     logMeOut: function() {
-      this.$emit("logOut", false);
+      axios.get('/logout').then(res => {
+        this.$emit('loggedOut', res.isAuthenticated());
+      })
     }
   }
 };
