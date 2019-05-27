@@ -10,7 +10,6 @@ module.exports = (app,db) => {
         console.log("called put user")
         let id = req.params.id
         let r = req.body
-        console.log(r.picture_ref)
         
         //sanitize input data #nobobbydroptables :)
         let userInfo = { 
@@ -20,8 +19,8 @@ module.exports = (app,db) => {
             phone_number: r.phone_number
         }
         if(req.files){
-            if(r.picture_ref)
-                fs.unlinkSync(`${__dirname}/../client/public/images/upload_images/${r.picture_ref}`);
+            if(r.picture_ref && r.picture_ref!== 'null')
+            fs.unlinkSync(`${__dirname}/../client/public/images/upload_images/${r.picture_ref}`);
             let pictureFile = req.files.picture;
             userInfo['picture_ref'] = pictureFile.name;
             pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, err => {
