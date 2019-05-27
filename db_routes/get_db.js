@@ -11,9 +11,25 @@ module.exports = (app,db) => {
     app.get('/api/user/:id', (req, res) => {
         let id = req.params.id
         db.User.findOne({where : { id: id } }).then(result => {
+            console.log(result)
+            
             res.send(result);
+            
         });
     });
+    // app.get('/api/user/:id/image', (req,res) => {
+    //     let id = req.params.id;
+    //     db.User.findOne({where: { id: id } , attributes: ['picture_ref'] } ).then(result => {
+    //         console.log(result)
+    //         let options = {
+    //             root: __dirname + '/../client/public/images/upload_images/'
+    //         }
+    //         res.sendFile(result.picture_ref, options);
+
+    //     })
+        
+        
+    // })
 
     // name and id of all users for searching to add user
     app.get('/api/search/users', (req, res) => {
@@ -29,18 +45,18 @@ module.exports = (app,db) => {
     });
 
     //get for group page - all users in group
-    app.get('/api/group/:id', (req, res) => {
+    app.get('/api/group/:uid/:id', (req, res) => {
         console.log('requested group')
         let id = req.params.id
+        let uid = req.params.uid
         db.UserGroup.findAll({
             where: { GroupId: id }, 
             include: {
-                order: [['status','DESC']],
                 model: db.User,
                 attributes: ['user_name','status','id', 'phone_number','picture_ref'],
                 where: {
                     id: {
-                        [Op.ne]: 1
+                        [Op.ne]: uid
                     }
                 }
             }   

@@ -1,3 +1,4 @@
+const fs = require('fs');
 module.exports = (app,db) => {
     const Op = db.Sequelize.Op;
 
@@ -7,21 +8,25 @@ module.exports = (app,db) => {
     //update user profile
     app.put('/api/user/:id', (req, res) => {
         console.log("called put user")
-        console.log(req.files)
-        let pictureFile = req.files.picture
-        pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, err => {
-            if(err) res.status(500).send(err)
-        })
         let id = req.params.id
         let r = req.body
+        console.log(r.picture_ref)
+        
         //sanitize input data #nobobbydroptables :)
         let userInfo = { 
             user_name: r.user_name,
             email: r.email,
             // tex_enabled: r.text_enabled,
-            phone_number: r.phone_number,
-            picture_ref: `@/public/images/upload_images/${pictureFile.name}`
-
+            phone_number: r.phone_number
+        }
+        if(req.files){
+            if(r.picture_ref)
+                fs.unlinkSync(`${__dirname}/../client/public/images/upload_images/${r.picture_ref}`);
+            let pictureFile = req.files.picture;
+            userInfo['picture_ref'] = pictureFile.name;
+            pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, err => {
+                if(err) res.status(500).send(err)
+            });
         }
         db.User.update( userInfo, {where: { id: id } } )
         .then((result => result[0] ? res.json(result[0]) : res.status(400)))

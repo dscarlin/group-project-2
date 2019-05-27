@@ -4,14 +4,21 @@
       <div class="container"> 
         <h1>{{name}}</h1>
         <div class="row">
-          <div v-for="(member, i) in groupInfo" :key="i" class="col-md-4 mg-top float in-l">
+          <div v-for="(member, i) in groupInfo" :key="i" class="col-md-4 mg-top memb float in-l">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
-                <img v-bind:src="member.picture_ref"/>
-                <h5 class="card-title text-center">{{member.user_name}}</h5>
+                <div class="row no-gutters justify-content-md-center">
+                  <div class="col-lg-2 center">
+                    <img v-if="member.picture_ref" v-bind:src="'/images/upload_images/' + member.picture_ref" id="profileThumbnail"/>
+                  </div>
+                  <div class="col-lg-8 title-container">
+                    <h5 class="card-title text-center">{{member.user_name}}</h5>
+                  </div>
+                  <div class="col-lg-2"></div>
+                </div>
                 <hr>
                 <p :style="statusColor(i)">{{ member.status ? 'available to talk' : 'not available'}}</p>
-                <p ><a :style="phoneNumberColor(i)" :href='"tel:+1"+formattedTelNumber(i)'> {{member.phone_number}}</a></p>
+                <p><a :style="phoneNumberColor(i)" :href='"tel:+1"+formattedTelNumber(i)'> {{member.phone_number}}</a></p>
                 <a @click="checkOutMember(i)" class="btn view-member-btn btn-block text-uppercase">View Member Info</a>
               </div>
             </div>
@@ -28,7 +35,6 @@ export default {
   
   data: function() {
     return {
-      id: null,
       name: null,
       groupInfo: null
     }
@@ -38,10 +44,11 @@ export default {
    
   }, 
   created: function() {
-    this.id = this.$route.params.id;
     this.name = this.$route.params.name;
+    let id = this.$route.params.id;
+    let uid = this.$route.params.uid
   
-    axios.get(`api/group/${this.id}`).then(
+    axios.get(`api/group/${uid}/${id}`).then(
       (response) => {
       this.groupInfo = response.data;
       console.table(this.groupInfo)
@@ -69,9 +76,29 @@ export default {
 };
 </script>
 <style scoped>
+.memb {
+  max-width: 70vw;
+}
+
+.title-containter {
+  width: fit-content;
+}
+
+h5 {
+  white-space: nowrap;
+
+}
+
+#profileThumbnail {
+  height: auto;
+  width: 100%;
+  max-width: 6em;
+  margin: auto;
+}
+
 section.group {
   background: lightgrey;
-  height: 100vh;
+  /* height: 100vh; */
   /* background: linear-gradient(to right, #0062E6, #33AEFF); */
 }
 
@@ -82,11 +109,6 @@ section.group {
 .mg-top {
   margin-top: 2em;
 }
-
-/* .float{
-  float:left;
-
-} */
 
 .group .card {
   border: none;
@@ -142,5 +164,14 @@ section.group {
     opacity: 1;
     color: white;
   }
+}
+@media only screen and (max-width: 768px){
+  .memb {
+    margin: auto;
+  }
+  h5 {
+    white-space: initial;
+  }
+  
 }
 </style>

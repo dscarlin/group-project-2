@@ -3,7 +3,7 @@
     <div id="nav">
       <navbar @logOut="logMeInOrOut" v-bind:userId="userId" v-bind:loggedIn="loggedIn" ></navbar>
     </div>
-    <router-view @loggingIn="logMeInOrOut" @updateProfile="updateProfile"/>
+    <router-view @loggingIn="logMeInOrOut"/>
   </div>
 </template>
 
@@ -47,12 +47,7 @@ export default {
       if(!boolean)
         this.$router.push({name: 'landing'})
     },
-    updateProfile: function(formData) {
-      console.log('axios update profile ')
-      console.log('data ',formData)
-      let headers = {headers: { 'content-type': 'multipart/form-data' } };
-      axios.put(`/api/user/${this.userId}`,formData,headers).then(res => console.log(res))
-    }
+    
     
   }
 };

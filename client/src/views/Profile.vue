@@ -97,9 +97,7 @@ import axios from 'axios'
 export default {
   name: "profile",
   computed: {
-  //   route: function() {
-  //     return `/user/${this.params.id}`
-  //   }
+    
   },
   data: function() {
     return {
@@ -108,18 +106,23 @@ export default {
       email: '',
       phoneNumber: '',
       password: '',
+      picture_ref: null
 
     }
   },
   created: function() {
-    axios.get(`/api/user/${this.$route.params.id}`).then(res => {
+    let id = this.$route.params.id
+    axios.get(`/api/user/${id}`).then(res => {
       console.log(res)
       this.name = res.data.user_name;
       this.email = res.data.email;
       this.phoneNumber = res.data.phone_number;
-      
-
+      this.picture_ref = res.data.picture_ref
     })
+    // axios.get(`/api/user/${id}/image`).then(res => {
+    //   console.log(res)
+    //   this.$refs.picture.file = res.data
+      // })
   },
   computed: {
     // checkWindowNotification: function() {
@@ -132,16 +135,18 @@ export default {
       console.log(this.file);
     },
     updateProfile: function() {
+      console.log(this.file)
+      console.log('file')
       let formData = new FormData();
       formData.append('picture',this.file)
       formData.append('user_name',this.name)
       formData.append('email',this.email)
       formData.append('phone_number',this.phoneNumber)
-      // axios.get('/api/userId').then(res => console.log(res))
-      // axios.put('api/group/basketballers/2').then(res => console.log(res))
-      // let headers = {headers: { 'content-type': 'multipart/form-data' } };
-      // axios.put(`/api/user/${this.$route.params.id}`,formData,headers).then(res => console.log(res))
-      this.$emit('updateProfile', formData )
+      formData.append('picture_ref',this.picture_ref)
+
+      
+      let headers = {headers: { 'content-type': 'multipart/form-data' } };
+      axios.put(`/api/user/${this.$route.params.id}`,formData,headers).then(res => console.log(res))
     }
     
   }
@@ -159,7 +164,7 @@ export default {
 } */
 section.profile {
   background: lightgrey;
-  height: 100vh;
+  /* height: 100vh; */
   /* background: linear-gradient(to right, #0062E6, #33AEFF) */
 }
 
