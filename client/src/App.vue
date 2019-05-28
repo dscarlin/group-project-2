@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <navbar @loggedOUt="logMeInOrOut" v-bind:userId="userId" v-bind:loggedIn="loggedIn" ></navbar>
+      <navbar @loggedOut="logMeInOrOut" v-bind:userId="userId" v-bind:loggedIn="loggedIn" ></navbar>
     </div>
     <router-view @loggedIn="logMeInOrOut"/>
   </div>
@@ -22,36 +22,29 @@ export default {
     }
   },
   created: function(){
-    get('/loginStatus').then(res => {
-      this.userId = res.user.id || null
-      this.loggedIn = res.user.id ? true : false
+    axios.get('/loginStatus').then(res => {
+      console.log('created: ',res)
+      this.userId = res.data.id || null
+      this.loggedIn = res.data.id ? true : false
+      if(res.data == false)
+        this.$router.push({ name: 'landing'})
+
         
     })
   },
   methods: {
-    onLoginOrOut: function(loggedIn, id) {
-      
-      this.loggedIn = loggedIn;
-      this.userId = id || null;
-      if (loggedIn)
-      this.$router.push({name: 'groups', params: { id: this.userId }})
-        
-      
-      
-    },
-   
-
     logMeInOrOut: function(object) {
-      let loggedIn = object.loggedIn
-      let id = object.id
-      this.onLoginOrOut(loggedIn, id);
-      if(!loggedIn)
+      console.log('log in ',object)
+      this.loggedIn= object.loggedIn
+      this.userId = object.id
+      if(object.loggedIn)
+        this.$router.push({name: 'groups', params: { id: this.userId }})
+      else
         this.$router.push({name: 'landing'})
     },
-    
-    
   }
 };
+
 </script>
 
 <style lang="scss">

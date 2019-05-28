@@ -5,18 +5,19 @@ module.exports = (app,db) => {
     
     //mlogin
     app.get('/loginStatus', (req, res) => {
-        console.log('is auth ',res.isAuthenticated())
-        if(res.isauthenticted())
-            res.send(res.user)
+        console.log('is auth ',req.isAuthenticated())
+        if(req.isAuthenticated())
+            res.send(req.user)
         else
-            res.sendStatus(400)
+            res.json(req.isAuthenticated())
        
     });
     
     app.get('/logout', (req, res) => {
+        console.log(req.isAuthenticated())
         req.logout();
-        req.session.destroy();
-        res.redirect('/');
+        req.session.destroy(err => {if(err) res.send(err)});
+        res.json(req.isAuthenticated())
     });
 
     app.get('/api/user/:id', (req, res) => {
