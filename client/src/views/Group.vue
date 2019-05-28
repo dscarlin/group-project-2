@@ -4,7 +4,7 @@
       <div class="container"> 
         <h1>{{name}}</h1>
         <div class="row">
-          <div v-for="(member, i) in groupInfo" :key="i" class="col-md-4 mg-top memb float in-l">
+          <div v-for="(member, i) in groupInfo" :key="i"  class="col-md-4 mg-top memb float in-l">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
                 <div class="row no-gutters justify-content-md-center">
@@ -68,6 +68,7 @@ export default {
 <style scoped>
 .memb {
   max-width: 70vw;
+  min-width: fit-content;
 }
 
 .title-containter {
@@ -82,7 +83,7 @@ h5 {
 #profileThumbnail {
   height: 100%;
   width: 100%;
-  max-width: 6em;
+  max-width: 10em;
   margin: auto;
   border-radius: 10em;
 }

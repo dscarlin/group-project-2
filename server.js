@@ -30,7 +30,7 @@ app.use(fileUpload());
 require('dotenv').config();
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
-const trialNumber = process.env.TRIAL_NUMBER
+const trialNumber = process.env.TRIAL_NUMBER;
 const twilio = require('twilio')(accountSid, authToken);
 
 
@@ -69,8 +69,8 @@ require('./db_routes/delete_db.js')(app,db);
 
 
 
-db.sequelize.sync({ force: true }).then(()=>{
-  require('./db_seeds2')(db,bcrypt);
+db.sequelize.sync({ force: false }).then(()=>{
+  // require('./db_seeds2')(db,bcrypt);
   app.listen(PORT, function() { 
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });

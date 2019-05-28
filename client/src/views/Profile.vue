@@ -53,7 +53,7 @@
                     <input
                       type="file"
                       ref="picture"
-                      accept="*/image"
+                      accept="image/*"
                       v-on:change="handleFileUpload()"
                       id="inputPicture"
                       class="form-control"
@@ -146,10 +146,6 @@ export default {
         this.phoneNumber.splice(9,0,'-');
       }
       this.phoneNumber = this.phoneNumber.join('').slice(0,14);
-    
-      
-    
-      
     }
   },
   computed: {
@@ -175,7 +171,7 @@ export default {
       formData.append('email',this.email)
       formData.append('phone_number',this.phoneNumber)
       formData.append('picture_ref',this.picture_ref)
-      formData.append('text_enabled, this.text_enabled')
+      formData.append('text_enabled', this.text_enabled)
 
       
       let headers = {headers: { 'content-type': 'multipart/form-data' } };

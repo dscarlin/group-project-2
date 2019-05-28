@@ -74,7 +74,8 @@ export default {
   methods: {
     logMeOut: function() {
       axios.get('/logout').then(res => {
-        this.$emit('loggedOut', res.isAuthenticated());
+        console.log(res)
+        this.$emit('loggedOut', {loggedIn: res.data, id: null});
       })
     }
   }

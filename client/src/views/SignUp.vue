@@ -109,7 +109,9 @@ export default {
         }
       console.log(data)
       axios.post('/api/user', data).then(response => {
-        console.log(response)
+        console.log(response);
+        if(response.status == 200)
+          this.$router.push({ name: 'login'})
       })
       
     }
@@ -122,7 +124,19 @@ export default {
       confrimPassword: "",
       phoneNumber: ''
     };
-  }
+  },
+  watch: {
+    phoneNumber: function() {
+      this.phoneNumber = this.phoneNumber.split('').filter(char => char.match(/[0-9]/g));
+      if (this.phoneNumber.length > 9){
+        this.phoneNumber.splice(0,0,'(');
+        this.phoneNumber.splice(4,0,')');
+        this.phoneNumber.splice(5,0,' ');
+        this.phoneNumber.splice(9,0,'-');
+      }
+      this.phoneNumber = this.phoneNumber.join('').slice(0,14);
+    }
+  },
  
 
 };
