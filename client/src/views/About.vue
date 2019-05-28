@@ -16,11 +16,13 @@
               <h4>Minimum Viable Product:</h4>
               <p>This application will register a new user, allow existing users to log in, create a new group, search for members, allow users to add members or delete members, set your current availability, and send notifications for people currently available.</p>
             </div>
-            <h2 class="card-title text-center">
-              About Us:
-              <strong>team.slice("pizza")</strong>
-              <br>
-            </h2>
+            <div>
+              <h2 class="card-title text-center">
+                About Us:
+                <strong>team.slice("pizza")</strong>
+                <br>
+              </h2>
+            </div>
           </div>
         </div>
       </div>
