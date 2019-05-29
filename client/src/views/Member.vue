@@ -93,7 +93,7 @@ section.member {
   /* background: lightgrey; */
   background-size:contain;
   min-height: 100vh;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
+  background: linear-gradient(to right,  #00a799, #b7e3e4));
 }
 
 
