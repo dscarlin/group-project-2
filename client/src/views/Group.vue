@@ -9,10 +9,10 @@
             <input type="text" id="search" v-model="search" placeholder="Search" class="round" autocomplete="off">
             
             <div id="suggest" class="round" >
-              <ul v-if="suggest.length < 6 && suggest.length > 0">
-                <li id="select" @click="fillInput(name)" v-for="name in suggest" :key="name.id">{{name.user_name}}</li>
+              <ul style="list-style-type:none;" v-if="suggest.length < 6 && suggest.length > 0">
+                <li id="select" @click="fillInput(name)" v-for="name in suggest" :key="name.id"><img v-if="name.picture_ref" v-bind:src="'/images/upload_images/'+name.picture_ref" id="icon"/>  {{name.user_name}}</li>
               </ul>
-              <ul v-else-if="(suggest.length < 1) && (search.length > 0)">
+              <ul style="list-style-type:none;" v-else-if="(suggest.length < 1) && (search.length > 0)">
                 <li>NO MATCH</li>
               </ul>
             </div>
@@ -140,7 +140,14 @@ export default {
 </script>
 <style scoped>
 
+ul {
+  padding: 0;
+}
 
+#icon {
+  width: 1em;
+  height: 1em;
+}
 .card {
   width: 25em;
   height: 20em;
@@ -155,7 +162,7 @@ export default {
 }
 
 li {
-  margin: auto 1em auto auto;
+  margin: auto;
 }
 
 #select:hover {

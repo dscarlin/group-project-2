@@ -34,7 +34,7 @@ module.exports = (app,db) => {
     // name and id of all users for searching to add user
     app.get('/api/search/users', (req, res) => {
         console.log('requested user id');
-        db.User.findAll({attributes: ['user_name','id']}).then(result => {
+        db.User.findAll({attributes: ['user_name','id','picture_ref']}).then(result => {
             let userArray = new Array; 
             result.forEach(item => {
                userArray.push(item.get())
