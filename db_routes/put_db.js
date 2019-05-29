@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path')
 module.exports = (app,db,bcrypt) => {
     const Op = db.Sequelize.Op;
 
@@ -19,8 +20,9 @@ module.exports = (app,db,bcrypt) => {
             phone_number: r.phone_number
         }
         if(req.files){
-            if(r.picture_ref && r.picture_ref!== 'null')
-                fs.unlinkSync(`${__dirname}/../client/public/images/upload_images/${r.picture_ref}`);
+            let abspath = path.join(__dirname,`/../client/public/images/upload_images/${r.picture_ref}`)
+            if(r.picture_ref && r.picture_ref!== 'null' && picture_ref != 'phoneDefault.png')
+                fs.unlinkSync(abspath);
             let pictureFile = req.files.picture;
             userInfo['picture_ref'] = pictureFile.name;
             pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, err => {
