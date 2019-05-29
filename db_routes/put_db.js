@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path')
+const saltRounds = 8
 module.exports = (app,db,bcrypt) => {
     const Op = db.Sequelize.Op;
 
@@ -18,11 +19,12 @@ module.exports = (app,db,bcrypt) => {
             email: r.email,
             tex_enabled: r.text_enabled,
             phone_number: r.phone_number
+            
         }
         if(req.files){
 
-            console.log(abspath)
             let abspath = path.join(__dirname,`/../client/public/images/upload_images/${r.picture_ref}`)
+            console.log(abspath)
             if(r.picture_ref && r.picture_ref!== 'null' && r.picture_ref != 'phoneDefault.png')
                 fs.unlinkSync(abspath);
             let pictureFile = req.files.picture;
@@ -31,8 +33,11 @@ module.exports = (app,db,bcrypt) => {
                 if(err) res.status(500).send(err)
             });
         }
-        db.User.update( userInfo, {where: { id: id } } )
-        .then((result => result[0] ? res.json(result[0]) : res.status(400).send(false)))
+        let pass = bcrypt.hash(r.password, saltRounds, (err, hash) => {
+            userInfo['password'] = hash
+            db.User.update( userInfo, {where: { id: id } } )
+            .then((result => result[0] ? res.json(result[0]) : res.status(400).send(false)))
+        })
     })
 
 
