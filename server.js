@@ -24,7 +24,9 @@ const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
 
-
+//socket vars
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 //Twilio vars
 require('dotenv').config();
@@ -38,6 +40,21 @@ const twilio = require('twilio')(accountSid, authToken);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/dist"));
 }
+
+
+//socket listener and response handler for dynamic routing
+io.on('connection', function(socket) {
+
+  // once a client has connected, we expect to get a ping from them saying what room they want to join
+  socket.on('room', function(object) {
+      
+      console.log(object.name,' requested')
+      socket.join(object.room);
+      socket.in(object.room).emit('message',object.message);
+      // io.sockets.in(room.room).emit('message', 'anyone in this room yet?');
+  });
+});
+
 
 
 //express middleware

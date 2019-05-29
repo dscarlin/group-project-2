@@ -29,15 +29,10 @@ export default {
     }
   },
   created: function() {
-    let message = this.notification
-    this.notifyMe(message);
+    // let message = this.notification
+    // this.notifyMe(message);
     
-    // axios.get('api/test').then(
-    //   (response) => {
-    //     console.log(response.data);
-    //   this.msg = response.data;
-    //   }
-    // );
+   
   },
   methods: {
   notifyMe: function(mess) {

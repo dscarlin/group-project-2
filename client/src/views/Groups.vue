@@ -2,6 +2,13 @@
   <div class="groups">
     <section class="groups py-5 groups-bg">
       <div class="container">
+        <form @submit.prevent="addGroup()">
+          <div class="">
+            <label id="createFormLabel" class="btn-block" for="inputGroupName">Create Group</label>
+            <input type="text" id="search" v-model="input" placeholder="Group Name" class="round" autocomplete="off">
+            <button type="submit"  class="btn view-groups-btn w-control add-btn btn-block text-uppercase">Add</button>
+          </div>
+        </form>
         <div class="row">
           <div class="col-md-4 mg-top"  v-for="(group,i) in groupsArray" :key="i">
             <div class="card mb-5 mb-lg-0">
@@ -33,32 +40,55 @@ export default {
   },
   data: function() {
     return {
-     groupsArray: []
-
+      groupsArray: [],
+      input: ''
     }
   },
   computed: {
 
   },
   created: function() {
-    let id = this.$route.params.id
-    console.log('route id: ',id)
-    axios.get(`api/groups/${id}`).then(
-      (response) => {
-      this.groupsArray = response.data;
-      console.table(this.groupsArray)
-      }
-    );
+    this.fillPage();
   },
   methods: {
+    fillPage: function() {
+      let id = this.$route.params.id
+      console.log('route id: ',id)
+      axios.get(`api/groups/${id}`).then(
+        (response) => {
+          this.groupsArray = response.data;
+          console.table(this.groupsArray)
+        }
+      );
+    },
     checkOutGroup: function(i){
       let groupData = this.groupsArray[i];
       this.$router.push({name: 'group', params: { grpid: groupData.id, name: groupData.name , uid: this.$route.params.id} })
+    },
+    addGroup: function() {
+      let body = {groupName: this.input}
+      axios.post(`/api/group/${this.$route.params.id}`,body).then(res => {
+        if(res.status == 200)
+        console.log(res)
+        this.input = ''
+        this.fillPage();
+        })
     }
   }
 }
 </script>
 <style>
+#createFormLabel {
+  font: 1.5em bold;
+}
+
+.w-control {
+  width:  10em;
+  margin: auto;
+  line-height: 1em;
+  box-shadow:0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  
+}
 
 section.groups {
   background-size: contain;

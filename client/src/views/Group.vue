@@ -5,7 +5,7 @@
         <h1>{{name}}</h1>
           <form @submit.prevent="add(search)">
           <div class="">
-            <label class="btn-block" for="inputName">Add a Member</label>
+            <label class="btn-block" for="search">Add a Member</label>
             <input type="text" id="search" v-model="search" placeholder="Search" class="round" autocomplete="off">
             
             <div id="suggest" class="round" >
@@ -43,6 +43,11 @@
           </div>   
         </div>
       </div>
+      <form @submit.prevent="removeGroup()">
+        <div class="">
+          <button type="submit"  class="btn remove add-btn text-uppercase">Remove Group</button>
+        </div>
+      </form>
     </section>
   </div>
 </template>
@@ -134,6 +139,12 @@ export default {
         this.fillPage()
       })
     },
+    removeGroup: function() {
+      axios.delete(`/api/group/${this.$route.params.grpid}`).then(res => {
+        if(res) 
+          this.$router.go(-1);
+      })
+    }
     
   }
 }
@@ -209,7 +220,7 @@ section.group {
   /* background: lightgrey; */
   background-size:contain;
   min-height: 100vh;
-  background: linear-gradient(to right, #00a799, #b7e3e4));
+  background: linear-gradient(to right, #00a799, #b7e3e4);
 }
 
 .in-l{
@@ -239,7 +250,18 @@ section.group {
 .group .text-muted {
   opacity: 0.7;
 }
+.remove {
+  width: 20em;
+  line-height: 2em;
+  background: #ff585b;
+  color: white;
+  border-radius: 3em;
+}
 
+.remove:hover {
+  background: #ff585b;
+  color: black;
+}
 .group .btn {
   font-size: 80%;
   letter-spacing: .1rem;
