@@ -92,7 +92,7 @@ section.group {
   background: lightgrey;
   background-size:contain;
   min-height: 100vh;
-  /* background: linear-gradient(to right, #0062E6, #33AEFF); */
+  background: linear-gradient(to right, #00a799, #b7e3e4);
 }
 
 .in-l{
@@ -125,10 +125,10 @@ section.group {
 
 .group .btn {
   font-size: 80%;
-  letter-spacing: .1rem;
+  border-radius: 5rem;
+  letter-spacing: 0.1rem;
   font-weight: bold;
-  padding: 10px;
-  opacity: 0.7;
+  padding: 1rem;
   transition: all 0.2s;
 }
 
@@ -137,8 +137,13 @@ section.group {
 }
 
 .view-member-btn {
-  background:#00a799;
+ background: #ff585b;
   color: white;
+}
+
+.view-member-btn:hover {
+  background: #ff585b;
+  color: black;
 }
 
 /* Hover Effects on Card */

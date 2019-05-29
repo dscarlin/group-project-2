@@ -86,7 +86,7 @@
                   </div>
 
                   <button
-                    class="btn btn-lg sign-in btn-block text-uppercase"
+                    class="btn btn-lg submit-profile-btn btn-block text-uppercase"
                     type="submit"
                   >Update Profile</button>
                   <hr class="my-4">
@@ -195,7 +195,7 @@ export default {
 section.profile {
   background: lightgrey;
   /* height: 100vh; */
-  /* background: linear-gradient(to right, #0062E6, #33AEFF) */
+  background: linear-gradient(to right, #00a799, #b7e3e4);
 }
 
 .mg-top {
@@ -223,11 +223,11 @@ section.profile {
 }
 
 .profile .btn {
-  font-size: 80%;
-  letter-spacing: .1rem;
+ font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: 0.1rem;
   font-weight: bold;
-  padding: 10px;
-  opacity: 0.7;
+  padding: 1rem;
   transition: all 0.2s;
 }
 
@@ -236,8 +236,13 @@ section.profile {
 }
 
 .submit-profile-btn {
-  background:#00a799;
+  background: #ff585b;
   color: white;
+}
+
+.submit-profile-btn:hover {
+  background: #ff585b;
+  color: black;
 }
 
 /* Hover Effects on Card */
@@ -252,9 +257,6 @@ section.profile {
     opacity: 1;
   }
 
-  .submit-profile-btn:hover {
-    opacity: 1;
-    color: white;
-  }
+
 }
 </style>
