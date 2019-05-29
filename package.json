@@ -8,6 +8,7 @@
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "test": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client:test\"",
+    "lint": "eslint '**/*.{js,jsx}' --quiet",
     "install": "cd client && npm install",
     "client": "cd client && npm run serve",
     "client:test": "cd client && npm run test:unit",

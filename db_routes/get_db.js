@@ -2,7 +2,6 @@ module.exports = (app,db) => {
     const Op = db.Sequelize.Op;
 
 
-    
     //mlogin
     app.get('/loginStatus', (req, res) => {
         console.log('is auth ',req.isAuthenticated())
@@ -10,9 +9,10 @@ module.exports = (app,db) => {
             res.send(req.user)
         else
             res.json(req.isAuthenticated())
-       
+
     });
     
+    //
     app.get('/logout', (req, res) => {
         console.log(req.isAuthenticated())
         req.logout();
@@ -29,7 +29,7 @@ module.exports = (app,db) => {
             
         });
     });
-  
+
 
     // name and id of all users for searching to add user
     app.get('/api/search/users', (req, res) => {
@@ -37,7 +37,7 @@ module.exports = (app,db) => {
         db.User.findAll({attributes: ['user_name','id','picture_ref']}).then(result => {
             let userArray = new Array; 
             result.forEach(item => {
-               userArray.push(item.get())
+                userArray.push(item.get())
             })
             console.table(userArray);
             res.json(userArray);

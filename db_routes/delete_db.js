@@ -1,14 +1,18 @@
-module.exports = (app,db) => {
-    const Op = db.Sequelize.Op;
-    //remove user
-    app.delete('/api/user/:id', (req, res) => {
-        console.log('called delete on user')
-        let id = req.params.id
-        db.User.destroy({where: { id: id }})
-        .then((res => res ? res.status(200) : res.status(400)))
-    })
+module.exports = (app, db) => {
 
-    //remove group
+  // Route to remove user
+  app.delete("/api/user/:id", (req, res) => {
+    console.log("called delete on user");
+
+    let id = req.params.id;
+    db.User.destroy({
+      where: {
+        id: id
+      }
+    }).then( (res) => res ? res.status(200) : res.status(400) );
+  });
+
+  //remove group
     app.delete('/api/group/:id', (req, res) => {
         console.log('called delete on group')
         let id = req.params.id
