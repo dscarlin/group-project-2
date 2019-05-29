@@ -20,8 +20,10 @@ module.exports = (app,db,bcrypt) => {
             phone_number: r.phone_number
         }
         if(req.files){
+
+            console.log(abspath)
             let abspath = path.join(__dirname,`/../client/public/images/upload_images/${r.picture_ref}`)
-            if(r.picture_ref && r.picture_ref!== 'null' && picture_ref != 'phoneDefault.png')
+            if(r.picture_ref && r.picture_ref!== 'null' && r.picture_ref != 'phoneDefault.png')
                 fs.unlinkSync(abspath);
             let pictureFile = req.files.picture;
             userInfo['picture_ref'] = pictureFile.name;
