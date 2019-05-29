@@ -16,7 +16,7 @@
                 <li>NO MATCH</li>
               </ul>
             </div>
-            <button type="submit"  class="btn view-member-btn  text-uppercase">Add Member</button>
+            <button type="submit"  class="btn view-member-btn add-btn text-uppercase">Add Member</button>
           </div>
           </form>
 
@@ -185,6 +185,7 @@ li {
 
 h5 {
   white-space: nowrap;
+  font-size: !important
 
 }
 
@@ -197,10 +198,10 @@ h5 {
 }
 
 section.group {
-  background: lightgrey;
+  /* background: lightgrey; */
   background-size:contain;
   min-height: 100vh;
-  /* background: linear-gradient(to right, #0062E6, #33AEFF); */
+  background: linear-gradient(to right, #0062E6, #33AEFF);
 }
 
 .in-l{
@@ -234,6 +235,7 @@ section.group {
 .group .btn {
   font-size: 80%;
   letter-spacing: .1rem;
+  border-radius: 5rem;
   font-weight: bold;
   padding: 10px;
   opacity: 0.7;
@@ -254,11 +256,18 @@ section.group {
 
 .view-member-btn {
   background:#00a799;
+  line-height: 3;
+
   color: white;
 }
 
 .table {
   height: 4em;
+}
+
+.add-btn {
+  border-radius: 1em!important;
+  line-height: 2;
 }
 
 /* Hover Effects on Card */

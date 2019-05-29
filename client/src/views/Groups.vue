@@ -63,7 +63,8 @@ export default {
 section.groups {
   background: lightgrey;
   /* height: 100vh; */
-  /* background: linear-gradient(to right, #0062E6, #33AEFF) */
+  height: 100vh;
+ background: linear-gradient(to right, #00a799, #b7e3e4);
 }
 
 .mg-top {
@@ -74,12 +75,16 @@ section.groups {
   border: none;
   border-radius: 1rem;
   transition: all 0.2s;
+  margin: 1em;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .groups hr {
   margin: 1.5rem 0;
 }
+
+
+
 
 .groups .group {
   font-size: 3rem;
@@ -92,11 +97,11 @@ section.groups {
 
 .groups .btn {
   font-size: 80%;
-  letter-spacing: .1rem;
+  border-radius: 5rem;
+  letter-spacing: 0.1rem;
   font-weight: bold;
-  padding: 10px;
-  opacity: 0.7;
-  transition: all 0.2s;
+  padding: 1rem;
+  transition: all 0.2s; 
 }
 
 .card-title {
@@ -107,7 +112,10 @@ section.groups {
   background:#00a799;
   color: white;
 }
-
+.view-groups-btn:hover {
+  background:#00a799;
+  color: black;
+}
 /* Hover Effects on Card */
 
 @media (min-width: 992px) {
@@ -120,9 +128,9 @@ section.groups {
     opacity: 1;
   }
 
-  .view-groups-btn:hover {
-    opacity: 1;
+  /* .view-groups-btn:hover {
+    opacity:.70;
     color: white;
-  }
+  } */
 }
 </style>

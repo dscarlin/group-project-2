@@ -173,11 +173,8 @@ export default {
   padding: 2rem;
 }
 
-.form-register {
-  width: 100%;
-}
 
-.form-register .btn {
+.btn {
   font-size: 80%;
   border-radius: 5rem;
   letter-spacing: 0.1rem;

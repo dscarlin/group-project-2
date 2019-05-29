@@ -232,15 +232,13 @@ export default {
 .auto {
   margin: auto
 }
-/* .profile-bg {
-  background: #00a799;
-  background: linear-gradient(to right, #00a799, #b7e3e4);
-  height: 100vh;
-} */
+
+
+
 section.profile {
-  background: lightgrey;
-  /* height: 100vh; */
-  /* background: linear-gradient(to right, #0062E6, #33AEFF) */
+  background: #00a799;
+  height: 100vh;
+  background: linear-gradient(to right, #00a799, #b7e3e4);
 }
 
 .mg-top {
@@ -255,13 +253,13 @@ section.profile {
 }
 
 .profile .btn {
-  font-size: 80%;
-  letter-spacing: .1rem;
+ font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: 0.1rem;
   font-weight: bold;
-  padding: 10px;
-  opacity: 0.7;
+  padding: 1rem;
   transition: all 0.2s;
-}/* may remove*/
+}
 
 :root {
   --input-padding-x: 1.5rem;
@@ -348,7 +346,9 @@ section.profile {
   background: #ff585b;
   color: black;
 }
-
+#profileThumbnail:hover {
+  cursor: pointer!important
+}
 
 /* Hover Effects on Card */
 

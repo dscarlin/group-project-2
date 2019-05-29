@@ -8,7 +8,7 @@
             <div class="card mb-5 mb-lg-0 mem-profile">
               <div class="card-body">
                 <div class="row no-gutters justify-content-md-center">
-                    <img v-if="picture_ref" v-bind:src="'/images/upload_images/' + picture_ref" id="profileThumbnail"/>
+                    <img v-if="picture_ref" v-bind:src="'/images/upload_images/' + picture_ref" id="profileImage"/>
                   <div class="col-lg-12 title-container">
                     <h1 class="card-title h1 text-center">{{name}}</h1>
                   </div>
@@ -81,19 +81,19 @@ h5 {
 
 }
 
-#profileThumbnail {
-  height: 100%;
-  width: 100%;
-  max-width: 8em;
+#profileImage {
+  max-height: 10em ;
+  /* width: 100%; */
+  max-width: 4  em;
   margin: 0 auto 2em;
   border-radius: 10em;
 }
 
 section.member {
-  background: lightgrey;
+  /* background: lightgrey; */
   background-size:contain;
   min-height: 100vh;
-  /* background: linear-gradient(to right, #0062E6, #33AEFF); */
+  background: linear-gradient(to right, #0062E6, #33AEFF);
 }
 
 
@@ -125,7 +125,8 @@ section.member {
 }
 
 .h1{
-  font-size: 2em;
+  font-size: 2em!important;
+  font-weight: bolder!important;
 }
 
 .remove-member-btn {
