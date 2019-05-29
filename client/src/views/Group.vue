@@ -3,23 +3,41 @@
     <section class="group py-5">
       <div class="container"> 
         <h1>{{name}}</h1>
+          <form @submit.prevent="add(search)">
+          <div class="">
+            <label class="btn-block" for="inputName">Add a Member</label>
+            <input type="text" id="search" v-model="search" placeholder="Search" class="round" autocomplete="off">
+            
+            <div id="suggest" class="round" >
+              <ul v-if="suggest.length < 6 && suggest.length > 0">
+                <li id="select" @click="fillInput(name)" v-for="name in suggest" :key="name.id">{{name.user_name}}</li>
+              </ul>
+              <ul v-else-if="(suggest.length < 1) && (search.length > 0)">
+                <li>NO MATCH</li>
+              </ul>
+            </div>
+            <button type="submit"  class="btn view-member-btn  text-uppercase">Add Member</button>
+          </div>
+          </form>
+
         <div class="row">
-          <div v-for="(member, i) in groupInfo" :key="i"  class="col-md-4 mg-top memb float in-l">
+
+          <div v-for="member in groupInfo" :key="member.id"  class="col-md-4 mg-top memb float in-l">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
-                <div class="row no-gutters justify-content-md-center">
-                  <div class="col-lg-2 center">
+                <div class="table row no-gutters justify-content-md-center">
+                  <div class="col col-lg-2 center">
                     <img v-if="member.picture_ref" v-bind:src="'/images/upload_images/' + member.picture_ref" id="profileThumbnail"/>
                   </div>
-                  <div class="col-lg-8 title-container">
-                    <h5 class="card-title text-center">{{member.user_name}}</h5>
+                  <div class="col col-lg-8 title-container">
+                    <h3 class="card-title text-center">{{member.user_name}}</h3>
                   </div>
-                  <div class="col-lg-2"></div>
+                  <div class="col col-lg-2"></div>
                 </div>
-                <hr>
+                <hr class= "divider">
                 <p :style="member.status ? 'color: green' : 'color: red; opacity: .5'">{{ member.status ? 'available to talk' : 'not available'}}</p>
-                <p><a :style="member.status ? '' : 'color: grey; opacity: .5'" :href='"tel:+1"+formattedTelNumber(i)'> {{member.phone_number}}</a></p>
-                <a @click="checkOutMember(i)" class="btn view-member-btn btn-block text-uppercase">View Member Info</a>
+                <p><a :style="member.status ? '' : 'color: grey; opacity: .5'" :href='"tel:+1"+formattedTelNumber(member.phone_number)'> {{member.phone_number}}</a></p>
+                <a @click="checkOut(member)" class="btn view-member-btn btn-block text-uppercase">View Member Info</a>
               </div>
             </div>
           </div>   
@@ -32,11 +50,44 @@
 import axios from 'axios'
 export default {
   name: "group",
-  
+  watch: {
+    search: function() {
+      let array = this.userArray.filter(user => user.user_name.toLowerCase().includes(this.search.toLowerCase()) && this.search.length > 0)
+      let levNums = []
+      this.suggest = []
+      array.forEach((item)=> {
+        let m = 0
+        item.user_name.split('').forEach(letter => {
+          this.search.split('').forEach(char => {
+            if (char.toLowerCase() == letter.toLowerCase()) 
+              m++
+          });
+        })
+        if(levNums.length < 1){
+          levNums.push(m)
+          this.suggest.push(item)
+        }
+        else {
+          for(let i=0; i < levNums.length; i++){
+            if(m > levNums[i]) {
+              levNums.splice(i,0,m)
+              this.suggest.splice(i,0,item)
+              return
+              
+            }
+          }
+          this.suggest.push(item)
+        }
+      })
+    }
+  },
   data: function() {
     return {
       name: null,
-      groupInfo: null
+      groupInfo: null,
+      userArray: null,
+      search: '',
+      suggest: ''
     }
   },
   computed: {
@@ -44,28 +95,85 @@ export default {
    
   }, 
   created: function() {
-    this.name = this.$route.params.name;
-    let id = this.$route.params.id;
-    let uid = this.$route.params.uid
-  
-    axios.get(`api/group/${uid}/${id}`).then(
-      (response) => {
-      this.groupInfo = response.data;
-      console.table(this.groupInfo)
-      }
-    );
+    this.fillPage()
   },
   methods: {
+    fillPage: function(){
+      this.name = this.$route.params.name;
+      let id = this.$route.params.grpid;
+      let uid = this.$route.params.uid
     
-  
-   
-    formattedTelNumber: function(i) {
-      return this.groupInfo[i].phone_number.split('').filter(char => char.match(/[0-9]/g)).join('')
+      axios.get(`/api/group/${uid}/${id}`).then(
+        (response) => {
+        this.groupInfo = response.data;
+        console.table(this.groupInfo)
+        let excludeArray = response.data.map(member => member.id)
+        excludeArray.push(parseInt(uid));
+        console.log(excludeArray)
+        axios.get('/api/search/users').then( 
+          res => this.userArray = res.data.filter(e => excludeArray.indexOf(e.id) < 0));
+        }
+      );
+      
     },
+    checkOut: function(member) {
+      this.$router.push({ name: 'member', params: { mid: member.id, grpid: this.$route.params.grpid } })
+    },
+    fillInput: function(selected) {
+      this.search = selected.user_name
+    },
+   
+    formattedTelNumber: function(number) {
+      return number.split('').filter(char => char.match(/[0-9]/g)).join('')
+    },
+    add: function(member){
+      let userId = this.userArray.filter(entry => entry.user_name == member)[0].id 
+      let groupId = this.$route.params.grpid
+      axios.post(`/api/user/${groupId}`,{userId}).then(res => {
+        this.search = ''
+        this.fillPage()
+      })
+    },
+    
   }
-};
+}
 </script>
 <style scoped>
+
+
+.card {
+  width: 25em;
+  height: 20em;
+
+  position: relative;
+}
+
+.round {
+  border-radius: .5em;
+  padding: 0 1em;
+  outline: none
+}
+
+li {
+  margin: auto 1em auto auto;
+}
+
+#select:hover {
+  cursor: pointer;
+  font-weight: bold
+}
+
+#suggest {
+  width: fit-content;
+  margin: auto;
+
+  }
+
+#suggest {
+  background: white;
+  display: block; 
+}
+
 .memb {
   max-width: 70vw;
   min-width: fit-content;
@@ -83,7 +191,7 @@ h5 {
 #profileThumbnail {
   height: 100%;
   width: 100%;
-  max-width: 10em;
+  max-width: 3em;
   margin: auto;
   border-radius: 10em;
 }
@@ -105,7 +213,7 @@ section.group {
 
 .group .card {
   border: none;
-  border-radius: .3rem;
+  border-radius: 1rem;
   transition: all 0.2s;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
@@ -132,13 +240,25 @@ section.group {
   transition: all 0.2s;
 }
 
-.card-title {
-  font-size: x-large;
+.divider {
+  
+  top: 5em;
+
+}
+.card .btn {
+  position: absolute;
+  bottom: 2em;
+  width: calc(100% - 2.5rem);
+  margin: auto;
 }
 
 .view-member-btn {
   background:#00a799;
   color: white;
+}
+
+.table {
+  height: 4em;
 }
 
 /* Hover Effects on Card */

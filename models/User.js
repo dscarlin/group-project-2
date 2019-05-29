@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       picture_ref: {
         type: DataTypes.STRING, 
-        defaultValue: null,
+        defaultValue: 'phoneDefault.png',
           validate: {
             
           }

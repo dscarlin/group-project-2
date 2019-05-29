@@ -28,14 +28,14 @@ module.exports = (app,db,bcrypt) => {
             });
         }
         db.User.update( userInfo, {where: { id: id } } )
-        .then((result => result[0] ? res.json(result[0]) : res.status(400)))
+        .then((result => result[0] ? res.json(result[0]) : res.status(400).send(false)))
     })
 
 
     //change group name
-    app.put('api/group/:name/:id', (req, res) => {
+    app.put('api/group/:id', (req, res) => {
         console.log("called put group")
-        let groupName = req.params.name
+        let groupName = req.body.name
         let id = req.params.id
         db.User.update( {name: groupName}, {where: { id: id } } )
         .then((res => res[0] ? res.status(200) : res.status(400)))

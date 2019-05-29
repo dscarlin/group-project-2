@@ -1,4 +1,3 @@
-import About from '@/views/About.vue'
 export default [
     {
       path: '/',
@@ -30,12 +29,12 @@ export default [
       component: () => import(/* webpackChunkName: "groups" */ './views/Groups.vue')
     },
     {
-      path: '/group/:uid/:id/:name',
+      path: '/group/:uid/:grpid/:name',
       name: 'group',
       component: () => import(/* webpackChunkName: "group" */ './views/Group.vue')
     },
     {
-      path: '/member/:id',
+      path: '/member/:mid/:grpid',
       name: 'member',
       component: () => import(/* webpackChunkName: "member" */ './views/Member.vue')
     },

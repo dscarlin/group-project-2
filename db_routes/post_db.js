@@ -40,22 +40,24 @@ module.exports = (LocalStrategy,passport,app,db,bcrypt) => {
         });
     });
 
-    app.post('api/group', (req, res) => {
+    app.post('/api/group', (req, res) => {
         console.log('called post on group')
         let groupName = req.params.name
         db.Group.create( {name: groupName})
         .then((result => res.json(result)));
     })
 
-    app.post('api/user/group', (req, res) => {
+    app.post('/api/user/:groupId', (req, res) => {
         console.log('called post on userGroup')
-        let groupId = req.body.groupId;
+        let groupId = req.params.groupId;
         let userId = req.body.userId;
+        console.log(groupId)
+        console.log(userId)
         db.UserGroup.create( {UserId: userId, GroupId: groupId})
         .then((result => res.json(result)));
     })
 
-    app.post('api/twilio',function(req,res){
+    app.post('/api/twilio',function(req,res){
         let body = req.body.message
         console.log('twilio post')
         // twilio.messages.create({
