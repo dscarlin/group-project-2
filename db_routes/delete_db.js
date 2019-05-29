@@ -12,8 +12,18 @@ module.exports = (app,db) => {
     app.delete('/api/group/:id', (req, res) => {
         console.log('called delete on group')
         let id = req.params.id
-        db.Group.destroy({where: { id: id }})
-        .then((res => res ? res.status(200) : res.status(400)))
+        db.UserGroup.destroy({where: {GroupId : id}}).then(result => {
+            if (result){
+                console.log(result);
+                db.Group.destroy({where: { id: id }}).then(result => { 
+                    result ? res.status(200).send(true) : res.status(400).send(false);
+                })
+            }
+            else 
+                res.status(400).send(false);
+
+            
+        })
     })
 
     //remove user from group

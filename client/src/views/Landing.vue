@@ -19,7 +19,19 @@ export default {
     userId: Number
   },
   data: function() {
-    return {};
+    return {
+      range: 0,
+      msg: {
+
+      },
+      notification: "Steven Wright for the next 45 minutes"
+    }
+  },
+  created: function() {
+    // let message = this.notification
+    // this.notifyMe(message);
+    
+   
   },
   methods: {
     logMeOut: function() {

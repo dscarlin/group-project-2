@@ -2,6 +2,26 @@
   <div class="groups">
     <section class="groups py-5 groups-bg">
       <div class="container">
+        <form @submit.prevent="setStatus()">
+          <div class="">
+            <label id="statusFormLabel" class="btn-block" for="timeaway">Set Status</label>
+            <label id="statusFormLabel" class="btn-block" for="timeaway">Groups Included</label>
+            <div v-for="group in groupsArray" :key="group.id">
+              <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
+              <input  v-model="group.connect" type="checkbox"   id="connectBox">
+            </div>
+            <input type="number" v-model="range" id="timeaway" >
+            <input class="slider btn-block" type="range" min="0" max="240" step="15" value="0" id="away" v-model="range" placeholder="Time Available"  autocomplete="off">
+            <button type="submit"  class="btn view-groups-btn w-control add-btn btn-block text-uppercase">Set</button>
+          </div>
+        </form>
+        <form @submit.prevent="addGroup()">
+          <div class="">
+            <label id="createFormLabel" class="btn-block" for="inputGroupName">Create Group</label>
+            <input type="text" id="inputGroupName" v-model="input" placeholder="Group Name" class="round" autocomplete="off">
+            <button type="submit"  class="btn view-groups-btn w-control add-btn btn-block text-uppercase">Add</button>
+          </div>
+        </form>
         <div class="row">
           <div class="col-md-4 mg-top"  v-for="(group,i) in groupsArray" :key="i">
             <div class="card mb-5 mb-lg-0">
@@ -33,7 +53,10 @@ export default {
   },
   data: function() {
     return {
-     groupsArray: []
+      groupsArray: [],
+      input: '',
+      range: 0,
+      status: false,
 
     }
   },
@@ -41,24 +64,73 @@ export default {
 
   },
   created: function() {
-    let id = this.$route.params.id
-    console.log('route id: ',id)
-    axios.get(`api/groups/${id}`).then(
-      (response) => {
-      this.groupsArray = response.data;
-      console.table(this.groupsArray)
-      }
-    );
+    this.fillPage();
   },
   methods: {
+    fillPage: function() {
+      let id = this.$route.params.id
+      console.log('route id: ',id)
+      axios.get(`api/groups/${id}`).then(
+        (response) => {
+          this.groupsArray = response.data;
+          console.table(this.groupsArray)
+          this.groupsArray.map(group => group['connect'] = false)
+          console.table(this.groupsArray)
+        }
+      );
+    },
     checkOutGroup: function(i){
       let groupData = this.groupsArray[i];
       this.$router.push({name: 'group', params: { grpid: groupData.id, name: groupData.name , uid: this.$route.params.id} })
+    },
+    addGroup: function() {
+      let body = {groupName: this.input}
+      axios.post(`/api/group/${this.$route.params.id}`,body).then(res => {
+        if(res.status == 200)
+        console.log(res)
+        this.input = ''
+        this.fillPage();
+        })
+    },
+    setStatus: function() {
+      var socket = io();
+      let groupIdsAndNamesToNotify = this.groupsArray.filter(group => group.connect).map(group => {return {id: group.id, name: group.name}});
+      console.log(groupIdsAndNamesToNotify);
+      let message = `person available for ${this.range} minutes`
+      // socket.on('connect', function() {
+
+        groupIdsAndNamesToNotify.forEach(chanel => 
+        socket.emit('room', {chanel: chanel.id, name: chanel.name, message: message }))
+        // Connected, let's sign-up for to receive messages for this room
+       
+       
+      // });
+
+      socket.on('message', function(data) {
+        console.log('Incoming message:', data);
+      });
+
     }
   }
 }
 </script>
 <style>
+.slider {
+  width: 10em;
+  margin: auto;
+}
+
+#createFormLabel {
+  font: 1.5em bold;
+}
+
+.w-control {
+  width:  10em;
+  margin: auto;
+  line-height: 1em;
+  box-shadow:0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  
+}
 
 section.groups {
   background-size: contain;
