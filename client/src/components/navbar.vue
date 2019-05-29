@@ -9,7 +9,7 @@
         </a>
         <a v-else class="navbar-brand">
           <router-link to="/">
-            <img src="http://placehold.it/150x50?text=Logo" alt>
+            <img src="..\..\public\images\upload_images\Reconnect.png" alt>
           </router-link>
         </a>
         <button
