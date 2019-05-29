@@ -239,7 +239,8 @@ section.profile {
   background: #00a799;
   height: 100vh;
   background: linear-gradient(to right, #00a799, #b7e3e4);
-}
+} 
+
 
 .mg-top {
   margin-top: 2em;
@@ -348,6 +349,11 @@ section.profile {
 }
 #profileThumbnail:hover {
   cursor: pointer!important
+}
+
+.submit-profile-btn:hover {
+  background: #ff585b;
+  color: black;
 }
 
 /* Hover Effects on Card */

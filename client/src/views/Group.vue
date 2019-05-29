@@ -185,7 +185,7 @@ li {
 
 h5 {
   white-space: nowrap;
-  font-size: !important
+  font-size: large!important
 
 }
 
@@ -237,8 +237,7 @@ section.group {
   letter-spacing: .1rem;
   border-radius: 5rem;
   font-weight: bold;
-  padding: 10px;
-  opacity: 0.7;
+  padding: 1rem;
   transition: all 0.2s;
 }
 

@@ -62,7 +62,6 @@ export default {
 
 section.groups {
   background: lightgrey;
-  /* height: 100vh; */
   height: 100vh;
  background: linear-gradient(to right, #00a799, #b7e3e4);
 }
