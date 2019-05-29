@@ -40,11 +40,17 @@ module.exports = (LocalStrategy,passport,app,db,bcrypt) => {
         });
     });
 
-    app.post('/api/group', (req, res) => {
+    app.post('/api/group/:uid', (req, res) => {
         console.log('called post on group')
-        let groupName = req.params.name
-        db.Group.create( {name: groupName})
-        .then((result => res.json(result)));
+
+        
+        let query = {name: req.body.groupName}
+        db.Group.create(query)
+        .then((result => {
+            console.log(result.id)
+            db.UserGroup.create({UserId: req.params.uid,GroupId: result.id})
+            .then(result => {res.json(result)});
+        }));
     })
 
     app.post('/api/user/:groupId', (req, res) => {

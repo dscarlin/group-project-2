@@ -45,11 +45,13 @@
     "express-fileupload": "^1.1.4",
     "express-session": "^1.16.1",
     "express-session-sequelize": "^2.0.0",
+    "http": "0.0.0",
     "if-env": "^1.0.4",
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sequelize": "^5.8.6",
+    "socket.io": "^2.2.0",
     "twilio": "^3.31.0"
   }
 }
