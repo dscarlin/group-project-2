@@ -16,6 +16,20 @@ const SessionStore = require('express-session-sequelize')(session.Store);
 const sequelizeSessionStore = new SessionStore({
   db: db.sequelize
 })
+//socket vars
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+io.on('connection', function(socket) {
+
+  // once a client has connected, we expect to get a ping from them saying what room they want to join
+  socket.on('room', function(object) {
+      
+      console.log(object.name,' requested')
+      socket.join(object.chanel);
+      socket.in(object.chanel).emit('message',object.message);
+      // io.sockets.in(room.room).emit('message', 'anyone in this room yet?');
+  });
+});
 
 // encryption service
 const bcrypt = require('bcrypt')
@@ -24,9 +38,6 @@ const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
 
-//socket vars
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
 //Twilio vars
 require('dotenv').config();
@@ -43,17 +54,6 @@ if (process.env.NODE_ENV === "production") {
 
 
 //socket listener and response handler for dynamic routing
-io.on('connection', function(socket) {
-
-  // once a client has connected, we expect to get a ping from them saying what room they want to join
-  socket.on('room', function(object) {
-      
-      console.log(object.name,' requested')
-      socket.join(object.room);
-      socket.in(object.room).emit('message',object.message);
-      // io.sockets.in(room.room).emit('message', 'anyone in this room yet?');
-  });
-});
 
 
 

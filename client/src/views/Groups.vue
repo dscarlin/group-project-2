@@ -2,10 +2,23 @@
   <div class="groups">
     <section class="groups py-5 groups-bg">
       <div class="container">
+        <form @submit.prevent="setStatus()">
+          <div class="">
+            <label id="statusFormLabel" class="btn-block" for="timeaway">Set Status</label>
+            <label id="statusFormLabel" class="btn-block" for="timeaway">Groups Included</label>
+            <div v-for="group in groupsArray" :key="group.id">
+              <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
+              <input  v-model="group.connect" type="checkbox"   id="connectBox">
+            </div>
+            <input type="number" v-model="range" id="timeaway" >
+            <input class="slider btn-block" type="range" min="0" max="240" step="15" value="0" id="away" v-model="range" placeholder="Time Available"  autocomplete="off">
+            <button type="submit"  class="btn view-groups-btn w-control add-btn btn-block text-uppercase">Set</button>
+          </div>
+        </form>
         <form @submit.prevent="addGroup()">
           <div class="">
             <label id="createFormLabel" class="btn-block" for="inputGroupName">Create Group</label>
-            <input type="text" id="search" v-model="input" placeholder="Group Name" class="round" autocomplete="off">
+            <input type="text" id="inputGroupName" v-model="input" placeholder="Group Name" class="round" autocomplete="off">
             <button type="submit"  class="btn view-groups-btn w-control add-btn btn-block text-uppercase">Add</button>
           </div>
         </form>
@@ -41,7 +54,10 @@ export default {
   data: function() {
     return {
       groupsArray: [],
-      input: ''
+      input: '',
+      range: 0,
+      status: false,
+
     }
   },
   computed: {
@@ -58,6 +74,8 @@ export default {
         (response) => {
           this.groupsArray = response.data;
           console.table(this.groupsArray)
+          this.groupsArray.map(group => group['connect'] = false)
+          console.table(this.groupsArray)
         }
       );
     },
@@ -73,11 +91,35 @@ export default {
         this.input = ''
         this.fillPage();
         })
+    },
+    setStatus: function() {
+      var socket = io();
+      let groupIdsAndNamesToNotify = this.groupsArray.filter(group => group.connect).map(group => {return {id: group.id, name: group.name}});
+      console.log(groupIdsAndNamesToNotify);
+      let message = `person available for ${this.range} minutes`
+      // socket.on('connect', function() {
+
+        groupIdsAndNamesToNotify.forEach(chanel => 
+        socket.emit('room', {chanel: chanel.id, name: chanel.name, message: message }))
+        // Connected, let's sign-up for to receive messages for this room
+       
+       
+      // });
+
+      socket.on('message', function(data) {
+        console.log('Incoming message:', data);
+      });
+
     }
   }
 }
 </script>
 <style>
+.slider {
+  width: 10em;
+  margin: auto;
+}
+
 #createFormLabel {
   font: 1.5em bold;
 }
