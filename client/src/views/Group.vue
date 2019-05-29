@@ -150,6 +150,7 @@ ul {
 }
 .card {
   width: 25em;
+  max-width: 90vw;
   height: 20em;
 
   position: relative;
