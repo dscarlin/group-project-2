@@ -9,7 +9,7 @@ module.exports = (app,db) => {
     })
 
     //remove group
-    app.delete('/api/group:id', (req, res) => {
+    app.delete('/api/group/:id', (req, res) => {
         console.log('called delete on group')
         let id = req.params.id
         db.Group.destroy({where: { id: id }})
@@ -18,11 +18,14 @@ module.exports = (app,db) => {
 
     //remove user from group
     app.delete('/api/user/group/:userId/:groupId', (req, res) => {
-        console.log('called delete on usergroup')
+        console.log(req.params)
         let UserId = req.params.userId
         let GroupId = req.params.groupId
         db.UserGroup.destroy({where: { UserId: UserId, GroupId: GroupId }})
-        .then((res => res ? res.status(200) : res.status(400)))
+        .then((result => {
+            console.log(result)
+            result ? res.status(200).send(true) : res.status(400).send(false)
+        }))
     })
 
 

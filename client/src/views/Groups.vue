@@ -53,7 +53,7 @@ export default {
   methods: {
     checkOutGroup: function(i){
       let groupData = this.groupsArray[i];
-      this.$router.push({name: 'group', params: { id: groupData.id, name: groupData.name , uid: this.$route.params.id} })
+      this.$router.push({name: 'group', params: { grpid: groupData.id, name: groupData.name , uid: this.$route.params.id} })
     }
   }
 }
@@ -62,7 +62,7 @@ export default {
 
 section.groups {
   background: lightgrey;
-  /* height: 100vh; */
+  height: 100vh;
  background: linear-gradient(to right, #00a799, #b7e3e4);
 }
 
@@ -72,14 +72,18 @@ section.groups {
 
 .groups .card {
   border: none;
-  border-radius: .3rem;
+  border-radius: 1rem;
   transition: all 0.2s;
+  margin: 1em;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .groups hr {
   margin: 1.5rem 0;
 }
+
+
+
 
 .groups .group {
   font-size: 3rem;
@@ -100,15 +104,15 @@ section.groups {
 }
 
 .card-title {
-  font-size: x-large;
+  font-size: xx-large;
 }
 
 .view-groups-btn {
-   background: #ff585b;
+  background:#00a799;
   color: white;
 }
 .view-groups-btn:hover {
-  background: #ff585b;
+  background:#00a799;
   color: black;
 }
 /* Hover Effects on Card */
