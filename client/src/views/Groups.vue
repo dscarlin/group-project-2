@@ -2,7 +2,7 @@
   <div class="groups">
     <div class="container">
       <!-- set status link -->
-      <p class="status-link" data-toggle="modal" data-target="#statusModal">📅 Set Status</p>
+      <p @click="displayTime" class="status-link" data-toggle="modal" data-target="#statusModal">📅 Set Status</p>
       <div>
         <div
           class="modal fade"
@@ -21,15 +21,16 @@
                 </button>
               </div>
               <!-- set status form -->
-              <form @submit.prevent="setStatus()">
+              <form @submit.prevent="setStatus(true)">
                 <div class>
-                  <label id="statusFormLabel" class="btn-block" for="timeaway">Set Status</label>
-                  <input type="number" v-model="range" id="timeaway">
+                  <label id="statusFormLabel" class="btn-block" for="timeaway">Available to talk until:</label>
+                  <!-- <input type="text" class="btn-block w10" disabled v-model="input" id="timeaway"> -->
+                  <input type="text" class="text-center" v-model="input" id="timeaway" disabled>
                   <input
                     class="slider btn-block"
                     type="range"
                     min="0"
-                    max="240"
+                    max="400"
                     step="15"
                     value="0"
                     id="away"
@@ -42,14 +43,15 @@
                     class="btn-block modal-body"
                     for="timeaway"
                   >Select Groups:</label>
-                  <div v-for="group in groupsArray" :key="group.id">
+                  <div style=" max-width: 5em; vertical-align: text-top; display: inline-block; margin: 0 1em 1em;" v-for="group in groupsArray" :key="group.id">
+                    <input v-model="group.connect" type="checkbox"  id="connectBox">
                     <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
-                    <input v-model="group.connect" type="checkbox" id="connectBox">
                   </div>
                 </div>
                 <button
                   type="submit"
                   class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
+                 
                 >Set</button>
               </form>
               <!-- <label id="statusFormLabel" class="btn-block modal-body" for="timeaway">Select Groups:</label>
@@ -101,15 +103,15 @@
                   <input
                     type="text"
                     id="inputGroupName"
-                    v-model="input"
+                    v-model="groupInput"
                     placeholder="Group Name"
                     class="round"
                     autocomplete="off"
                   >
                 </div>
                 <button
-                  type="submit"
                   class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
+                  type="submit"
                 >Add</button>
               </form>
             </div>
@@ -118,12 +120,14 @@
       </div>
 
       <div class="row">
-        <div class="col-md-4 mg-top" v-for="(group,i) in groupsArray" :key="i">
+        <div class="col-lg-4 mg-top" v-for="(group,i) in groupsArray" :key="i">
           <div class="card mb-5 mb-lg-0">
             <div class="card-body">
+              <div class="title-container">
               <h5 class="card-title text-center">{{group.name}}</h5>
+              </div>
               <hr>
-              <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
+              <p>{{group.memberStatusArray.length + 1}} Members 👨‍👨‍👧‍👧</p>
               <p>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
               <a
                 @click="checkOutGroup(i)"
@@ -139,6 +143,9 @@
 
 <script>
 import axios from "axios";
+import io from 'socket.io-client';
+import moment from 'moment'
+import {notify} from '../services/notify.js'
 
 export default {
   name: "groups",
@@ -149,14 +156,27 @@ export default {
       groupsArray: [],
       input: "",
       range: 0,
-      status: false
+      status: false,
+      userDataObject: '',
+      groupInput: ''
     };
+  },
+  watch: {
+    range: function() {
+      this.displayTime();
+    }
   },
   computed: {},
   created: function() {
     this.fillPage();
+    this.userData();
+    
   },
   methods: {
+    userData: function() {
+      axios.get(`/api/user/${this.$route.params.id}`)
+      .then(res => this.userDataObject = res.data)
+    },
     fillPage: function() {
       let id = this.$route.params.id;
       console.log("route id: ", id);
@@ -178,46 +198,91 @@ export default {
         }
       });
     },
+    displayTime: function(){
+      let secAdj = (15 - moment().format('m')) * 60;
+      let sec = this.range * 60 + secAdj;
+      let time = moment.unix(parseInt(moment().format('X')) + sec).format('LT')
+      this.input = time
+      console.log(time)
+    },
     addGroup: function() {
-      let body = { groupName: this.input };
+      console.log('add')
+      let body = { groupName: this.groupInput };
       axios.post(`/api/group/${this.$route.params.id}`, body).then(res => {
         if (res.status == 200) console.log(res);
-        this.input = "";
+        this.groupInput = "";
         this.fillPage();
       });
     },
-    setStatus: function() {
-      var socket = io();
-      let groupIdsAndNamesToNotify = this.groupsArray
-        .filter(group => group.connect)
-        .map(group => {
-          return { id: group.id, name: group.name };
+    setStatus: function(status) {
+      let newStatus = status
+      let uid = this.$route.params.id
+      axios.put(`/api/status/${uid}`,{status: newStatus} ).then(res => {
+
+        var socket = io();
+        let groupIdsAndNamesToNotify = this.groupsArray
+          .filter(group => group.connect)
+          .map(group => {
+            return { id: group.id, name: group.name };
+          });
+        console.log(res);
+        
+        let message = {
+          body:`Call me at ${res.data.phone_number} - ${res.data.user_name} \n Let's Reconnect! I can't wait to hear from you!`,
+          time: this.input,
+          user: res.data.user_name,
+          icon: `/images/upload_images/phoneDefault.png}`
+        };
+        socket.on('connect', function() {
+          
+        groupIdsAndNamesToNotify.forEach(chanel =>
+          socket.emit("room", {
+            chanel: chanel.id,
+            name: chanel.name,
+            message: message
+          })
+        );
+        // Connected, let's sign-up for to receive messages for this room
+  
         });
-      console.log(groupIdsAndNamesToNotify);
-      let message = `person available for ${this.range} minutes`;
-      // socket.on('connect', function() {
-
-      groupIdsAndNamesToNotify.forEach(chanel =>
-        socket.emit("room", {
-          chanel: chanel.id,
-          name: chanel.name,
-          message: message
-        })
-      );
-      // Connected, let's sign-up for to receive messages for this room
-
-      // });
-
-      socket.on("message", function(data) {
-        console.log("Incoming message:", data);
-      });
+        let self = this
+        socket.on("message", function(message) {
+          console.log('NOTIFY from ',message.user, ' i am ', self.userDataObject.user_name)
+          // notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
+        });
+      })
     }
   }
 };
 </script>
 <style>
+#statusFormLabel {
+  height: 3em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+h5 {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card {
+  width: 18em;
+  max-width: 90vw;
+  /* height: 20em; */
+  display: block;
+  /* position: relative; */
+
+}
+
+#timeAway {
+  text-align: center;
+}
 .slider {
-  width: 10em;
+  width: 11em;
   margin: auto;
 }
 
@@ -227,6 +292,7 @@ export default {
 
 #inputGroupName {
   margin-bottom: 5px;
+  text-align: center;
 }
 
 .w-control {

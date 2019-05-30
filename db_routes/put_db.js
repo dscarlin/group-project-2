@@ -23,13 +23,13 @@ module.exports = (app,db,bcrypt) => {
         }
         if(req.files){
 
-            let abspath = path.join(__dirname,`/../client/public/images/upload_images/${r.picture_ref}`)
+            let abspath = path.join(__dirname,`/../client/dist/images/upload_images/${r.picture_ref}`)
             console.log(abspath)
             if(r.picture_ref && r.picture_ref!== 'null' && r.picture_ref != 'phoneDefault.png')
                 fs.unlinkSync(abspath);
             let pictureFile = req.files.picture;
             userInfo['picture_ref'] = pictureFile.name;
-            pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, err => {
+            pictureFile.mv(`client/dist/images/upload_images/${pictureFile.name}`, err => {
                 if(err) res.status(500).send(err)
             });
         }
@@ -42,13 +42,24 @@ module.exports = (app,db,bcrypt) => {
 
 
     //change group name
-    app.put('api/group/:id', (req, res) => {
+    app.put('/api/group/:id', (req, res) => {
         console.log("called put group")
         let groupName = req.body.name
         let id = req.params.id
         db.User.update( {name: groupName}, {where: { id: id } } )
-        .then((res => res[0] ? res.status(200) : res.status(400)))
+        .then((res => res[0] ? res.status(200) : res.status(400)));
 
+    })
+
+    //change status
+    app.put('/api/status/:uid', (req, res) => {
+        let id = req.params.uid;
+        let status = req.body.status;
+        db.User.update({status: status },{where: { id: id } }).then(result => {
+            console.log(result);
+            if(result)
+                res.json(req.user);
+        });
     })
 
    

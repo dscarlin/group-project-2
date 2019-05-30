@@ -4,12 +4,12 @@
       <div class="container">
         <a v-if="loggedIn" class="navbar-brand">
           <router-link :to="{ name: 'groups', params: { id: userId } }">
-            <img src="http://placehold.it/150x50?text=Logo" alt>
+            <img class="logo" src="../../public/images/reconnect-logo.png" alt>
           </router-link>
         </a>
         <a v-else class="navbar-brand">
           <router-link to="/">
-            <img src="..\..\public\images\reconnect-logo.png" alt>
+            <img  class="logo" src="../../public/images/reconnect-logo.png" alt>
           </router-link>
         </a>
         <button
@@ -62,6 +62,7 @@
 <script>
 import axios from 'axios';
 
+
 export default {
   name: "navbar",
   props: {
@@ -83,6 +84,10 @@ export default {
 </script>
 
 <style lang="scss">
+.logo {
+  width: 20vw;
+}
+
 #nav {
   nav {
     background-color: white;

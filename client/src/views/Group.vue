@@ -62,9 +62,11 @@ export default {
       this.suggest = []
       array.forEach((item)=> {
         let m = 0
-        item.user_name.split('').forEach(letter => {
-          this.search.split('').forEach(char => {
-            if (char.toLowerCase() == letter.toLowerCase()) 
+        item.user_name.split('').forEach((letter,i) => {
+          this.search.split('').forEach((char,n) => {
+            if((i < 1 && n < 1 && char.toLowerCase() == letter.toLowerCase()) || (n < 1 && /^[A-Z]/.test(letter) && char.toLowerCase() == letter.toLowerCase()) )
+              m += 3
+            else if (char.toLowerCase() == letter.toLowerCase()) 
               m++
           });
         })
