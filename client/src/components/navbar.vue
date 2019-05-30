@@ -85,7 +85,7 @@ export default {
 <style lang="scss">
 #nav {
   nav {
-    background-color: none;
+    background-color: white;
     // background: linear-gradient(to bottom, white, #ffffff00);
   }
 
