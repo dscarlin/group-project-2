@@ -1,7 +1,8 @@
 /* eslint-disable quotes */
 /* eslint-disable indent */
-require('dotenv').config();
-module.exports ={
+require("dotenv").config();
+
+module.exports = {
   "development": {
         "username": process.env.DB_USERNAME,
         "password": process.env.DB_PASSWORD,
