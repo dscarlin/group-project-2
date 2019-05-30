@@ -42,5 +42,6 @@
           "error",
           "always"
       ]
-  }
+  },
+  "extends": "plugin:vue/base"
 }
