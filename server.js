@@ -18,7 +18,7 @@ const sequelizeSessionStore = new SessionStore({
 });
 
 // Socket
-var http = require("http").Server(app);
+var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
 io.on("connection", function(socket) {
@@ -48,9 +48,9 @@ const trialNumber = process.env.TRIAL_NUMBER;
 const twilio = require("twilio")(accountSid, authToken);
 
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
+
   app.use(express.static("client/dist"));
-}
+
 
 //socket listener and response handler for dynamic routing
 
@@ -84,7 +84,9 @@ require("./db_routes/delete_db.js")(app, db);
 
 db.sequelize.sync({ force: false }).then(() => {
   // require('./db_seeds2')(db,bcrypt);
+
   app.listen(PORT, function() {
+//  http.listen(PORT, function() { 
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });
 });

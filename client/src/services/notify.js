@@ -1,4 +1,5 @@
-export function notify(message,textEnabled) {
+export function notify(message,receiverName,textEnabled) {
+    
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
       if(textEnabled){
@@ -17,12 +18,12 @@ export function notify(message,textEnabled) {
     // Let's check whether notification permissions have already been granted
     else if (Notification.permission === "granted") {
       // If it's okay let's create a notification
-      var notification = new Notification("A friend is available to talk:",{
-            body: message,
-            vibrate: 200,
-            badge: 'https://img.icons8.com/dusk/64/000000/phonelink-ring.png',
-            image: 'https://media.istockphoto.com/photos/happy-laughing-man-picture-id544358212?k=6&m=544358212&s=612x612&w=0&h=odURMNz2hty8LIfpVahaaUKpGU4vd-UlZx4jy-OAnJA='
-          });
+      var notification = new Notification(`Hey ${receiverName}! I'm free until ${message.time}`,{
+        body: message.body,
+        vibrate: 200,
+        badge: 'https://img.icons8.com/dusk/64/000000/phonelink-ring.png',
+        icon: message.icon
+      });
       
     }
 
@@ -31,12 +32,11 @@ export function notify(message,textEnabled) {
       Notification.requestPermission().then(function (permission) {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
-          var notification = new Notification("A friend is available to talk:",{
-            body: message,
+          var notification = new Notification(`Hey ${message.myName}! I'm free until ${message.time}`,{
+            body: message.body,
             vibrate: 200,
             badge: 'https://img.icons8.com/dusk/64/000000/phonelink-ring.png',
-            image: 'https://media.istockphoto.com/photos/happy-laughing-man-picture-id544358212?k=6&m=544358212&s=612x612&w=0&h=odURMNz2hty8LIfpVahaaUKpGU4vd-UlZx4jy-OAnJA='
-
+            icon: message.icon
           });
           
         }

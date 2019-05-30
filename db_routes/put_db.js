@@ -47,16 +47,14 @@ module.exports = (app, db, bcrypt) => {
       });
 
     }
-
   });
+
 
   // Route to change group name
   app.put("api/group/:id", (req, res) => {
     console.log("called put group");
-
     let groupName = req.body.name;
     let id = req.params.id;
-
     db.User.update({
       name: groupName
     }, {
@@ -65,5 +63,25 @@ module.exports = (app, db, bcrypt) => {
       }
     }).then( (res) => res[0] ? res.status(200) : res.status(400));
   });
+
+        
+  //change status
+  app.put("/api/status/:uid", (req, res) => {
+    let id = req.params.uid;
+    let status = req.body.status;
+    db.User.update({
+       status: status
+    }, {
+      where: {
+        id: id
+      }
+    }).then( (result) => {
+      console.log(result);
+      if (result) {
+        res.json(req.user);
+      }
+    });
+  });
+    
 
 }; // end export{}
