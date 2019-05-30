@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 mg-top auto"  >
-            <div class="card mb-5 mb-lg-0">
+            <div class="card wide-card mb-5 mb-lg-0">
               <div class="card-body">
                 <div class="img-wrapper ">
                   <img v-if="picture_ref" v-bind:src="'/images/upload_images/' + picture_ref" id="profileThumbnail"/>
@@ -93,12 +93,12 @@
                     <input type="checkbox" v-model="textEnabled" class="custom-control-input" id="inputEnableText">
                     <label class="custom-control-label"  for="inputEnableText">Enable Text Notifications</label>
                   </div>
+                  <hr class="my-4">
 
                   <button
                     class="btn btn-lg update btn-block text-uppercase"
                     type="submit"
                   >Update Profile</button>
-                  <hr class="my-4">
                 </form>
               </div>
             </div>
@@ -185,6 +185,10 @@ export default {
 </script>
 <style>
 
+.wide-card {
+  width: auto;
+}
+
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
@@ -217,10 +221,16 @@ export default {
   opacity: 0;
   margin: auto;
 }
+
 .img-wrapper {
   padding: 1em;
   height: 10em;
 }
+
+#fileUploadWrapper:hover, #inputPicture:hover  {
+  cursor: pointer;
+}
+
 #profileThumbnail {
   height: 80%;
   width: 80%;

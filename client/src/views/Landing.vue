@@ -47,7 +47,7 @@ export default {
 <style lang="scss">
 .landing {
   background-image: url("../../public/images/upload_images/phone_talk.jpg");
-  // background-size: cover;
+  background-size: cover;
   // height: calc(100vh - $headerHeight);
   //  background: linear-gradient(to right, #00a799, #b7e3e4);
   height: 100vh;
