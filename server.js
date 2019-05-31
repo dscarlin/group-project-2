@@ -20,7 +20,10 @@ const sequelizeSessionStore = new SessionStore({
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 io.on('connection', function(socket) {
-
+  socket.on('re-join', function(object) {
+    console.log(`re-joined chanel ${object.name}`);
+    socket.join(object.chanel)
+  })
   // once a client has connected, we expect to get a ping from them saying what room they want to join
   socket.on('room', function(object) {
       
