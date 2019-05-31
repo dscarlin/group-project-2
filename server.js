@@ -41,10 +41,10 @@ app.use(fileUpload());
 
 //Twilio vars
 require('dotenv').config();
-const accountSid = process.env.ACCOUNT_SID;
-const authToken = process.env.AUTH_TOKEN;
-const trialNumber = process.env.TRIAL_NUMBER;
-const twilio = require('twilio')(accountSid, authToken);
+//const accountSid = process.env.ACCOUNT_SID;
+//const authToken = process.env.AUTH_TOKEN;
+//const trialNumber = process.env.TRIAL_NUMBER;
+//const twilio = require('twilio')(accountSid, authToken);
 
 
 // Serve up static assets (usually on heroku)
@@ -72,10 +72,10 @@ app.use(session({
 //passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req, res, next){
-  res.locals.isAuthenticated = req.isAuthenticated();
-  next();
-});
+// app.use(function(req, res, next){
+//   res.locals.isAuthenticated = req.isAuthenticated();
+//   next();
+// });
 require('./config/auth.js')(LocalStrategy, passport, bcrypt, db)
 
 
