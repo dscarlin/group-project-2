@@ -29,7 +29,8 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
           req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
           "\x1b[0m" + "Authenticated: " + req.isAuthenticated() + " @ {JSON}\n" +
           JSON.stringify(req.user.get(), null, 2));
-        //return res.redirect('/users/' + user.username);
+        
+        return res.redirect('/users/' + user.username);
       });
     })(req, res, next);
     

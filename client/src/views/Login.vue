@@ -2,6 +2,9 @@
 <div class="login">
   <body class="login-bg">
     <div class="container">
+      <div v-if="message" class="alert alert-danger text-center" role="alert">
+      {{message}}
+      </div>
       <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
           <div class="card card-signin my-5">
@@ -64,17 +67,30 @@ export default {
         password: this.password
       }
       axios.post('/login',data).then(res => {
+        console.log("POST - /login");
         console.log(res);
         this.$emit('loggedIn', {loggedIn: true, id: res.data });
-
-        
       })
+      .catch(err => {
+        console.log("> CS Login authentication error");
+        console.log(err.response.data);
+        this.message = err.response.data.error;
+      });
+    },
+
+    dataTest: function() {
+      axios.get("/login", data).then( res => {
+        
+        console.log("GET - /login");
+        console.log(res);
+      });
     }
   },
   data: function() {
     return {
       email: '',
-      password: ''
+      password: '',
+      message: ''
     }
   }
 };
