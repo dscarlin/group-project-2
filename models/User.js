@@ -30,14 +30,6 @@ module.exports = (sequelize, DataTypes) => {
             not: ['[a-z]','i']
           }
       },
-      status: {
-        type: DataTypes.INTEGER, 
-        defaultValue: 0,
-          validate: {
-            min: 0,
-            max: 1
-          }
-      },
       picture_ref: {
         type: DataTypes.STRING, 
         defaultValue: 'phoneDefault.png',
