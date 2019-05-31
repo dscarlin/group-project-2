@@ -53,7 +53,7 @@ module.exports = (app,db) => {
             where: { GroupId: id }, 
             include: {
                 model: db.User,
-                attributes: ['user_name','status','id', 'phone_number','picture_ref'],
+                attributes: ['user_name','id','phone_number','picture_ref'],
                 where: {
                     id: {
                         [Op.ne]: uid
@@ -64,11 +64,11 @@ module.exports = (app,db) => {
             let userArrayActive = new Array();
             let userArrayInactive = new Array();
             result.forEach(userGroup => {
-            // console.log(userGroup.User.get());
-            if (userGroup.User.status)
-                userArrayActive.push(userGroup.User.get())
-            else    
-                userArrayInactive.push(userGroup.User.get())
+            console.log(userGroup.User.get());
+            let userInfo = userGroup.User.get()
+            userInfo['status'] = userGroup.status
+            let array = userGroup.status ? userArrayActive : userArrayInactive
+            array.push(userInfo)
             });
             let userArray = userArrayActive.concat(userArrayInactive);
             console.table(userArray);

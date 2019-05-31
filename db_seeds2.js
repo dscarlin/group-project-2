@@ -58,8 +58,33 @@ module.exports = (db, bcrypt) => {
         },500)
     }
     setTimeout(()=> {
-       
-        
+       let id = 1
+       let uid = 1
+        db.UserGroup.findAll({
+            where: { GroupId: id }, 
+            include: {
+                model: db.User,
+                attributes: ['user_name','id','phone_number','picture_ref'],
+                where: {
+                    id: {
+                        [Op.ne]: uid
+                    }
+                }
+            }   
+        }).then(result => {
+            let userArrayActive = new Array();
+            let userArrayInactive = new Array();
+            result.forEach(userGroup => {
+            console.log(userGroup.User.get());
+            let userInfo = userGroup.User.get()
+            userInfo['status'] = userGroup.status
+            let array = userGroup.status ? userArrayActive : userArrayInactive
+            array.push(userInfo)
+            });
+            let userArray = userArrayActive.concat(userArrayInactive);
+            console.table(userArray);
+            // res.json(userArray);
+        })
             
 
     }, 2000);
