@@ -26,12 +26,14 @@
                       v-model="email"
                       type="email"
                       id="inputEmail"
-                      class="form-control"
+                      :class="emailMessage ? 'form-control is-invalid' : 'form-control'"
                       placeholder="Email address"
                       required="required"
                     >
+                    <div class="invalid-feedback" style="padding-left: 20px">Sorry, that email's taken. Try another?</div>
                     <label for="inputEmail">Email address</label>
                   </div>
+                  
                 </div>
                 <div class="form-group">
                   <div class="form-label-group">
@@ -67,10 +69,11 @@
                           v-model="confirmPassword"
                           type="password"
                           id="confirmPassword"
-                          class="form-control"
+                          :class="passwordMessage ? 'form-control is-invalid' : 'form-control'"
                           placeholder="Confirm password"
                           required="required"
                         >
+                        <div class="invalid-feedback" style="padding-left: 20px">Sorry, the password's do not match. Try again?</div>
                         <label for="confirmPassword">Confirm password</label>
                       </div>
                     </div>
@@ -99,21 +102,33 @@ export default {
   name: "signup",
   methods: {
     signMeUp: function() {
-      // need check confirm password
-      console.log('sign me up')
-      let data = {
-        user_name: this.name,
-        email: this.email,
-        password: this.password,
-        phone_number: this.phoneNumber
-        }
-      console.log(data)
-      axios.post('/api/user', data).then(response => {
-        console.log(response);
-        if(response.status == 200)
-          this.$router.push({ name: 'login'})
-      })
       
+      if(this.password === this.confirmPassword) {
+        console.log("> CS POST Sign me up");
+
+        let data = {
+          user_name: this.name,
+          email: this.email,
+          password: this.password,
+          phone_number: this.phoneNumber
+          }
+        console.log(data)
+        axios.post('/api/user', data)
+        .then((response) => {
+          console.log(response);
+          if(response.status == 200)
+            this.$router.push({ name: 'login'})
+        })
+        .catch((err) => {
+          console.log("> CS Create error with email address");
+          console.log(err.response.data);
+          this.message = true;
+        });
+
+      } else {
+        console.log("> CS Passwords need to match");
+        this.passwordMessage = true;
+      }
     }
   },
   data: function() {
@@ -121,8 +136,10 @@ export default {
       name: "",
       email: "",
       password: "",
-      confrimPassword: "",
-      phoneNumber: ''
+      confirmPassword: "",
+      phoneNumber: "",
+      emailMessage: false,
+      passwordMessage: false
     };
   },
   watch: {
@@ -137,7 +154,7 @@ export default {
       this.phoneNumber = this.phoneNumber.join('').slice(0,14);
     }
   },
- 
+
 
 };
 </script>
