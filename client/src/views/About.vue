@@ -30,18 +30,17 @@
           </div>
         </div>
       </div>
-      <!-- <div class="container"> -->
+    </div>
+    <div class="container">
       <div class="content">
         <section id="team" class="team-area">
-          <!-- <div class="content"> -->
           <div class="row justify-content-center">
             <div class="col-lg-6 col-md-9 col col-sm-12">
-              <!-- <div class="section-title text-center"> -->
               <h3 class="title text-center">
                 About Us:
                 <strong>team.Pizza.slice()</strong>
               </h3>
-              <!-- </div> -->
+
               <!-- section title -->
             </div>
           </div>
@@ -72,7 +71,9 @@
                     <br>
                     <span class="space red">website</span>
                     <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
+                    <a target="_blank" href="https://github.com/ekeoid/">
+                      <span class="green">'https://github.com/ekeoid/'</span>
+                    </a>
                     <br>};
                   </p>
                 </div>
@@ -97,20 +98,17 @@
                     <br>
                     <span class="space red">name</span>
                     <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
+                    <span class="green">'david carlin'</span>,
                     <br>
                     <span class="space red">position</span>
                     <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
+                    <span class="green">'full-stack developer'</span>,
                     <br>
                     <span class="space red">website</span>
                     <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
+                    <a target="_blank" href="https://github.com/dscarlin/">
+                      <span class="green">'https://github.com/dscarlin/'</span>
+                    </a>
                   </p>
                 </div>
               </div>
@@ -133,20 +131,17 @@
                     <br>
                     <span class="space red">name</span>
                     <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
+                    <span class="green">'emery ihegaranya'</span>,
                     <br>
                     <span class="space red">position</span>
                     <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
+                    <span class="green">'full-stack developer'</span>,
                     <br>
                     <span class="space red">website</span>
                     <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
+                    <a target="_blank" href="https://github.com/EmeryI/">
+                      <span class="green">'https://github.com/EmeryI/'</span>
+                    </a>
                   </p>
                 </div>
               </div>
@@ -168,20 +163,17 @@
                     <br>
                     <span class="space red">name</span>
                     <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
+                    <span class="green">'lindsey fahys'</span>,
                     <br>
                     <span class="space red">position</span>
                     <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
+                    <span class="green">'full-stack developer'</span>,
                     <br>
                     <span class="space red">website</span>
                     <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
+                    <a target="_blank" href="https://github.com/lgfahys/">
+                      <span class="green">'https://github.com/lgfahys/'</span>
+                    </a>
                   </p>
                 </div>
               </div>
@@ -203,20 +195,17 @@
                     <br>
                     <span class="space red">name</span>
                     <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
+                    <span class="green">'pierce lusk'</span>,
                     <br>
                     <span class="space red">position</span>
                     <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
+                    <span class="green">'full-stack developer'</span>,
                     <br>
                     <span class="space red">website</span>
                     <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
+                    <a target="_blank" href="https://github.com/gpiercelusk/">
+                      <span class="green">'https://github.com/gpiercelusk/'</span>
+                    </a>
                   </p>
                 </div>
               </div>
@@ -227,7 +216,6 @@
           <!-- container -->
         </section>
       </div>
-      <!-- </div> -->
     </div>
   </body>
 </div>
@@ -335,7 +323,7 @@ $cyan: #4dd0e1;
   &__side {
     height: 15rem;
     transition: all 0.8s ease;
-
+    justify-content: center;
     position: absolute;
     top: 0;
     left: 0;
@@ -391,6 +379,12 @@ $cyan: #4dd0e1;
         margin-left: 2rem;
       }
     }
+  }
+}
+@media only screen and (max-width: 519px) {
+  .team-area {
+    margin-top: 600px;
+    justify-content: center;
   }
 }
 </style>
