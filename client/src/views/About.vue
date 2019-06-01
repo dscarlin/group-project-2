@@ -10,7 +10,6 @@
                 <!-- logo here -->
                 <strong>REc(=)nnect</strong>
               </h1>
-
               <h4>Project Description:</h4>
               <p>
                 REc(=)nnect is for people to create groups and notify that they are available to catch up on the
@@ -26,6 +25,9 @@
                 for members, allow users to add members or delete members, set your current availability, and send
                 notifications for people currently available.
               </p>
+              <div class="presentation-link">
+              <a href="https://ekeoid.github.io/reconnect-slides/index.html">View our full presentation ↗</a>
+              </div>
             </div>
           </div>
         </div>
@@ -109,6 +111,7 @@
                     <a target="_blank" href="https://github.com/dscarlin/">
                       <span class="green">'https://github.com/dscarlin/'</span>
                     </a>
+                    <br>};
                   </p>
                 </div>
               </div>
@@ -142,6 +145,7 @@
                     <a target="_blank" href="https://github.com/EmeryI/">
                       <span class="green">'https://github.com/EmeryI/'</span>
                     </a>
+                    <br>};
                   </p>
                 </div>
               </div>
@@ -174,6 +178,7 @@
                     <a target="_blank" href="https://github.com/lgfahys/">
                       <span class="green">'https://github.com/lgfahys/'</span>
                     </a>
+                    <br>};
                   </p>
                 </div>
               </div>
@@ -206,6 +211,7 @@
                     <a target="_blank" href="https://github.com/gpiercelusk/">
                       <span class="green">'https://github.com/gpiercelusk/'</span>
                     </a>
+                    <br>};
                   </p>
                 </div>
               </div>
@@ -234,6 +240,20 @@ export default {
 body {
   background: #00a799;
   background: linear-gradient(to right, #00a799, #b7e3e4);
+}
+
+.presentation-link {
+  color: #00a799;
+  text-align: right;
+}
+
+.presentation-link a {
+  color: #00a799;
+}
+
+.presentation-link a:hover {
+  color: #00a799;
+  text-decoration: none;
 }
 
 h2 {
