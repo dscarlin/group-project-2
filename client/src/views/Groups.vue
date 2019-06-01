@@ -338,7 +338,7 @@ h5 {
 }
 
 .groups-card {
-  width: 90%;
+  width: 18em;
   max-width: 90vw;
   /* height: 20em; */
   display: block;
