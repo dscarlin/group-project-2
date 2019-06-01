@@ -51,13 +51,7 @@
             <div class="card card-about">
               <div class="card__side card__side--front">
                 <!-- Front Content -->
-                <div class="card__cont">
-                  <span class="blue">alert</span>
-                  <span>
-                    (
-                    <span class="green">'Hello World!'</span>)
-                  </span>
-                </div>
+                <div class="card__cont"></div>
               </div>
               <div class="card__side card__side--back">
                 <!-- Back Content -->
