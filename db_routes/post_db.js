@@ -3,7 +3,7 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
   const saltRounds = 8
 
   // Route for user login
-  app.post("/login", passport.authenticate("local"), (req, res) => {
+  app.post("/login", passport.authenticate("local"), (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) { 
         return next(err);
