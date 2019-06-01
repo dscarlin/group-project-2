@@ -3,14 +3,12 @@
     <div class="container">
       <!-- set status link -->
       <div class="row">
-        <div class="col">
-          <p
-            @click="displayTime"
-            class="status-link"
-            data-toggle="modal"
-            data-target="#statusModal"
-          >📅 Set Status</p>
-        </div>
+        <p
+          @click="displayTime"
+          class="status-link"
+          data-toggle="modal"
+          data-target="#statusModal"
+        >📅 Set Status</p>
         <div>
           <div
             class="modal fade"
@@ -85,13 +83,11 @@
           </div>
         </div>
         <!-- create group link -->
-        <div class="col">
-          <p
-            class="create-group-link"
-            data-toggle="modal"
-            data-target="#createGroupModal"
-          >📁 Create Group</p>
-        </div>
+        <p
+          class="create-group-link"
+          data-toggle="modal"
+          data-target="#createGroupModal"
+        >📁 Create Group</p>
         <div>
           <div
             class="modal fade"
@@ -379,6 +375,7 @@ body {
   background: #00a799;
   color: white;
 }
+
 .view-groups-btn:hover {
   background: #00a799;
   color: black;
@@ -390,54 +387,12 @@ body {
   margin-top: 15px;
   text-align: right;
   font-weight: bold;
-}
-
-.status-link {
-  margin-right: -350px;
-}
-.create-group-link {
-  margin-right: 50px;
+  padding-left: 30px;
 }
 
 .status-link:hover,
 .create-group-link:hover {
   cursor: pointer;
-}
-
-@media (max-width: 1200px) {
-  .status-link {
-    margin-right: -300px;
-  }
-  .create-group-link {
-    margin-right: 5px;
-  }
-}
-
-@media (max-width: 991px) {
-  .status-link {
-    margin-right: -200px;
-  }
-}
-
-@media (max-width: 781px) {
-  .status-link {
-    margin-right: -150px;
-  }
-}
-
-@media (max-width: 769px) {
-  .status-link {
-    margin-right: -50px;
-  }
-}
-
-@media (max-width: 404px) {
-  .status-link {
-    margin-right: 0px;
-  }
-    .create-group-link {
-    margin-right: 0px;
-  }
 }
 
 /* Hover Effects on Card */
