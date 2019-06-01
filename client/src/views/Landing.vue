@@ -17,14 +17,14 @@
         </div>
       </div>
       <!-- Slide Two - Set the background image for this slide in the line below -->
-      <div class="carousel-item" :style="{ backgroundImage: 'url(' + require('../../public/images/upload_images/phone_talk2.jpg') + ')'}">
+      <div class="carousel-item" :style="{ backgroundImage: 'url(' + require('../../public/images/upload_images/phone_talk4.jpg') + ')'}">
         <div class="carousel-caption d-none d-md-block">
           <h3 class="display-4">Second Slide</h3>
           <p class="lead">This is a description for the second slide.</p>
         </div>
       </div>
       <!-- Slide Three - Set the background image for this slide in the line below -->
-      <div class="carousel-item" :style="{ backgroundImage: 'url(' + require('../../public/images/upload_images/phone_talk3.jpg') + ')'}">
+      <div class="carousel-item" :style="{ backgroundImage: 'url(' + require('../../public/images/upload_images/phone_talk5.jpg') + ')'}">
         <div class="carousel-caption d-none d-md-block">
           <h3 class="display-4">Third Slide</h3>
           <p class="lead">This is a description for the third slide.</p>
