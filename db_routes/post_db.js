@@ -30,15 +30,10 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
           "\x1b[0m" + "Authenticated: " + req.isAuthenticated() + " @ {JSON}\n" +
           JSON.stringify(req.user.get(), null, 2));
         
-        return res.redirect('/users/' + user.username);
+        return res.json(req.user.id);
       });
     })(req, res, next);
     
-    
-
-    // console.log(req.body);
-    
-    //res.json(req.user.id);
   });
 
 
@@ -46,25 +41,47 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
   app.post("/api/user", (req, res) => {
     const { user_name, email, password, phone_number } = req.body; // Destructuring Object
 
-    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
-      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
-      "\x1b[0m" + "Create user: " + user_name);
+    db.User.findOne({
+      where: {
+        email: email
+      }
+    })
+    .then( (found) => {
 
-    bcrypt.hash(password, saltRounds)
-      .then((hash) => {
-        let userInfo = {
-          user_name: user_name,
-          email: email,
-          password: hash,
-          phone_number: phone_number
-        };
+      if (found) {
+        console.log("Email address is already taken");
+        throw new Error("Email address found in database");
+        //return res.status(409).send({ /*error: err, */ message: "db.user - where" });
+      }
 
-        db.User.create(userInfo)
-          .then((result) => { return res.json(result) })
-          .catch(err => res.json({ error: err.message }));
-      })
-      .catch(err => res.json({ error: err.message }));
+      console.log("create the user");
+
+      console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+          req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+          "\x1b[0m" + "Create user: " + user_name);
+
+      bcrypt.hash(password, saltRounds)
+        .then((hash) => {
+          let userInfo = {
+            user_name: user_name,
+            email: email,
+            password: hash,
+            phone_number: phone_number
+          };
+
+          db.User.create(userInfo)
+            .then((result) => { return res.json(result) })
+            .catch((err) => res.json({ error: err.message, message: "db.user - create" }));
+            })
+        .catch((err) => res.json({ error: err.message, message: "bcrypt" }));
+
+    })
+    .catch(err => {
+      res.status(409).send({error: "Email address is already taken", message: "db.user - where" });
+    });
+
   });
+
 
   app.post('/api/group/:uid', (req, res) => {
     console.log('called post on group')
