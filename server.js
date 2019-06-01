@@ -41,15 +41,14 @@ app.use(fileUpload());
 
 // Twilio Package
 require("dotenv").config();
-
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const trialNumber = process.env.TRIAL_NUMBER;
 const twilio = require("twilio")(accountSid, authToken);
 
-// Serve up static assets (usually on heroku)
 
-  app.use(express.static("client/dist"));
+// Serve up static assets (usually on heroku)
+app.use(express.static("client/dist"));
 
 
 //socket listener and response handler for dynamic routing
@@ -70,7 +69,7 @@ app.use(session({
 // Apply Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-app.use( function(req, res, next) {
+app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated();
   next();
 });

@@ -3,9 +3,11 @@ module.exports = (app, db) => {
 
   // Route to manage login status
   app.get("/loginStatus", (req, res) => {
-    console.log("is Authenticated: ", req.isAuthenticated());
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Authenticated: " + req.isAuthenticated());
 
-    if ( req.isAuthenticated() ) {
+    if (req.isAuthenticated()) {
       res.send(req.user);
     } else {
       res.json(req.isAuthenticated());
@@ -14,41 +16,48 @@ module.exports = (app, db) => {
 
   // Route to logout current user / session
   app.get("/logout", (req, res) => {
-    console.log("logging out, currently: ", req.isAuthenticated());
-
     req.logout();
-    req.session.destroy( (err) => {
-      if (err) {
-        res.send(err);
-      }
+    req.session.destroy(err => {
+      if (err) res.send(err)
     });
-    res.json(req.isAuthenticated());
+
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Authenticated: " + req.isAuthenticated());   
+    
+    res.json(req.isAuthenticated())
   });
 
   // Route to get requested user
   app.get("/api/user/:id", (req, res) => {
-    let id = req.params.id;
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Request: user_id = " + req.params.id);
 
+    let id = req.params.id;
     db.User.findOne({
-      where : {
+      where: {
         id: id
       }
     }).then( (result) => {
-      console.log(result);
+      //console.log(result);
       res.send(result);
     });
   });
 
+
   // Route to get name and id of all users for searching to add user
   app.get("/api/search/users", (req, res) => {
-    console.log("requested user id");
-
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Request: userArray" );
+    
     db.User.findAll({
       attributes: ["user_name", "id", "picture_ref"]
     }).then( (result) => {
-      let userArray = new Array();
+      let userArray = new Array;
 
-      result.forEach( (item) => {
+      result.forEach((item) => {
         userArray.push(item.get());
       });
 
@@ -56,10 +65,12 @@ module.exports = (app, db) => {
       res.json(userArray);
     });
   });
-
+  
   // Route to get group page for all users in group
   app.get("/api/group/:uid/:id", (req, res) => {
-    console.log("requested group");
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Requested group: " + req.params.id + " : " + req.params.uid);
 
     let id = req.params.id;
     let uid = req.params.uid;
@@ -77,11 +88,12 @@ module.exports = (app, db) => {
           }
         }
       }
-    }).then( (result) => {
+    })
+    .then((result) => {
       let userArrayActive = new Array();
       let userArrayInactive = new Array();
 
-      result.forEach( (userGroup) => {
+      result.forEach((userGroup) => {
 
         // console.log(userGroup.User.get());
         if (userGroup.User.status) {
@@ -94,13 +106,17 @@ module.exports = (app, db) => {
       let userArray = userArrayActive.concat(userArrayInactive);
       console.table(userArray);
       res.json(userArray);
-    });
+    })
+
   });
 
-  // Route to get groups page for all groups of user and
-  // all status/ids of members in each group
+  // Route to get groups for page 
+  // all groups of user and all status/ids of members in each group
   app.get("/api/groups/:id", (req,res) => {
-    console.log("requested user groups");
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Requested user groups: " + req.params.id);
+
     let id = req.params.id;
 
     db.UserGroup.findAll({

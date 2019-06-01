@@ -1,38 +1,87 @@
-
 module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
   const Op = db.Sequelize.Op;
-  const saltRounds = 8;
+  const saltRounds = 8
 
   // Route for user login
-  app.post("/login", passport.authenticate("local"), (req, res) => {
-    //console.log(req.body);
-    console.log(req.user.get());
-    console.log(req.isAuthenticated());
+  app.post("/login", passport.authenticate("local"), (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) { 
+        return next(err);
+      }
 
-    res.json(req.user.id);
+      if (!user) {
+        console.log("Login authentication error");
+        return res.status(403).send({
+          message: info.message,
+          error: "Invalid login credentials"
+        });
+      }
+
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+        
+        console.log("Login authentication success");
+        console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+          req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+          "\x1b[0m" + "Authenticated: " + req.isAuthenticated() + " @ {JSON}\n" +
+          JSON.stringify(req.user.get(), null, 2));
+        
+        return res.json(req.user.id);
+      });
+    })(req, res, next);
   });
 
   // Route to create user
   app.post("/api/user", (req, res) => {
-    console.log("called post on user");
+    // Destructure Object
+    const { user_name, email, password, phone_number } = req.body;
 
-    let r = req.body;
-    bcrypt.hash(r.password, saltRounds, (err, hash) => {
-      let userInfo = {
-        user_name: r.user_name,
-        email: r.email,
-        password: hash,
-        phone_number: r.phone_number
-      };
+    db.User.findOne({
+      where: {
+        email: email
+      }
+    })
+    .then( (found) => {
 
-      console.log(userInfo.password);
-      db.User.create(userInfo).then( (result) => res.json(result) );
+      if (found) {
+        console.log("Email address is already taken");
+        throw new Error("Email address found in database");
+        //return res.status(409).send({ /*error: err, */ message: "db.user - where" });
+      }
+
+      console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+        req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+        "\x1b[0m" + "Create user: " + user_name);
+      
+      bcrypt.hash(password, saltRounds)
+      .then((hash) => {
+        let userInfo = {
+          user_name: user_name,
+          email: email,
+          password: hash,
+          phone_number: phone_number
+        };
+
+        db.User.create(userInfo)
+          .then((result) => { return res.json(result) })
+          .catch((err) => res.json({ error: err.message, message: "db.user - create" }));
+          })
+      .catch((err) => res.json({ error: err.message, message: "bcrypt" }));
+
+    })
+    .catch(err => {
+      res.status(409).send({error: "Email address is already taken", message: "db.user - where" });
     });
+
   });
 
   // Route to create a group
   app.post("/api/group/:uid", (req, res) => {
-    console.log("called post on group");
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Create group for: " + req.body.groupName);
 
     let query = {
       name: req.body.groupName
@@ -51,7 +100,10 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
 
   // Route to create user-group
   app.post("/api/user/:groupId", (req, res) => {
-    console.log("called post on userGroup");
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Create user group for (user, group): " + req.body.userId +
+      " : " + req.params.groupId);
 
     let groupId = req.params.groupId;
     let userId = req.body.userId;
@@ -65,10 +117,14 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
     });
   });
 
+
   // Route for twilio messaging
   app.post("/api/twilio", (req, res) => {
-    let body = req.body.message;
-    console.log("twilio post");
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Twilio post for: " + req.body.message);
+    
+      let body = req.body.message;
     // twilio.messages.create({
     //   body: body,
     //   from: trialNumber,
