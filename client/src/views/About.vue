@@ -35,7 +35,7 @@
         <section id="team" class="team-area">
           <!-- <div class="content"> -->
           <div class="row justify-content-center">
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-9 col col-sm-12">
               <!-- <div class="section-title text-center"> -->
               <h3 class="title text-center">
                 About Us:
@@ -48,7 +48,7 @@
           <!-- row -->
 
           <div class="row justify-content-center">
-            <div class="card">
+            <div class="card card-about">
               <div class="card__side card__side--front">
                 <!-- Front Content -->
                 <div class="card__cont">
@@ -339,11 +339,14 @@ $cyan: #4dd0e1;
   justify-content: center;
   align-items: center;
 }
-
+.card-about {
+  background-color: unset;
+  border: unset;
+}
 .card {
   //FUNCTIONALITY
   margin: 50px;
-  perspective: 150rem;
+  perspective: 15rem;
   height: 10rem;
   width: 10rem;
 
