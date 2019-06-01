@@ -62,78 +62,78 @@
               <div v-for="group in groupsArray" :key="group.id">
                 <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
                 <input v-model="group.connect" type="checkbox" id="connectBox">
-              </div>-->
-              <!-- <div class="modal-footer">
+                </div>-->
+                <!-- <div class="modal-footer">
                 <button
                   type="submit"
                   class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
                 >Set</button>
-              </div> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- create group link -->
-      <p
-        class="create-group-link"
-        data-toggle="modal"
-        data-target="#createGroupModal"
-      >📁 Create Group</p>
-      <div>
-        <div
-          class="modal fade"
-          id="createGroupModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="createGroupModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="createGroupLabel">Create Group</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                </div>-->
               </div>
-              <!-- add group form -->
-              <form @submit.prevent="addGroup()">
-                <div class>
-                  <label
-                    id="createGroupFormLabel"
-                    class="btn-block"
-                    for="inputGroupName"
-                  >Create Group</label>
-                  <input
-                    type="text"
-                    id="inputGroupName"
-                    v-model="groupInput"
-                    placeholder="Group Name"
-                    class="round"
-                    autocomplete="off"
-                  >
+            </div>
+          </div>
+        </div>
+        <!-- create group link -->
+        <p
+          class="create-group-link"
+          data-toggle="modal"
+          data-target="#createGroupModal"
+        >📁 Create Group</p>
+        <div>
+          <div
+            class="modal fade"
+            id="createGroupModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createGroupModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="createGroupLabel">Create Group</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-                <button
-                  class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
-                  type="submit"
-                >Add</button>
-              </form>
+                <!-- add group form -->
+                <form @submit.prevent="addGroup()">
+                  <div class>
+                    <label
+                      id="createGroupFormLabel"
+                      class="btn-block"
+                      for="inputGroupName"
+                    >Create Group</label>
+                    <input
+                      type="text"
+                      id="inputGroupName"
+                      v-model="groupInput"
+                      placeholder="Group Name"
+                      class="round"
+                      autocomplete="off"
+                    >
+                  </div>
+                  <button
+                    class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
+                    type="submit"
+                  >Add</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col-lg-4 mg-top" v-for="(group,i) in groupsArray" :key="i">
-          <div class="card mb-5 mb-lg-0">
+          <div class="card groups-card mb-5 mb-lg-0">
             <div class="card-body">
               <div class="title-container">
-              <h5 class="card-title text-center">{{group.name}}</h5>
+                <h5 class="card-title text-center">{{group.name}}</h5>
               </div>
               <hr>
               <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
-              <p v-if="group.status">{{group.memberStatusArray.filter(status => status == true).length-1}} Members Available to Chat 👁️‍🗨️</p>
-              <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+              <p >{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+              <!-- <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p> -->
               <a
                 @click="checkOutGroup(i)"
                 class="btn view-groups-btn btn-block text-uppercase"
@@ -148,9 +148,9 @@
 
 <script>
 import axios from "axios";
-import io from 'socket.io-client';
-import moment from 'moment'
-import {notify} from '../services/notify.js'
+import io from "socket.io-client";
+import moment from "moment";
+import { notify } from "../services/notify.js";
 
 export default {
   name: "groups",
@@ -225,7 +225,7 @@ export default {
       console.log(time)
     },
     addGroup: function() {
-      console.log('add')
+      console.log("add");
       let body = { groupName: this.groupInput };
       axios.post(`/api/group/${this.$route.params.id}`, body).then(res => {
         if (res.status == 200) console.log(res);
@@ -245,7 +245,9 @@ export default {
       axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
         console.log(res);
         let message = {
-          body:`Call me at ${res.data.phone_number} - ${res.data.user_name} \n Let's Reconnect! I can't wait to hear from you!`,
+          body: `Call me at ${res.data.phone_number} - ${
+            res.data.user_name
+          } \n Let's Reconnect! I can't wait to hear from you!`,
           time: this.input,
           user: res.data.user_name,
           icon: `/images/upload_images/phoneDefault.png}`
@@ -325,6 +327,10 @@ export default {
   overflow: hidden;
 }
 
+form {
+  margin: 10px;
+}
+
 h5 {
   width: 100%;
   overflow: hidden;
@@ -332,21 +338,22 @@ h5 {
   text-overflow: ellipsis;
 }
 
-.card {
+.groups-card {
   width: 18em;
   max-width: 90vw;
   /* height: 20em; */
   display: block;
   /* position: relative; */
-
 }
 
 #timeAway {
   text-align: center;
 }
+
 .slider {
-  width: 11em;
-  margin: auto;
+  width: 40%;
+  
+  margin: 0 auto 0;
 }
 
 #createFormLabel {
@@ -379,7 +386,7 @@ body {
   margin-top: 2em;
 }
 
-.groups .card {
+.groups .groups-card {
   border: none;
   border-radius: 1rem;
   transition: all 0.2s;
@@ -417,6 +424,7 @@ body {
   background: #00a799;
   color: white;
 }
+
 .view-groups-btn:hover {
   background: #00a799;
   color: black;
@@ -425,23 +433,25 @@ body {
 
 .status-link,
 .create-group-link {
-  margin-top: 30px;
+  margin-top: 15px;
+  text-align: right;
+  font-weight: bold;
+  padding-left: 30px;
 }
 
-.status-link,
+.status-link:hover,
 .create-group-link:hover {
   cursor: pointer;
 }
 
 /* Hover Effects on Card */
-
 @media (min-width: 992px) {
-  .groups .card:hover {
+  .groups .groups-card:hover {
     margin-top: -0.25rem;
     margin-bottom: 0.25rem;
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
   }
-  .groups .card:hover {
+  .groups .groups-card:hover {
     opacity: 1;
   }
 

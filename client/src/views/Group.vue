@@ -5,7 +5,7 @@
         <h1>{{name}}</h1>
           <form @submit.prevent="add(search)">
           <div class="">
-            <label class="btn-block" for="search">Add a Member</label>
+            <label for="search">Add a Member</label>
             <input type="text" id="search" v-model="search" placeholder="Search" class="round" autocomplete="off">
             
             <div id="suggest" class="round" >
@@ -16,13 +16,13 @@
                 <li>NO MATCH</li>
               </ul>
             </div>
-            <button type="submit"  class="btn view-member-btn add-btn text-uppercase">Add Member</button>
+            <button type="submit"  class="btn add-member-btn add-btn text-uppercase">Add to Group</button>
           </div>
           </form>
 
         <div class="row">
 
-          <div v-for="member in groupInfo" :key="member.id"  class="col-md-4 mg-top memb float in-l">
+          <div v-for="member in groupInfo" :key="member.id"  class="col-lg-4 mg-top memb float in-l">
             <div class="card mb-5 mb-lg-0">
               <div class="card-body">
                 <div class="table row no-gutters justify-content-md-center">
@@ -157,6 +157,11 @@ ul {
   padding: 0;
 }
 
+.add-member-btn {
+  background-color: #ff585b;
+  margin-top: 10px;
+}
+
 #icon {
   width: 1em;
   height: 1em;
@@ -182,6 +187,10 @@ li {
 #select:hover {
   cursor: pointer;
   font-weight: bold
+}
+
+#search {
+  margin-left: 5px;
 }
 
 #suggest {
@@ -288,8 +297,11 @@ section.group {
 .view-member-btn {
   background:#00a799;
   line-height: 3;
-
   color: white;
+}
+
+.view-member-btn:hover {
+  cursor: pointer;
 }
 
 .table {
