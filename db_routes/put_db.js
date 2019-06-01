@@ -22,7 +22,6 @@ module.exports = (app, db, bcrypt) => {
 
     if (req.files) {
       let abspath = path.join(__dirname,`/../client/public/images/upload_images/${r.picture_ref}`);
-
       console.log(abspath);
 
       if (r.picture_ref && r.picture_ref !== "null" && r.picture_ref !== "phoneDefault.png") {
@@ -49,6 +48,34 @@ module.exports = (app, db, bcrypt) => {
     }
   });
 
+     //change status of all groups based upon state of groups array from groups page
+     app.put('/api/status/:uid', (req, res) => {
+        let uid = req.params.uid;
+        let groupArr = req.body;
+        let success = false
+        groupArr.forEach(group => {
+            let userAndGroup = {
+                UserId: uid, GroupId: group.id
+            }
+            db.UserGroup.update({status: group.status },{where: userAndGroup }).then(result => {
+                success = result ? true : false
+            });
+        }) 
+        console.log(success)
+        res.json(req.user); 
+    })
+
+    app.put('/api/range/:uid', (req, res) => {
+        console.log('UPDATE MINS *********')
+        let uid = req.params.uid;
+        console.log(req.body)
+      
+        let minutes = {minutes: parseInt(req.body.minutes)}
+        db.User.update( minutes ,{where: { id: uid } }).then(response => {
+            res.send(response);
+        })
+
+    })
 
   // Route to change group name
   app.put("api/group/:id", (req, res) => {

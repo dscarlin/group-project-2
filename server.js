@@ -15,19 +15,30 @@ const session = require("express-session");
 const SessionStore = require("express-session-sequelize")(session.Store);
 const sequelizeSessionStore = new SessionStore({
   db: db.sequelize
-});
+})
+//socket vars
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+io.on('connection', function(socket) {
+  socket.on('rejoin', function(object) {
+    console.log(`\u001b[35;1m re-joined chanel ${object.name}`);
+    socket.join(object.chanel)
+  })
+  socket.on('leave', function(object) {
+    console.log(`\u001b[35;1m leaving chanel ${object.name}`);
+    
+    socket.leave(object.chanel)
+  })
 
-// Socket
-var http = require("http").createServer(app);
-var io = require("socket.io")(http);
 
-io.on("connection", function(socket) {
-  // once a client has connected, we expect to get a ping from them saying what room they want to join
-  socket.on("room", function(object) {
-    console.log(object.name, " requested");
-    socket.join(object.chanel);
-    socket.in(object.chanel).emit("message", object.message);
-    // io.sockets.in(room.room).emit('message', 'anyone in this room yet?');
+  socket.on('join', function(object) {
+    
+          console.log('\u001b[35;1m',object.name,' requested')
+          socket.join(object.chanel);
+          socket.in(object.chanel).emit('message',object.message);
+
+
+      // io.sockets.in(room.room).emit('message', 'anyone in this room yet?');
   });
 
 });
@@ -81,11 +92,11 @@ require("./db_routes/post_db.js")(LocalStrategy, passport, app, db, bcrypt);
 require("./db_routes/put_db.js")(app, db, bcrypt);
 require("./db_routes/delete_db.js")(app, db);
 
-db.sequelize.sync({ force: false }).then(() => {
-  // require('./db_seeds2')(db,bcrypt);
 
-  app.listen(PORT, function() {
-//  http.listen(PORT, function() { 
+
+db.sequelize.sync({ force: true }).then(()=>{
+  require('./db_seeds2')(db,bcrypt);
+  http.listen(PORT, function() { 
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });
 });

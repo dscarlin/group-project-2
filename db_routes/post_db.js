@@ -3,7 +3,7 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
   const saltRounds = 8
 
   // Route for user login
-  app.post("/login", passport.authenticate("local"), (req, res, next) => {
+  app.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) { 
         return next(err);
@@ -33,6 +33,7 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
     })(req, res, next);
   });
 
+ 
   // Route to create user
   app.post("/api/user", (req, res) => {
     // Destructure Object
@@ -116,6 +117,9 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
       res.json(result);
     });
   });
+
+   
+   
 
 
   // Route for twilio messaging

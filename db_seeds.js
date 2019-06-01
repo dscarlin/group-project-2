@@ -3,9 +3,9 @@ module.exports = (db) => {
     const Op = db.Sequelize.Op;
     //create some example users
     db.Users.bulkCreate([
-        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994', status: true},
-        {user_name: 'Tim Collins', email: 'tim@email.com', text_enabled: true, phone_number: '(903) 394 3364', status: false},
-        {user_name: 'Jamal Perkins', email: 'jamal@email.com', text_enabled: true, phone_number: '(839) 454 2994', status: true}
+        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994'},
+        {user_name: 'Tim Collins', email: 'tim@email.com', text_enabled: true, phone_number: '(903) 394 3364'},
+        {user_name: 'Jamal Perkins', email: 'jamal@email.com', text_enabled: true, phone_number: '(839) 454 2994'}
     ])
     .then(newUsers => {
         //log data values for each user

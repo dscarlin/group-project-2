@@ -30,13 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         not: ["[a-z]", "i"]
       }
     },
-    status: {
+    minutes: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
-      validate: {
-        min: 0,
-        max: 1
-      }
+      allowNull: true,
+      defaultValue: 0
     },
     picture_ref: {
       type: DataTypes.STRING,

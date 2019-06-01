@@ -2,72 +2,63 @@
   <div class="groups">
     <div class="container">
       <!-- set status link -->
-      <div class="row">
-        <p
-          @click="displayTime"
-          class="status-link"
-          data-toggle="modal"
-          data-target="#statusModal"
-        >📅 Set Status</p>
-        <div>
-          <div
-            class="modal fade"
-            id="statusModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="statusModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="statusModalLabel">Set Status</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <!-- set status form -->
-                <form @submit.prevent="setStatus(true)">
-                  <div class>
-                    <label
-                      id="statusFormLabel"
-                      class="btn-block"
-                      for="timeaway"
-                    >Available to talk until:</label>
-                    <!-- <input type="text" class="btn-block w10" disabled v-model="input" id="timeaway"> -->
-                    <input type="text" class="text-center" v-model="input" id="timeaway" disabled>
-                    <input
-                      class="slider"
-                      type="range"
-                      min="0"
-                      max="400"
-                      step="15"
-                      value="0"
-                      id="away"
-                      v-model="range"
-                      placeholder="Time Available"
-                      autocomplete="off"
-                    >
-                    <label
-                      id="statusFormLabel"
-                      class="btn-block modal-body"
-                      for="timeaway"
-                    >Select Groups:</label>
-                    <div
-                      style=" max-width: 5em; vertical-align: text-top; display: inline-block; margin: 0 1em 1em;"
-                      v-for="group in groupsArray"
-                      :key="group.id"
-                    >
-                      <input v-model="group.connect" type="checkbox" id="connectBox">
-                      <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
-                    </div>
+      <p @click="displayTime" class="status-link" data-toggle="modal" data-target="#statusModal">📅 Set Status</p>
+      <div>
+        <div
+          class="modal fade"
+          id="statusModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="statusModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="statusModalLabel">Set Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!-- set status form -->
+              <form >
+                <div class>
+                  <label id="statusFormLabel" class="btn-block" for="timeaway">Available to talk until:</label>
+                  <!-- <input type="text" class="btn-block w10" disabled v-model="input" id="timeaway"> -->
+                  <input type="text" class="text-center" v-model="input" id="timeaway" disabled>
+                  <input
+                    class="slider btn-block"
+                    type="range"
+                    min="0"
+                    max="400"
+                    step="15"
+                    value="0"
+                    id="away"
+                    v-model="range"
+                    placeholder="Time Available"
+                    autocomplete="off"
+                  >
+                  <label
+                    id="statusFormLabel" 
+                    class="btn-block modal-body"
+                    for="timeaway"
+                  >Select Groups:</label>
+                  <div style=" max-width: 5em; vertical-align: text-top; display: inline-block; margin: 0 1em 1em;" v-for="group in groupsArray" :key="group.id">
+                    <input v-model="group.status" type="checkbox"  id="connectBox">
+                    <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
                   </div>
-                  <button
-                    type="submit"
-                    class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
-                  >Set</button>
-                </form>
-                <!-- <label id="statusFormLabel" class="btn-block modal-body" for="timeaway">Select Groups:</label>
+                </div>
+                <button v-if="!statusSet"
+                  @click.prevent="setStatus()"
+                  type="submit"
+                  class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
+                 
+                >Set</button>
+              <button v-else class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
+
+              @click.prevent="clearStatus">clear status</button>
+              </form>
+              <!-- <label id="statusFormLabel" class="btn-block modal-body" for="timeaway">Select Groups:</label>
               <div v-for="group in groupsArray" :key="group.id">
                 <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
                 <input v-model="group.connect" type="checkbox" id="connectBox">
@@ -140,8 +131,9 @@
                 <h5 class="card-title text-center">{{group.name}}</h5>
               </div>
               <hr>
-              <p>{{group.memberStatusArray.length + 1}} Members 👨‍👨‍👧‍👧</p>
-              <p>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+              <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
+              <p >{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+              <!-- <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p> -->
               <a
                 @click="checkOutGroup(i)"
                 class="btn view-groups-btn btn-block text-uppercase"
@@ -168,10 +160,13 @@ export default {
     return {
       groupsArray: [],
       input: "",
-      range: 0,
-      status: false,
-      userDataObject: "",
-      groupInput: ""
+      range: null,
+      userDataObject: '',
+      groupInput: '',
+      socket: io(),
+      UnixTimerSetting: '',
+      timer: '',
+      statusSet: 0
     };
   },
   watch: {
@@ -183,12 +178,18 @@ export default {
   created: function() {
     this.fillPage();
     this.userData();
+   
+    
   },
   methods: {
     userData: function() {
-      axios
-        .get(`/api/user/${this.$route.params.id}`)
-        .then(res => (this.userDataObject = res.data));
+      axios.get(`/api/user/${this.$route.params.id}`)
+      .then(res =>{
+        this.userDataObject = res.data;
+        this.range = this.userDataObject.minutes;
+        if(this.range)
+          this.setTimer();
+      });
     },
     fillPage: function() {
       let id = this.$route.params.id;
@@ -196,8 +197,12 @@ export default {
       axios.get(`api/groups/${id}`).then(response => {
         this.groupsArray = response.data;
         console.table(this.groupsArray);
-        this.groupsArray.map(group => (group["connect"] = false));
-        console.table(this.groupsArray);
+        const reducer = (acc, curr) => {
+          if (curr)
+            return acc = 1
+        }
+        this.statusSet = this.groupsArray.map(group => group.status).reduce(reducer)
+        this.reJoin();
       });
     },
     checkOutGroup: function(i) {
@@ -211,12 +216,13 @@ export default {
         }
       });
     },
-    displayTime: function() {
-      let secAdj = (15 - moment().format("m")) * 60;
+    displayTime: function(){
+      let secAdj = (15 - moment().format('m') % 15) * 60;
       let sec = this.range * 60 + secAdj;
-      let time = moment.unix(parseInt(moment().format("X")) + sec).format("LT");
-      this.input = time;
-      console.log(time);
+      this.UnixTimerSetting = sec
+      let time = moment((moment().unix() + sec),'X').format('LT')
+      this.input = time
+      console.log(time)
     },
     addGroup: function() {
       console.log("add");
@@ -227,18 +233,17 @@ export default {
         this.fillPage();
       });
     },
-    setStatus: function(status) {
-      let newStatus = status;
-      let uid = this.$route.params.id;
-      axios.put(`/api/status/${uid}`, { status: newStatus }).then(res => {
-        var socket = io();
-        let groupIdsAndNamesToNotify = this.groupsArray
-          .filter(group => group.connect)
-          .map(group => {
-            return { id: group.id, name: group.name };
-          });
+    setTimer: function() {
+      this.timer = setTimeout(this.clearStatus, this.UnixTimerSetting * 1000);
+    },
+    setStatus: function() {
+      this.statusSet = 1;
+      console.table(this.range)
+      this.setTimer();
+      let uid = this.$route.params.id
+      axios.put(`/api/range/${uid}`,{minutes: this.range}).then(res => console.log(res))
+      axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
         console.log(res);
-
         let message = {
           body: `Call me at ${res.data.phone_number} - ${
             res.data.user_name
@@ -247,26 +252,69 @@ export default {
           user: res.data.user_name,
           icon: `/images/upload_images/phoneDefault.png}`
         };
-        socket.on("connect", function() {
-          groupIdsAndNamesToNotify.forEach(chanel =>
-            socket.emit("room", {
+        let self = this
+        // socket.on('connect', function() {
+          
+        this.groupsArray.forEach(chanel =>{
+          if(chanel.status)
+            this.socket.emit("join", {
               chanel: chanel.id,
               name: chanel.name,
-              message: message
+              message: message,
+              uid: res.data.id
             })
-          );
-          // Connected, let's sign-up for to receive messages for this room
         });
-        let self = this;
-        socket.on("message", function(message) {
-          console.log(
-            "NOTIFY from ",
-            message.user,
-            " i am ",
-            self.userDataObject.user_name
-          );
-          // notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
+        
+        // Connected, let's sign-up for to receive messages for this room
+          // socket.removeListener('connect')
+  
+        // });
+        
+        this.socket.on("message", function(message) {
+          console.log('NOTIFY from ',message.user, ' i am ', self.userDataObject.user_name)
+          notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
         });
+      })
+    },
+    clearStatus: function() {
+      // let socket = io()
+      this.statusSet = 0;
+      clearTimeout(this.timer);
+      this.range = 0;
+      axios.put(`/api/range/${this.$route.params.id}`,this.range).then(res => console.log(res))
+
+      axios.put()
+      this.groupsArray.forEach(chanel =>{
+        if(chanel.status)
+          this.socket.emit("leave", {
+            chanel: chanel.id,
+            name: chanel.name
+          });
+        chanel.status = false;
+      });
+      this.socket.removeListener('message');
+      let uid = this.$route.params.id;
+      axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
+      });
+    },
+    reJoin: function() {
+      // let socket = io()
+      console.log(this.socket)
+      let self = this;
+      // this.socket.connect();
+      // this.socket.on('connect', function() {
+      console.log('connect iterable ',self.groupsArray)
+      self.groupsArray.forEach(chanel =>{
+        if(chanel.status)
+          self.socket.emit("rejoin", {
+            chanel: chanel.id,
+            name: chanel.name
+          });
+      });
+      // })
+      this.socket.on("message", function(message) {
+        console.log('NOTIFY from ',message.user, ' i am ', self.userDataObject.user_name)
+        notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
       });
     }
   }
@@ -303,8 +351,9 @@ h5 {
 }
 
 .slider {
-  width: 75%;
-  margin-top: 5px;
+  width: 40%;
+  
+  margin: 0 auto 0;
 }
 
 #createFormLabel {
