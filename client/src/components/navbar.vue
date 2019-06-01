@@ -119,10 +119,5 @@ export default {
     width: 100%;
     transition: width 0.3s;
   }
-
-  .logo{
-    height: 50px;
-    width: 150px;
-  }
 }
 </style>
