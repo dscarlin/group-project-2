@@ -20,12 +20,12 @@ const sequelizeSessionStore = new SessionStore({
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 io.on('connection', function(socket) {
-  socket.on('re-join', function(object) {
-    console.log(`re-joined chanel ${object.name}`);
+  socket.on('rejoin', function(object) {
+    console.log(`\u001b[35;1m re-joined chanel ${object.name}`);
     socket.join(object.chanel)
   })
   socket.on('leave', function(object) {
-    console.log(`leaving chanel ${object.name}`);
+    console.log(`\u001b[35;1m leaving chanel ${object.name}`);
     
     socket.leave(object.chanel)
   })
@@ -33,7 +33,7 @@ io.on('connection', function(socket) {
   // once a client has connected, we expect to get a ping from them saying what room they want to join
   socket.on('join', function(object) {
     
-          console.log(object.name,' requested')
+          console.log('\u001b[35;1m',object.name,' requested')
           socket.join(object.chanel);
           socket.in(object.chanel).emit('message',object.message);
 

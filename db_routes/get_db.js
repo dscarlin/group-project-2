@@ -23,7 +23,7 @@ module.exports = (app,db) => {
     app.get('/api/user/:id', (req, res) => {
         let id = req.params.id
         db.User.findOne({where : { id: id } }).then(result => {
-            console.log(result)
+            // console.log(result)
             
             res.send(result);
             
@@ -35,7 +35,7 @@ module.exports = (app,db) => {
     app.get('/api/search/users', (req, res) => {
         console.log('requested user id');
         db.User.findAll({attributes: ['user_name','id','picture_ref']}).then(result => {
-            let userArray = new Array; 
+            let userArray = new Array(); 
             result.forEach(item => {
                userArray.push(item.get())
             })
@@ -64,7 +64,6 @@ module.exports = (app,db) => {
             let userArrayActive = new Array();
             let userArrayInactive = new Array();
             result.forEach(userGroup => {
-            console.log(userGroup.User.get());
             let userInfo = userGroup.User.get()
             userInfo['status'] = userGroup.status
             let array = userGroup.status ? userArrayActive : userArrayInactive
@@ -97,10 +96,8 @@ module.exports = (app,db) => {
             let groupsArray = new Array;
             result.forEach(item => {
                 let statusArray = new Array;
-                console.log(item.get())
                 item.Group.UserGroups.forEach(userGroup => {
                     statusArray.push(userGroup.status)
-                    console.log('Status:',userGroup.status)
                 })
                 let group = {
                     name: item.Group.name,
@@ -114,5 +111,13 @@ module.exports = (app,db) => {
             res.json(groupsArray)
         });
 
+    });
+
+    app.get('/api/range/:uid', (req, res) => {
+        let uid = req.params.id;
+       
+        User.findOne({where: { id: uid }, attributes: ['minutes'] }).then(response => {
+            res.send(response);
+        });
     });
 }

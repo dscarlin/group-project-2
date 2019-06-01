@@ -16,9 +16,7 @@ module.exports = (LocalStrategy,passport,app,db,bcrypt) => {
 
     //login
     app.post('/login',passport.authenticate("local"), (req, res) => {
-        console.log(req.body)
-        console.log(req.user.get())
-        console.log(req.isAuthenticated())
+        console.log('login ',req.isAuthenticated())
         res.json(req.user.id)
 
         // res.send('')

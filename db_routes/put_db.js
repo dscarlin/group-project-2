@@ -29,7 +29,7 @@ module.exports = (app,db,bcrypt) => {
                 fs.unlinkSync(abspath);
             let pictureFile = req.files.picture;
             userInfo['picture_ref'] = pictureFile.name;
-            pictureFile.mv(`client/dist/images/upload_images/${pictureFile.name}`, err => {
+            pictureFile.mv(`lclient/dist/images/upload_images/${pictureFile.name}`, err => {
                 if(err) res.status(500).send(err)
             });
         }
@@ -54,7 +54,6 @@ module.exports = (app,db,bcrypt) => {
      //change status of all groups based upon state of groups array from groups page
      app.put('/api/status/:uid', (req, res) => {
         let uid = req.params.uid;
-        console.log(req.body)
         let groupArr = req.body;
         let success = false
         groupArr.forEach(group => {
@@ -62,12 +61,23 @@ module.exports = (app,db,bcrypt) => {
                 UserId: uid, GroupId: group.id
             }
             db.UserGroup.update({status: group.status },{where: userAndGroup }).then(result => {
-                console.log(result);
                 success = result ? true : false
             });
         }) 
         console.log(success)
         res.json(req.user); 
+    })
+
+    app.put('/api/range/:uid', (req, res) => {
+        console.log('UPDATE MINS *********')
+        let uid = req.params.uid;
+        console.log(req.body)
+      
+        let minutes = {minutes: parseInt(req.body.minutes)}
+        db.User.update( minutes ,{where: { id: uid } }).then(response => {
+            res.send(response);
+        })
+
     })
 
    

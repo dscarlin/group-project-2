@@ -5,10 +5,10 @@ module.exports = (db, bcrypt) => {
     const Op = db.Sequelize.Op;
     //create some example users
     let userArray = [
-        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994',  password: 'pass'},
-        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994',  password: 'pass'},
-        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994',  password: 'pass'},
-        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994',  password: 'pass'}
+        {user_name: 'Bob Rothschild', email: 'bob@email.com', text_enabled: true, phone_number: '(839) 394 2994',  password: 'pass', minutes: 0},
+        {user_name: 'Tim Rothschild', email: 'Tim@email.com', text_enabled: false, phone_number: '(839) 394 2994',  password: 'pass', minutes: 0},
+        {user_name: 'Jane Rothschild', email: 'Jane@email.com', text_enabled: true, phone_number: '(839) 394 2994',  password: 'pass', minutes: 0},
+        {user_name: 'Timmy Rothschild', email: 'Timmy@email.com', text_enabled: false, phone_number: '(839) 394 2994',  password: 'pass', minutes: 0}
     ]
     let groupName = ['Basketball Team','Tennis Group','Friend Group','Church Peeps']
     
@@ -21,7 +21,7 @@ module.exports = (db, bcrypt) => {
          Promise.all([
              db.User.create(
                  
-                 {user_name: x.user_name, email: x.email, text_enabled: x.text_enabled, phone_number: '(839) 394 2994', password: hash}
+                 {user_name: x.user_name, email: x.email, text_enabled: x.text_enabled, phone_number: '(839) 394 2994', password: hash, minutes: x.minutes}
              ),
          ])
          .then(res => {
@@ -92,10 +92,10 @@ module.exports = (db, bcrypt) => {
             let groupsArray = new Array;
             result.forEach(item => {
                 let statusArray = new Array;
-                console.log(item.get())
+                // console.log(item.get())
                 item.Group.UserGroups.forEach(userGroup => {
                     statusArray.push(userGroup.status)
-                    console.log('Status:',userGroup.status)
+                    // console.log('Status:',userGroup.status)
                 })
                 let group = {
                     name: item.Group.name,

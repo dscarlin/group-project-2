@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
             not: ['[a-z]','i']
           }
       },
+      minutes: {
+        type: DataTypes.INTEGER, 
+        allowNull: true, 
+      },
       picture_ref: {
         type: DataTypes.STRING, 
         defaultValue: 'phoneDefault.png',
