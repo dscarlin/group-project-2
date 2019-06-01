@@ -126,6 +126,10 @@ body {
   overflow-x: hidden;
 }
 
+.main {
+  background-color: white;
+}
+
 .carousel-item {
   height: 85vh;
   min-height: 350px;
