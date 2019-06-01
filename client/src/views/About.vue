@@ -39,7 +39,7 @@
               <!-- <div class="section-title text-center"> -->
               <h3 class="title text-center">
                 About Us:
-                <strong>team.slice("pizza")</strong>
+                <strong>team.Pizza.slice()</strong>
               </h3>
               <!-- </div> -->
               <!-- section title -->
@@ -51,7 +51,113 @@
             <div class="card card-about">
               <div class="card__side card__side--front">
                 <!-- Front Content -->
-                <div class="card__cont"></div>
+                <div class="card__cont">
+                  <img class="teamPizza" src="/images/owlvin.jpeg" alt="owlvin">
+                </div>
+              </div>
+              <div class="card__side card__side--back">
+                <!-- Back Content -->
+                <div class="card__cta">
+                  <p>
+                    <span class="purple">const</span> aboutMe
+                    <span class="cyan">=</span> {
+                    <br>
+                    <span class="space red">name</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'elvin eng'</span>,
+                    <br>
+                    <span class="space red">position</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'full-stack developer'</span>,
+                    <br>
+                    <span class="space red">website</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'lauraalpinto.github.io'</span>
+                    <br>};
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-about">
+              <div class="card__side card__side--front">
+                <!-- Front Content -->
+
+                <div class="card__cont">
+                  <img class="teamPizza" src="/images/david.jpeg" alt="owlvin">
+                </div>
+              </div>
+
+              <div class="card__side card__side--back">
+                <!-- Back Content -->
+                <div class="card__cta">
+                  <p>
+                    <span class="purple">const</span> aboutMe
+                    <span class="cyan">=</span> {
+                    <br>
+                    <span class="space red">name</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'laura pinto'</span>,
+                    <br>
+                    <span class="space red">email</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'lauraalpinto@gmail.com</span>',
+                    <br>
+                    <span class="space red">position</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'front-end developer'</span>,
+                    <br>
+                    <span class="space red">website</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'lauraalpinto.github.io'</span>
+                    <br>};
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-about">
+              <div class="card__side card__side--front">
+                <!-- Front Content -->
+                <div class="card__cont">
+                  <img class="teamPizza" src="/images/emery.jpeg" alt="owlvin">
+                </div>
+              </div>
+
+              <div class="card__side card__side--back">
+                <!-- Back Content -->
+                <div class="card__cta">
+                  <p>
+                    <span class="purple">const</span> aboutMe
+                    <span class="cyan">=</span> {
+                    <br>
+                    <span class="space red">name</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'laura pinto'</span>,
+                    <br>
+                    <span class="space red">email</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'lauraalpinto@gmail.com</span>',
+                    <br>
+                    <span class="space red">position</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'front-end developer'</span>,
+                    <br>
+                    <span class="space red">website</span>
+                    <span class="cyan">:</span>
+                    <span class="green">'lauraalpinto.github.io'</span>
+                    <br>};
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-about">
+              <div class="card__side card__side--front">
+                <!-- Front Content -->
+                <div class="card__cont">
+                  <img class="teamPizza" src="/images/lindsey.jpeg" alt="owlvin">
+                </div>
               </div>
               <div class="card__side card__side--back">
                 <!-- Back Content -->
@@ -85,128 +191,7 @@
               <div class="card__side card__side--front">
                 <!-- Front Content -->
                 <div class="card__cont">
-                  <span class="blue">alert</span>
-                  <span>
-                    (
-                    <span class="green">'Hello World!'</span>)
-                  </span>
-                </div>
-              </div>
-              <div class="card__side card__side--back">
-                <!-- Back Content -->
-                <div class="card__cta">
-                  <p>
-                    <span class="purple">const</span> aboutMe
-                    <span class="cyan">=</span> {
-                    <br>
-                    <span class="space red">name</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
-                    <br>
-                    <span class="space red">position</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
-                    <br>
-                    <span class="space red">website</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="card card-about">
-              <div class="card__side card__side--front">
-                <!-- Front Content -->
-                <div class="card__cont">
-                  <span class="blue">alert</span>
-                  <span>
-                    (
-                    <span class="green">'Hello World!'</span>)
-                  </span>
-                </div>
-              </div>
-              <div class="card__side card__side--back">
-                <!-- Back Content -->
-                <div class="card__cta">
-                  <p>
-                    <span class="purple">const</span> aboutMe
-                    <span class="cyan">=</span> {
-                    <br>
-                    <span class="space red">name</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
-                    <br>
-                    <span class="space red">position</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
-                    <br>
-                    <span class="space red">website</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="card card-about">
-              <div class="card__side card__side--front">
-                <!-- Front Content -->
-                <div class="card__cont">
-                  <span class="blue">alert</span>
-                  <span>
-                    (
-                    <span class="green">'Hello World!'</span>)
-                  </span>
-                </div>
-              </div>
-              <div class="card__side card__side--back">
-                <!-- Back Content -->
-                <div class="card__cta">
-                  <p>
-                    <span class="purple">const</span> aboutMe
-                    <span class="cyan">=</span> {
-                    <br>
-                    <span class="space red">name</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'laura pinto'</span>,
-                    <br>
-                    <span class="space red">email</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto@gmail.com</span>',
-                    <br>
-                    <span class="space red">position</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'front-end developer'</span>,
-                    <br>
-                    <span class="space red">website</span>
-                    <span class="cyan">:</span>
-                    <span class="green">'lauraalpinto.github.io'</span>
-                    <br>};
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="card card-about">
-              <div class="card__side card__side--front">
-                <!-- Front Content -->
-                <div class="card__cont">
-                  <span class="blue">alert</span>
-                  <span>
-                    (
-                    <span class="green">'Hello World!'</span>)
-                  </span>
+                  <img class="teamPizza" src="/images/peerz.jpeg" alt="owlvin">
                 </div>
               </div>
               <div class="card__side card__side--back">
@@ -282,10 +267,11 @@ h4 {
   font-size: 0.85rem;
 }
 
-// img {
-//   max-height: 100px;
-//   max-width: 100px;
-// }
+.teamPizza {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+}
 
 * {
   font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",
