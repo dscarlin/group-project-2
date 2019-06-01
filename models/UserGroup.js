@@ -1,11 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-  let UserGroup = sequelize.define("UserGroup", { });
-
-  UserGroup.associate = (models) => {
-    UserGroup.belongsTo(models.User);
-    UserGroup.belongsTo(models.Group);
-  };
-
-  return UserGroup;
-
-}; // end export{}
+    let UserGroup = sequelize.define("UserGroup", {
+      status: {
+        type: DataTypes.INTEGER, 
+        defaultValue: 0,
+          validate: {
+            min: 0,
+            max: 1
+          }
+      }
+    });
+    UserGroup.associate = (models) => {
+      UserGroup.belongsTo(models.User);
+      UserGroup.belongsTo(models.Group);
+     
+    };  
+   
+    return UserGroup;
+}
