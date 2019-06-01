@@ -45,10 +45,45 @@
       </div>
       <div class="card sign-up-card">
         <div class="card-body">
-          <h5 class="card-title sign-up-card-title">Stop <br> Playing  <br> Phone  <br> Tag</h5>
+          <h5 class="card-title sign-up-card-title">
+            Stop
+            <br>Playing
+            <br>Phone
+            <br>Tag
+          </h5>
           <button class="btn sign-up-btn">
             <router-link to="/signup" class="sign-up-router">Sign up for free</router-link>
           </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="row" id="about-heading">
+              <h2>How it works</h2>
+          </div>
+          <p id="about">
+            You're finally free and want to catch up with friends, family or co-workers, but don't want to spend endless amounts of time searching for people who are free.
+            <br>
+            <br>
+            <b>We've got you covered...</b>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col 4">
+          <img src="../../public/images/upload_images/group.png" class="home-icon">
+          <br>
+          <p class="caption">Create Groups</p>
+        </div>
+        <div class="col 4">
+          <img src="../../public/images/upload_images/clock.png" class="home-icon">
+          <br>
+          <p class="caption">Set Availability</p>
+        </div>
+        <div class="col 4">
+          <img src="../../public/images/upload_images/connect.png" class="home-icon">
+          <br>
+          <p class="caption">Connect</p>
         </div>
       </div>
     </header>
@@ -87,8 +122,12 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  overflow-x: hidden;
+}
+
 .carousel-item {
-  height: 65vh;
+  height: 85vh;
   min-height: 350px;
   background: no-repeat center center scroll;
   -webkit-background-size: cover;
@@ -101,6 +140,7 @@ export default {
   color: black;
   font-size: xx-large;
   font-weight: 900;
+  line-height: 1.5em;
 }
 
 .sign-up-card {
@@ -115,6 +155,7 @@ export default {
   // height: 22em;
   border-radius: 0;
   text-align: left;
+  padding: 20px;
 }
 
 .sign-up-btn {
@@ -137,40 +178,71 @@ export default {
   text-decoration: none;
 }
 
+.home-icon {
+  margin-top: 20px;
+  height: 80px;
+  width: 80px;
+}
+
+#about-heading {
+  color: black;
+  margin-top: 20px;
+  text-align: left;
+  border-bottom: 2px dotted #ff585b;
+}
+
+#about {
+  text-align: left;
+  font-size: x-large;
+  margin-top: 20px;
+  color: black;
+}
+
+.caption {
+  color: black;
+  letter-spacing: 2px;
+  margin-top: 5px;
+}
+
+@media (max-width: 991px) {
+  .sign-up-card {
+    display: none;
+  }
+}
+
 @media (max-width: 930px) {
   .sign-up-card {
-   left: 60%;
+    left: 60%;
   }
 }
 
 @media (max-width: 780px) {
   .sign-up-card {
-   left: 50%;
+    left: 50%;
   }
 }
 
 @media (max-width: 600px) {
   .sign-up-card {
-   left: 40%;
+    left: 40%;
   }
 }
 
 @media (max-width: 485px) {
   .sign-up-card {
-   left: 30%;
+    left: 30%;
   }
 }
 
 @media (max-width: 400px) {
   .sign-up-card {
-   left: 20%;
+    left: 20%;
   }
 }
 
 @media (max-width: 350px) {
   .sign-up-card {
-   left: 17%;
+    left: 17%;
   }
 }
-
 </style>
