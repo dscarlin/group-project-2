@@ -24,12 +24,20 @@ io.on('connection', function(socket) {
     console.log(`re-joined chanel ${object.name}`);
     socket.join(object.chanel)
   })
+  socket.on('leave', function(object) {
+    console.log(`leaving chanel ${object.name}`);
+    
+    socket.leave(object.chanel)
+  })
+
   // once a client has connected, we expect to get a ping from them saying what room they want to join
-  socket.on('room', function(object) {
-      
-      console.log(object.name,' requested')
-      socket.join(object.chanel);
-      socket.in(object.chanel).emit('message',object.message);
+  socket.on('join', function(object) {
+    
+          console.log(object.name,' requested')
+          socket.join(object.chanel);
+          socket.in(object.chanel).emit('message',object.message);
+
+
       // io.sockets.in(room.room).emit('message', 'anyone in this room yet?');
   });
 });

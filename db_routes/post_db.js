@@ -73,5 +73,8 @@ module.exports = (LocalStrategy,passport,app,db,bcrypt) => {
         //   }).then(message => res.json(message.sid))
       })
 
+   
+   
+
 
 }

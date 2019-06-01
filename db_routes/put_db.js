@@ -51,15 +51,23 @@ module.exports = (app,db,bcrypt) => {
 
     })
 
-    //change status
-    app.put('/api/status/:uid', (req, res) => {
-        let id = req.params.uid;
-        let status = req.body.status;
-        db.User.update({status: status },{where: { id: id } }).then(result => {
-            console.log(result);
-            if(result)
-                res.json(req.user);
-        });
+     //change status of all groups based upon state of groups array from groups page
+     app.put('/api/status/:uid', (req, res) => {
+        let uid = req.params.uid;
+        console.log(req.body)
+        let groupArr = req.body;
+        let success = false
+        groupArr.forEach(group => {
+            let userAndGroup = {
+                UserId: uid, GroupId: group.id
+            }
+            db.UserGroup.update({status: group.status },{where: userAndGroup }).then(result => {
+                console.log(result);
+                success = result ? true : false
+            });
+        }) 
+        console.log(success)
+        res.json(req.user); 
     })
 
    

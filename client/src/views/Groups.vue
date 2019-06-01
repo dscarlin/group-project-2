@@ -39,12 +39,12 @@
                     autocomplete="off"
                   >
                   <label
-                    id="statusFormLabel"
+                    id="statusFormLabel" 
                     class="btn-block modal-body"
                     for="timeaway"
                   >Select Groups:</label>
                   <div style=" max-width: 5em; vertical-align: text-top; display: inline-block; margin: 0 1em 1em;" v-for="group in groupsArray" :key="group.id">
-                    <input v-model="group.connect" type="checkbox"  id="connectBox">
+                    <input v-model="group.status" type="checkbox"  id="connectBox">
                     <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
                   </div>
                 </div>
@@ -54,6 +54,7 @@
                  
                 >Set</button>
               </form>
+              <button @click="clearStatus">clear status</button>
               <!-- <label id="statusFormLabel" class="btn-block modal-body" for="timeaway">Select Groups:</label>
               <div v-for="group in groupsArray" :key="group.id">
                 <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
@@ -127,8 +128,9 @@
               <h5 class="card-title text-center">{{group.name}}</h5>
               </div>
               <hr>
-              <p>{{group.memberStatusArray.length + 1}} Members 👨‍👨‍👧‍👧</p>
-              <p>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+              <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
+              <p v-if="group.connect">{{group.memberStatusArray.filter(status => status == true).length-1}} Members Available to Chat 👁️‍🗨️</p>
+              <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
               <a
                 @click="checkOutGroup(i)"
                 class="btn view-groups-btn btn-block text-uppercase"
@@ -156,9 +158,9 @@ export default {
       groupsArray: [],
       input: "",
       range: 0,
-      status: false,
       userDataObject: '',
-      groupInput: ''
+      groupInput: '',
+      socket: io()
     };
   },
   watch: {
@@ -182,8 +184,6 @@ export default {
       console.log("route id: ", id);
       axios.get(`api/groups/${id}`).then(response => {
         this.groupsArray = response.data;
-        console.table(this.groupsArray);
-        this.groupsArray.map(group => (group["connect"] = false));
         console.table(this.groupsArray);
       });
     },
@@ -214,43 +214,55 @@ export default {
         this.fillPage();
       });
     },
-    setStatus: function(status) {
-      let newStatus = status
+    setStatus: function() {
+      
       let uid = this.$route.params.id
-      axios.put(`/api/status/${uid}`,{status: newStatus} ).then(res => {
-
-        var socket = io();
-        let groupIdsAndNamesToNotify = this.groupsArray
-          .filter(group => group.connect)
-          .map(group => {
-            return { id: group.id, name: group.name };
-          });
+      axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
         console.log(res);
-        
         let message = {
           body:`Call me at ${res.data.phone_number} - ${res.data.user_name} \n Let's Reconnect! I can't wait to hear from you!`,
           time: this.input,
           user: res.data.user_name,
           icon: `/images/upload_images/phoneDefault.png}`
         };
-        socket.on('connect', function() {
-          
-        groupIdsAndNamesToNotify.forEach(chanel =>
-          socket.emit("room", {
-            chanel: chanel.id,
-            name: chanel.name,
-            message: message
-          })
-        );
-        // Connected, let's sign-up for to receive messages for this room
-  
-        });
         let self = this
-        socket.on("message", function(message) {
+        // socket.on('connect', function() {
+          
+        this.groupsArray.forEach(chanel =>{
+          if(chanel.status)
+            this.socket.emit("join", {
+              chanel: chanel.id,
+              name: chanel.name,
+              message: message,
+              uid: res.data.id
+            })
+        });
+        
+        // Connected, let's sign-up for to receive messages for this room
+          // socket.removeListener('connect')
+  
+        // });
+        
+        this.socket.on("message", function(message) {
           console.log('NOTIFY from ',message.user, ' i am ', self.userDataObject.user_name)
           // notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
         });
       })
+    },
+    clearStatus: function() {
+      // let socket = io()
+      this.groupsArray.forEach(chanel =>{
+        if(chanel.status)
+          this.socket.emit("leave", {
+            chanel: chanel.id,
+            name: chanel.name
+          });
+        chanel.status = false;
+      });
+      this.socket.removeListener('message');
+      let uid = this.$route.params.id;
+      axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
+      });
     }
   }
 };

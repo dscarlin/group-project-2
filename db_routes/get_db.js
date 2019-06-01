@@ -89,12 +89,7 @@ module.exports = (app,db) => {
                 attributes: ['name','id'],
                 include: {
                     model: db.UserGroup,
-                    attributes: ['GroupId','status'],
-                    where: {
-                        UserId: {
-                            [Op.ne]: id
-                        }
-                    }
+                    attributes: ['GroupId','status']
                 }
             } 
         })
@@ -102,6 +97,7 @@ module.exports = (app,db) => {
             let groupsArray = new Array;
             result.forEach(item => {
                 let statusArray = new Array;
+                console.log(item.get())
                 item.Group.UserGroups.forEach(userGroup => {
                     statusArray.push(userGroup.status)
                     console.log('Status:',userGroup.status)
@@ -109,6 +105,7 @@ module.exports = (app,db) => {
                 let group = {
                     name: item.Group.name,
                     id: item.Group.id,
+                    status: item.status,
                     memberStatusArray: statusArray
                 }
                 groupsArray.push(group) 

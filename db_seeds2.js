@@ -60,7 +60,55 @@ module.exports = (db, bcrypt) => {
     setTimeout(()=> {
        let id = 1
        let uid = 1
-      
+       db.UserGroup.findAll({
+        where: { UserId: id }, 
+        include: {
+            model: db.Group,
+            attributes: ['name','id'],
+            include: {
+                model: db.UserGroup,
+                attributes: ['GroupId','status'],
+                where: {
+                    UserId: {
+                        [Op.ne]: id
+                    }
+                }
+            }
+        } 
+    })
+    .then(result => {
+        db.UserGroup.findAll({
+            where: { UserId: id }, 
+            include: {
+                model: db.Group,
+                attributes: ['name','id'],
+                include: {
+                    model: db.UserGroup,
+                    attributes: ['GroupId','status']
+                }
+            } 
+        })
+        .then(result => {
+            let groupsArray = new Array;
+            result.forEach(item => {
+                let statusArray = new Array;
+                console.log(item.get())
+                item.Group.UserGroups.forEach(userGroup => {
+                    statusArray.push(userGroup.status)
+                    console.log('Status:',userGroup.status)
+                })
+                let group = {
+                    name: item.Group.name,
+                    id: item.Group.id,
+                    status: item.status,
+                    memberStatusArray: statusArray
+                }
+                groupsArray.push(group) 
+            })
+            console.table(groupsArray)
+            // res.json(groupsArray)
+        });
+    });
             
 
     }, 2000);
