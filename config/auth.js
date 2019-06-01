@@ -1,6 +1,5 @@
 module.exports = (LocalStrategy, passport, bcrypt, db) => {
 
-
   passport.use(new LocalStrategy({
     usernameField: "email",
     passwordField: "password"
@@ -22,23 +21,22 @@ module.exports = (LocalStrategy, passport, bcrypt, db) => {
           const hash = entries.dataValues.password;
 
           bcrypt.compare(password, hash)
-            .then((res) => {
-              
-              if (res) { // match == true
-                console.log("Matching password found");
-                return done(null, entries);
-              } else {
-                console.log("Wrong password detected");
-                return done(null, false, { message: "Incorrect Password" });
-              }
-            })
-            .catch((err) => console.log(err.message));
+          .then((res) => {
+            
+            if (res) { // match == true
+              console.log("Matching password found");
+              return done(null, entries);
+            } else {
+              console.log("Wrong password detected");
+              return done(null, false, { message: "Incorrect Password" });
+            }
+          })
+          .catch((err) => console.log(err.message));
         }
 
       })
       .catch((err) => res.json({ error: err.message }));
 
-    // return done(null, false);
   }));
 
   passport.serializeUser( (user, done) => {
@@ -52,7 +50,8 @@ module.exports = (LocalStrategy, passport, bcrypt, db) => {
       }
     }).then((user) => {
       done(null, user);
-    })
+    });
   });
 
-};
+
+}; // end export{}

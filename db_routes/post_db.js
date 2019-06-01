@@ -2,10 +2,8 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
   const Op = db.Sequelize.Op;
   const saltRounds = 8
 
-
-  //login
-  app.post('/login', (req, res, next) => {
-    
+  // Route for user login
+  app.post("/login", passport.authenticate("local"), (req, res) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) { 
         return next(err);
@@ -33,13 +31,12 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
         return res.json(req.user.id);
       });
     })(req, res, next);
-    
   });
 
-
-  //create user
+  // Route to create user
   app.post("/api/user", (req, res) => {
-    const { user_name, email, password, phone_number } = req.body; // Destructuring Object
+    // Destructure Object
+    const { user_name, email, password, phone_number } = req.body;
 
     db.User.findOne({
       where: {
@@ -54,26 +51,24 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
         //return res.status(409).send({ /*error: err, */ message: "db.user - where" });
       }
 
-      console.log("create the user");
-
       console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
-          req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
-          "\x1b[0m" + "Create user: " + user_name);
-
+        req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+        "\x1b[0m" + "Create user: " + user_name);
+      
       bcrypt.hash(password, saltRounds)
-        .then((hash) => {
-          let userInfo = {
-            user_name: user_name,
-            email: email,
-            password: hash,
-            phone_number: phone_number
-          };
+      .then((hash) => {
+        let userInfo = {
+          user_name: user_name,
+          email: email,
+          password: hash,
+          phone_number: phone_number
+        };
 
-          db.User.create(userInfo)
-            .then((result) => { return res.json(result) })
-            .catch((err) => res.json({ error: err.message, message: "db.user - create" }));
-            })
-        .catch((err) => res.json({ error: err.message, message: "bcrypt" }));
+        db.User.create(userInfo)
+          .then((result) => { return res.json(result) })
+          .catch((err) => res.json({ error: err.message, message: "db.user - create" }));
+          })
+      .catch((err) => res.json({ error: err.message, message: "bcrypt" }));
 
     })
     .catch(err => {
@@ -82,48 +77,59 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
 
   });
 
+  // Route to create a group
+  app.post("/api/group/:uid", (req, res) => {
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Create group for: " + req.body.groupName);
 
-  app.post('/api/group/:uid', (req, res) => {
-    console.log('called post on group')
+    let query = {
+      name: req.body.groupName
+    };
 
+    db.Group.create(query).then( (result) => {
+      console.log(result.id);
+      db.UserGroup.create({
+        UserId: req.params.uid,
+        GroupId: result.id
+      }).then( (result) => {
+        res.json(result);
+      });
+    });
+  });
 
-    let query = { name: req.body.groupName };
+  // Route to create user-group
+  app.post("/api/user/:groupId", (req, res) => {
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Create user group for (user, group): " + req.body.userId +
+      " : " + req.params.groupId);
 
-    db.Group.create(query)
-      .then((result => {
-        console.log(result.id)
-        db.UserGroup.create({
-            UserId: req.params.uid,
-            GroupId: result.id
-          })
-          .then(result => {
-            res.json(result)
-          });
-      }));
-  })
-
-  app.post('/api/user/:groupId', (req, res) => {
-    console.log('called post on userGroup')
     let groupId = req.params.groupId;
     let userId = req.body.userId;
-    console.log(groupId)
-    console.log(userId)
+    console.log(groupId);
+    console.log(userId);
     db.UserGroup.create({
-        UserId: userId,
-        GroupId: groupId
-      })
-      .then((result => res.json(result)));
-  })
+      UserId: userId,
+      GroupId: groupId
+    }).then( (result) => {
+      res.json(result);
+    });
+  });
 
-  app.post('/api/twilio', function (req, res) {
-    let body = req.body.message
-    console.log('twilio post')
+
+  // Route for twilio messaging
+  app.post("/api/twilio", (req, res) => {
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+      req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+      "\x1b[0m" + "Twilio post for: " + req.body.message);
+    
+      let body = req.body.message;
     // twilio.messages.create({
     //   body: body,
     //   from: trialNumber,
     //   to: '+19193682008'
     //   }).then(message => res.json(message.sid))
-  })
+  });
 
-
-}
+}; // end export{}
