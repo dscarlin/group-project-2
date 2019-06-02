@@ -9,7 +9,7 @@
         </a>
         <a v-else class="navbar-brand">
           <router-link to="/">
-            <img  class="logo" src="../../public/images/reconnect-logo.png" alt>
+            <img class="logo" src="../../public/images/reconnect-logo.png" alt>
           </router-link>
         </a>
         <button
@@ -32,13 +32,13 @@
               >My Groups</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/create" class="nav-link">Create Group</router-link>
+              <router-link
+                :to="{ name: 'profile', params: {id: userId}}"
+                class="nav-link"
+              >My Profile</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'profile', params: {id: userId}}" class="nav-link">My Profile</router-link>
-            </li>
-            <li class="nav-item">
-              <a @click="logMeOut" class="nav-link">Log Out</a>
+              <a @click="logMeOut" class="nav-link pointer">Log Out</a>
             </li>
           </ul>
           <ul v-else class="navbar-nav ml-auto">
@@ -60,8 +60,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import axios from "axios";
 
 export default {
   name: "navbar",
@@ -78,10 +77,10 @@ export default {
   },
   methods: {
     logMeOut: function() {
-      axios.get('/logout').then(res => {
-        console.log(res)
-        this.$emit('loggedOut', {loggedIn: res.data, id: null});
-      })
+      axios.get("/logout").then(res => {
+        console.log(res);
+        this.$emit("loggedOut", { loggedIn: res.data, id: null });
+      });
     }
   }
 };
@@ -91,7 +90,9 @@ export default {
 .logo {
   width: 20vw;
 }
-
+.pointer:hover {
+  cursor: pointer;
+}
 #nav {
   nav {
     background-color: white;

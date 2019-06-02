@@ -92,14 +92,14 @@ app.use((req, res, next) => {
 require("./config/auth.js")(LocalStrategy, passport, bcrypt, db);
 
 require("./db_routes/get_db.js")(app, db);
-require("./db_routes/post_db.js")(LocalStrategy, passport, app, db, bcrypt);
+require("./db_routes/post_db.js")(passport, app, db, bcrypt,trialNumber,twilio);
 require("./db_routes/put_db.js")(app, db, bcrypt);
 require("./db_routes/delete_db.js")(app, db);
 
 
 
-db.sequelize.sync({ force: true}).then(()=>{
-  require('./db_seeds2')(db,bcrypt);
+db.sequelize.sync({ force: false }).then(()=>{
+  //require('./db_seeds2')(db,bcrypt);
   http.listen(PORT, function() { 
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });

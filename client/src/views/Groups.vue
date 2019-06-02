@@ -11,7 +11,7 @@
           role="dialog"
           aria-labelledby="statusModalLabel"
           aria-hidden="true"
-        >
+          >
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -56,11 +56,8 @@
                   @click.prevent="setStatus"
                   type="submit"
                   class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
-                 
-                >Set</button>
-              <button v-else class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
-
-              @click.prevent="clearStatus">clear status</button>
+                  >Set</button>
+                <button v-else class="btn view-groups-btn w-control add-btn btn-block text-uppercase" @click.prevent="clearStatus">clear status</button>
               </form>
               <!-- <label id="statusFormLabel" class="btn-block modal-body" for="timeaway">Select Groups:</label>
               <div v-for="group in groupsArray" :key="group.id">
@@ -73,16 +70,16 @@
                   class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
                 >Set</button>
                 </div>-->
-              </div>
             </div>
           </div>
         </div>
+      </div>
         <!-- create group link -->
         <p
           class="create-group-link"
           data-toggle="modal"
           data-target="#createGroupModal"
-        >📁 Create Group</p>
+          >📁 Create Group</p>
         <div>
           <div
             class="modal fade"
@@ -91,7 +88,7 @@
             role="dialog"
             aria-labelledby="createGroupModalLabel"
             aria-hidden="true"
-          >
+            >
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -126,10 +123,11 @@
             </div>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
       <div class="row">
+
         <div class="col-lg-4 mg-top" v-for="(group,i) in groupsArray" :key="i">
-          <div class="card groups-card mb-5 mb-lg-0">
+          <div class="card groups-card mb-5 mb-lg-0 mx-auto">
             <div class="card-body">
               <div class="title-container">
                 <h5 class="card-title text-center">{{group.name}}</h5>
@@ -145,7 +143,8 @@
             </div>
           </div>
         </div>
-      </div>
+      
+      </div> <!-- end row -->
     </div>
   </div>
 </template>
@@ -240,7 +239,7 @@ export default {
 
         this.socket.on("message", function(message) {
           console.log('NOTIFY from ',message.user, ' i am ', self.userData.user_name)
-          notify(message,self.userData.user_name,self.userData.text_enabled)
+          notify(message,self.userData.user_name,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
         });
       })
     },
@@ -249,6 +248,9 @@ export default {
       this.socket.emit('updateGroups', this.groupsArray.map(group => group.id))
       this.$emit('clearStatus')
       
+    },
+    formattedTelNumber: function(number) {
+      return number.split('').filter(char => char.match(/[0-9]/g)).unshift('+','1').join('')
     },
 
     

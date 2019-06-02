@@ -143,17 +143,19 @@ export default {
       let self = this;
       this.socket.on("message", function(message) {
         console.log('NOTIFY from ',message.user, ' i am ', self.userData.user_name)
-        notify(message,self.userData.user_name,self.userData.text_enabled)
+          notify(message,self.userData.user_name,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
       });
-    }
+    },
+    formattedTelNumber: function(number) {
+      return number.split('').filter(char => char.match(/[0-9]/g)).unshift('+','1').join('')
+    },
   }
 };
 
 </script>
 
 <style lang="scss">
-#app {
-  
+#app { 
   font-family: "Quicksand", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
