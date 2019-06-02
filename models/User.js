@@ -31,9 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     minutes: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 0
+      defaultValue: ''
     },
     picture_ref: {
       type: DataTypes.STRING,

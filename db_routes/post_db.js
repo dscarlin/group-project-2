@@ -1,5 +1,4 @@
-module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
-  const Op = db.Sequelize.Op;
+module.exports = (passport, app, db, bcrypt,trialNumber,twilio) => {
   const saltRounds = 8
 
   // Route for user login
@@ -28,7 +27,7 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
           "\x1b[0m" + "Authenticated: " + req.isAuthenticated() + " @ {JSON}\n" +
           JSON.stringify(req.user.get(), null, 2));
         
-        return res.json(req.user.id);
+        return res.json(req.user);
       });
     })(req, res, next);
   });
@@ -129,11 +128,12 @@ module.exports = (LocalStrategy, passport, app, db, bcrypt) => {
       "\x1b[0m" + "Twilio post for: " + req.body.message);
     
       let body = req.body.message;
-    // twilio.messages.create({
-    //   body: body,
-    //   from: trialNumber,
-    //   to: '+19193682008'
-    //   }).then(message => res.json(message.sid))
+      let number = req.body.number
+    twilio.messages.create({
+      body: body,
+      from: trialNumber,
+      to: number
+      }).then(message => res.json(message.sid))
   });
 
 }; // end export{}

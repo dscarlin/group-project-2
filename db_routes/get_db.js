@@ -45,6 +45,32 @@ module.exports = (app, db) => {
     });
   });
 
+  //route to get requested user and their status for selected group
+  app.get("/api/user/status/:id/:grpid", (req, res) => {
+    console.log("\n \x1b[44m > \x1b[1m\x1b[33m" +
+    req.method + " \x1b[40m " + "\x1b[36m " + req.url + "  " +
+    "\x1b[0m" + "Request: user_id = " + req.params.id +
+    " group_id = " + req.params.grpid);
+
+    let id = req.params.id;
+    let grpid = req.params.grpid
+    db.User.findOne({
+      where: {
+        id: id
+      },
+      include: {
+        model: db.UserGroup,
+        attributes: ['status'],
+        where: {
+            GroupId: grpid
+        }
+    }   
+    }).then( (result) => {
+      //console.log(result);
+      res.send(result);
+    });
+  });
+  
 
     // Route to get group page for all users in group
   app.get("/api/group/:uid/:id", (req, res) => {
@@ -115,11 +141,6 @@ module.exports = (app, db) => {
                 include: {
                     model: db.UserGroup,
                     attributes: ['GroupId','status'],
-                  //   where: {
-                  //     id: {
-                  //         [Op.ne]: id
-                  //     }
-                  // }
                 }
             } 
         })

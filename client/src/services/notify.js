@@ -1,9 +1,10 @@
-export function notify(message,receiverName,textEnabled) {
+export function notify(message,receiverName,textEnabled,phoneNumber) {
     
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
       if(textEnabled){
-        axios.post('/twilio',{message: ''}).then(response => console.log(response))
+        let messageConcat = `Hey ${receiverName}! I'm free until ${message.time}. ${message.body}`
+        axios.post('/twilio',{message: messageConcat,number: phoneNumber}).then(response => console.log(response))
       }
       else{
         alert(

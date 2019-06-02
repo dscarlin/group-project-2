@@ -38,7 +38,7 @@
               >My Profile</router-link>
             </li>
             <li class="nav-item">
-              <a @click="logMeOut" class="nav-link">Log Out</a>
+              <a @click="logMeOut" class="nav-link pointer">Log Out</a>
             </li>
           </ul>
           <ul v-else class="navbar-nav ml-auto">
@@ -66,10 +66,14 @@ export default {
   name: "navbar",
   props: {
     loggedIn: Boolean,
-    userId: Number
+    userData: Object
+  },
+  watch: {
   },
   data: function() {
-    return {};
+    return {
+      userId: this.userData ? userData.id : 0
+    };
   },
   methods: {
     logMeOut: function() {
@@ -86,7 +90,9 @@ export default {
 .logo {
   width: 20vw;
 }
-
+.pointer:hover {
+  cursor: pointer;
+}
 #nav {
   nav {
     background-color: white;

@@ -9,6 +9,8 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "aws-sdk": "2.x",
+    "ejs": "2.x",
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-plugin-unit-mocha": "^3.7.0",
     "@vue/cli-service": "^3.7.0",

@@ -30,6 +30,10 @@ io.on('connection', function(socket) {
     socket.leave(object.chanel)
   })
 
+  socket.on('updateGroups', function(array){
+    console.log(`\u001b[35;1m update ${array}`);
+    socket.broadcast.emit('update', array)
+  })
 
   socket.on('join', function(object) {
     
@@ -88,7 +92,7 @@ app.use((req, res, next) => {
 require("./config/auth.js")(LocalStrategy, passport, bcrypt, db);
 
 require("./db_routes/get_db.js")(app, db);
-require("./db_routes/post_db.js")(LocalStrategy, passport, app, db, bcrypt);
+require("./db_routes/post_db.js")(passport, app, db, bcrypt,trialNumber,twilio);
 require("./db_routes/put_db.js")(app, db, bcrypt);
 require("./db_routes/delete_db.js")(app, db);
 
