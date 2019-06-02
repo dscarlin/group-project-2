@@ -25,19 +25,23 @@
                 <div class>
                   <label id="statusFormLabel" class="btn-block" for="timeaway">Available to talk until:</label>
                   <!-- <input type="text" class="btn-block w10" disabled v-model="input" id="timeaway"> -->
-                  <input type="text" class="text-center" v-model="input" id="timeaway" disabled>
-                  <input
-                    class="slider btn-block"
-                    type="range"
-                    min="0"
-                    max="400"
-                    step="15"
-                    value="0"
-                    id="away"
-                    v-model="range"
-                    placeholder="Time Available"
-                    autocomplete="off"
-                  >
+                  <div v-if="!userData.minutes">
+                    <input type="text" class="text-center" v-model="input" id="timeaway" disabled>
+                    <input
+                      class="slider btn-block"
+                      type="range"
+                      min="0"
+                      max="400"
+                      step="15"
+                      value="0"
+                      id="away"
+                      v-model="range"
+                      placeholder="Time Available"
+                      autocomplete="off"
+                    >
+                  </div>
+                  <input v-else type="text" class="text-center" v-model="userData.minutes" id="timeaway" disabled>
+
                   <label
                     id="statusFormLabel" 
                     class="btn-block modal-body"
@@ -48,8 +52,8 @@
                     <label id="statusFormLabel" class="btn-block" for="timeaway">{{group.name}}</label>
                   </div>
                 </div>
-                <button v-if="!statusSet"
-                  @click.prevent="setStatus()"
+                <button v-if="!userData.minutes"
+                  @click.prevent="setStatus"
                   type="submit"
                   class="btn view-groups-btn w-control add-btn btn-block text-uppercase"
                  
@@ -97,7 +101,7 @@
                   </button>
                 </div>
                 <!-- add group form -->
-                <form @submit.prevent="addGroup()">
+                <form @submit.prevent="addGroup">
                   <div class>
                     <label
                       id="createGroupFormLabel"
@@ -132,8 +136,8 @@
               </div>
               <hr>
               <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
-              <p >{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
-              <!-- <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p> -->
+              <p v-if="group.status">{{group.memberStatusArray.filter(status => status == true).length-1}} Members Available to Chat 👁️‍🗨️</p>
+              <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
               <a
                 @click="checkOutGroup(i)"
                 class="btn view-groups-btn btn-block text-uppercase"
@@ -148,25 +152,23 @@
 
 <script>
 import axios from "axios";
-import io from "socket.io-client";
 import moment from "moment";
 import { notify } from "../services/notify.js";
 
 export default {
   name: "groups",
   components: {},
-  props: {},
+  props: {
+    groupsArray: Array,
+    userData: Object,
+    socket: Object
+
+  },
   data: function() {
     return {
-      groupsArray: [],
       input: "",
-      range: null,
-      userDataObject: '',
+      range: 0,
       groupInput: '',
-      socket: io(),
-      UnixTimerSetting: '',
-      timer: '',
-      statusSet: 0
     };
   },
   watch: {
@@ -176,85 +178,56 @@ export default {
   },
   computed: {},
   created: function() {
-    this.fillPage();
-    this.userData();
-   
-    
+    this.$emit('getGroups')
   },
   methods: {
-    userData: function() {
-      axios.get(`/api/user/${this.$route.params.id}`)
-      .then(res =>{
-        this.userDataObject = res.data;
-        this.range = this.userDataObject.minutes;
-        if(this.range)
-          this.setTimer();
-      });
-    },
-    fillPage: function() {
-      let id = this.$route.params.id;
-      console.log("route id: ", id);
-      axios.get(`api/groups/${id}`).then(response => {
-        this.groupsArray = response.data;
-        console.table(this.groupsArray);
-        const reducer = (acc, curr) => {
-          if (curr)
-            return acc = 1
-        }
-        this.statusSet = this.groupsArray.map(group => group.status).reduce(reducer)
-        this.reJoin();
-      });
-    },
     checkOutGroup: function(i) {
+      //maybe substitute i for group
       let groupData = this.groupsArray[i];
       this.$router.push({
         name: "group",
         params: {
           grpid: groupData.id,
           name: groupData.name,
-          uid: this.$route.params.id
+          uid: this.userData.id
         }
       });
     },
     displayTime: function(){
       let secAdj = (15 - moment().format('m') % 15) * 60;
       let sec = this.range * 60 + secAdj;
-      this.UnixTimerSetting = sec
       let time = moment((moment().unix() + sec),'X').format('LT')
       this.input = time
-      console.log(time)
     },
     addGroup: function() {
-      console.log("add");
       let body = { groupName: this.groupInput };
-      axios.post(`/api/group/${this.$route.params.id}`, body).then(res => {
+      axios.post(`/api/group/${this.userData.id}`, body).then(res => {
         if (res.status == 200) console.log(res);
         this.groupInput = "";
-        this.fillPage();
+        this.$emit('getGroups')
       });
     },
-    setTimer: function() {
-      this.timer = setTimeout(this.clearStatus, this.UnixTimerSetting * 1000);
-    },
     setStatus: function() {
-      this.statusSet = 1;
-      console.table(this.range)
-      this.setTimer();
-      let uid = this.$route.params.id
-      axios.put(`/api/range/${uid}`,{minutes: this.range}).then(res => console.log(res))
+      let uid = this.userData.id
+      this.userData.minutes = this.input
+      axios.put(`/api/minutes/${uid}`,{minutes: this.input}).then(res => {
+        console.log('minutes saved');
+        this.$emit('userData')
+      })
       axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
-        console.log(res);
+        console.log('status saved');
+        this.$emit('getGroups')
+        this.socket.emit('updateGroups', this.groupsArray.map(group => group.id))
         let message = {
           body: `Call me at ${res.data.phone_number} - ${
             res.data.user_name
           } \n Let's Reconnect! I can't wait to hear from you!`,
           time: this.input,
           user: res.data.user_name,
-          icon: `/images/upload_images/phoneDefault.png}`
+          icon: `/images/upload_images/phoneDefault.png`
         };
+
         let self = this
-        // socket.on('connect', function() {
-          
         this.groupsArray.forEach(chanel =>{
           if(chanel.status)
             this.socket.emit("join", {
@@ -264,59 +237,22 @@ export default {
               uid: res.data.id
             })
         });
-        
-        // Connected, let's sign-up for to receive messages for this room
-          // socket.removeListener('connect')
-  
-        // });
-        
+
         this.socket.on("message", function(message) {
-          console.log('NOTIFY from ',message.user, ' i am ', self.userDataObject.user_name)
-          notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
+          console.log('NOTIFY from ',message.user, ' i am ', self.userData.user_name)
+          notify(message,self.userData.user_name,self.userData.text_enabled)
         });
       })
     },
     clearStatus: function() {
-      // let socket = io()
-      this.statusSet = 0;
-      clearTimeout(this.timer);
-      this.range = 0;
-      axios.put(`/api/range/${this.$route.params.id}`,this.range).then(res => console.log(res))
-
-      axios.put()
-      this.groupsArray.forEach(chanel =>{
-        if(chanel.status)
-          this.socket.emit("leave", {
-            chanel: chanel.id,
-            name: chanel.name
-          });
-        chanel.status = false;
-      });
-      this.socket.removeListener('message');
-      let uid = this.$route.params.id;
-      axios.put(`/api/status/${uid}`,this.groupsArray ).then(res => {
-      });
+      this.range = 0
+      this.socket.emit('updateGroups', this.groupsArray.map(group => group.id))
+      this.$emit('clearStatus')
+      
     },
-    reJoin: function() {
-      // let socket = io()
-      console.log(this.socket)
-      let self = this;
-      // this.socket.connect();
-      // this.socket.on('connect', function() {
-      console.log('connect iterable ',self.groupsArray)
-      self.groupsArray.forEach(chanel =>{
-        if(chanel.status)
-          self.socket.emit("rejoin", {
-            chanel: chanel.id,
-            name: chanel.name
-          });
-      });
-      // })
-      this.socket.on("message", function(message) {
-        console.log('NOTIFY from ',message.user, ' i am ', self.userDataObject.user_name)
-        notify(message,self.userDataObject.user_name,self.userDataObject.text_enabled)
-      });
-    }
+
+    
+    
   }
 };
 </script>

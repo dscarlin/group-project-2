@@ -67,10 +67,14 @@ export default {
   name: "navbar",
   props: {
     loggedIn: Boolean,
-    userId: Number
+    userData: Object
+  },
+  watch: {
   },
   data: function() {
-    return {};
+    return {
+      userId: this.userData ? userData.id : 0
+    };
   },
   methods: {
     logMeOut: function() {

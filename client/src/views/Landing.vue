@@ -52,33 +52,12 @@ import axios from "axios";
 
 export default {
   name: "navbar",
-  props: {
-    loggedIn: Boolean,
-    userId: Number
-  },
+  props: {},
   data: function() {
-    return {
-      range: 0,
-      msg: {
-
-      },
-      notification: "Steven Wright for the next 45 minutes"
-    }
+    return {}
   },
-  created: function() {
-    // let message = this.notification
-    // this.notifyMe(message);
-    
-   
-  },
-  methods: {
-    logMeOut: function() {
-      axios.get("/logout").then(res => {
-        console.log(res);
-        this.$emit("loggedOut", { loggedIn: res.data, id: null });
-      });
-    }
-  }
+  created: function() {},
+  methods: {}
 };
 </script>
 

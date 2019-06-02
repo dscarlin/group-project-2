@@ -60,6 +60,13 @@
 import axios from 'axios'
 export default {
   name: "login",
+    data: function() {
+      return {
+        email: '',
+        password: '',
+        message: ''
+      }
+    },
   methods: {
     logMeIn: function() {
       let data = {
@@ -69,7 +76,8 @@ export default {
       axios.post('/login',data).then(res => {
         console.log("POST - /login");
         console.log(res);
-        this.$emit('loggedIn', {loggedIn: true, id: res.data });
+        this.$emit('loggedIn', {loggedIn: true, user: res.data });
+
       })
       .catch(err => {
         console.log("> CS Login authentication error");
@@ -84,13 +92,6 @@ export default {
         console.log("GET - /login");
         console.log(res);
       });
-    }
-  },
-  data: function() {
-    return {
-      email: '',
-      password: '',
-      message: ''
     }
   }
 };

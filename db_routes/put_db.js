@@ -65,14 +65,14 @@ module.exports = (app, db, bcrypt) => {
         res.json(req.user); 
     })
 
-    app.put('/api/range/:uid', (req, res) => {
-        console.log('UPDATE MINS *********')
-        let uid = req.params.uid;
-        console.log(req.body)
+    app.put('/api/minutes/:uid', (req, res) => {
+      let uid = req.params.uid;
+      console.log(req.body)
       
-        let minutes = {minutes: parseInt(req.body.minutes)}
+      let minutes = {minutes: req.body.minutes}
         db.User.update( minutes ,{where: { id: uid } }).then(response => {
-            res.send(response);
+            console.log('UPDATE MINS *********')
+            res.json(response);
         })
 
     })

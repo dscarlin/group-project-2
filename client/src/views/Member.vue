@@ -31,6 +31,9 @@
 import axios from 'axios';
 export default {
   name: "member",
+  props: {
+    socket: Object
+  },
   data: function() {
     return {
       name: '',
@@ -42,19 +45,25 @@ export default {
     }
   },
   created: function(){
-    let id = this.$route.params.mid;
-
-    axios.get(`/api/user/${id}`).then(res => {
-      console.log(res)
-      this.name = res.data.user_name;
-      this.email = res.data.email;
-      this.phoneNumber = res.data.phone_number;
-      this.picture_ref = res.data.picture_ref;
-      this.status = res.data.status;
-      this.date = res.data.createdAt  
-    })
+    this.fillPage();
+    this.listenForUpdates();
+    
   },
   methods: {
+    fillPage: function() {
+      let id = this.$route.params.mid;
+      let grpid = this.$route.params.grpid;
+
+      axios.get(`/api/user/status/${id}/${grpid}`).then(res => {
+        console.log(res)
+        this.name = res.data.user_name;
+        this.email = res.data.email;
+        this.phoneNumber = res.data.phone_number;
+        this.picture_ref = res.data.picture_ref;
+        this.status = res.data.UserGroups[0].status;
+        this.date = res.data.createdAt  
+      })
+    },
     formattedTelNumber: function(number) {
       return number.split('').filter(char => char.match(/[0-9]/g)).join('')
     },
@@ -65,6 +74,15 @@ export default {
         if(res)
           this.$router.go(-1)
       });
+    },
+     listenForUpdates: function() {
+      let self = this;
+      this.socket.on("update", function(groups) {
+        console.log('updating');
+        if(groups.indexOf(self.$route.params.grpid) > -1)
+          self.fillPage();
+      })
+      
     }
   }
 

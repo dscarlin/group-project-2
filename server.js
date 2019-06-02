@@ -30,6 +30,10 @@ io.on('connection', function(socket) {
     socket.leave(object.chanel)
   })
 
+  socket.on('updateGroups', function(array){
+    console.log(`\u001b[35;1m update ${array}`);
+    socket.broadcast.emit('update', array)
+  })
 
   socket.on('join', function(object) {
     
@@ -94,8 +98,8 @@ require("./db_routes/delete_db.js")(app, db);
 
 
 
-db.sequelize.sync({ force: false}).then(()=>{
-  // require('./db_seeds2')(db,bcrypt);
+db.sequelize.sync({ force: true}).then(()=>{
+  require('./db_seeds2')(db,bcrypt);
   http.listen(PORT, function() { 
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });

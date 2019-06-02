@@ -55,6 +55,9 @@
 import axios from 'axios'
 export default {
   name: "group",
+  props: {
+    socket: Object
+  },
   watch: {
     search: function() {
       let array = this.userArray.filter(user => user.user_name.toLowerCase().includes(this.search.toLowerCase()) && this.search.length > 0)
@@ -102,7 +105,8 @@ export default {
    
   }, 
   created: function() {
-    this.fillPage()
+    this.fillPage();
+    this.listenForUpdates();
   },
   methods: {
     fillPage: function(){
@@ -137,8 +141,8 @@ export default {
       let userId = this.userArray.filter(entry => entry.user_name == member)[0].id 
       let groupId = this.$route.params.grpid
       axios.post(`/api/user/${groupId}`,{userId}).then(res => {
-        this.search = ''
-        this.fillPage()
+        this.search = '';
+        this.fillPage();
       })
     },
     removeGroup: function() {
@@ -146,6 +150,15 @@ export default {
         if(res) 
           this.$router.go(-1);
       })
+    },
+    listenForUpdates: function() {
+      let self = this;
+      this.socket.on("update", function(groups) {
+        console.log('updating');
+        if(groups.indexOf(self.$route.params.grpid) > -1)
+          self.fillPage();
+      })
+      
     }
     
   }
