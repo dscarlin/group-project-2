@@ -11,7 +11,8 @@ module.exports = (app, db, aws, S3_BUCKET) => {
       Key: fileName,
       Expires: 60,
       ContentType: fileType,
-      ACL: 'public-read'
+      ACL: 'public-read',
+      CacheControl: "no-cache"
     };
   
     s3.getSignedUrl('putObject', s3Params, (err, data) => {
@@ -23,8 +24,10 @@ module.exports = (app, db, aws, S3_BUCKET) => {
         signedRequest: data,
         url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`
       };
-      res.write(JSON.stringify(returnData));
-      res.end();
+      console.log('### data ',data)
+      res.send(JSON.stringify(returnData));
+      // res.end()
+      
     });
   });
 
