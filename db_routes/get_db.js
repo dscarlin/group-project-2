@@ -141,6 +141,11 @@ module.exports = (app, db) => {
                 include: {
                     model: db.UserGroup,
                     attributes: ['GroupId','status'],
+                    where: {
+                        UserId: {
+                            [Op.ne] : id
+                        }
+                    }
                 }
             } 
         })

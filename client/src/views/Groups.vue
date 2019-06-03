@@ -134,8 +134,7 @@
               </div>
               <hr>
               <p>{{group.memberStatusArray.length}} Members 👨‍👨‍👧‍👧</p>
-              <p v-if="group.status">{{group.memberStatusArray.filter(status => status == true).length-1}} Members Available to Chat 👁️‍🗨️</p>
-              <p v-else>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
+              <p>{{group.memberStatusArray.filter(status => status == true).length}} Members Available to Chat 👁️‍🗨️</p>
               <a
                 @click="checkOutGroup(i)"
                 class="btn view-groups-btn btn-block text-uppercase"
