@@ -39,12 +39,12 @@ export default {
       userData: null,
       groupsArray: null,
       timer: '',
-      socket: io(),
-      userDataLoaded: false
+      socket: io()
     }
   },
   watch: {
-    userDataLoaded: function() {
+    loggedIn: function() {
+      this.getGroups();
       if(this.userData.minutes){
         // if(this.userData.minutes){
           let timeDiff = moment(this.userData.minutes, 'h:mm A').unix() - moment().unix() 
@@ -87,7 +87,6 @@ export default {
       this.userData = res.data || null
       this.loggedIn = res.data ? true : false
       if(res.data){
-        this.userDataLoaded = true
         console.log('get groups')
         this.getGroups();
       }

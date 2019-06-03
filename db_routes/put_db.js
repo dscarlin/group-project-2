@@ -17,35 +17,22 @@ module.exports = (app, db, bcrypt) => {
       user_name: r.user_name,
       email: r.email,
       tex_enabled: r.text_enabled,
-      phone_number: r.phone_number
+      phone_number: r.phone_number,
+      picture_ref: r.picture_ref
     };
 
-    if (req.files) {
-      let abspath = path.join(__dirname,`/../client/public/images/upload_images/${r.picture_ref}`);
-      console.log(abspath);
+    
 
-      if (r.picture_ref && r.picture_ref !== "null" && r.picture_ref !== "phoneDefault.png") {
-        fs.unlinkSync(abspath);
-      }
-
-      let pictureFile = req.files.picture;
-      userInfo["picture_ref"] = pictureFile.name;
-      pictureFile.mv(`client/public/images/upload_images/${pictureFile.name}`, (err) => {
-        if (err) {
-          res.status(500).send(err);   
+    bcrypt.hash(r.password, saltRounds, (err, hash) => {
+      userInfo["password"] = hash;
+      db.User.update( userInfo, {
+        where: {
+          id: id
         }
-      });
+      }).then( (result) => result[0] ? res.json(result[0]) : res.status(400).send(false) );
+    });
 
-      bcrypt.hash(r.password, saltRounds, (err, hash) => {
-        userInfo["password"] = hash;
-        db.User.update( userInfo, {
-          where: {
-            id: id
-          }
-        }).then( (result) => result[0] ? res.json(result[0]) : res.status(400).send(false) );
-      });
-
-    }
+    
   });
 
      //change status of all groups based upon state of groups array from groups page

@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     picture_ref: {
       type: DataTypes.STRING,
-      defaultValue: "phoneDefault.png",
+      defaultValue: "https://reconnectprofileimages.s3.amazonaws.com/phoneDefault.png",
       validate: {
 
       }

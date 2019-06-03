@@ -10,7 +10,7 @@
             
             <div id="suggest" class="round" >
               <ul style="list-style-type:none;" v-if="suggest.length < 6 && suggest.length > 0">
-                <li id="select" @click="fillInput(name)" v-for="name in suggest" :key="name.id"><img v-if="name.picture_ref" v-bind:src="'/images/upload_images/'+name.picture_ref" id="icon"/>  {{name.user_name}}</li>
+                <li id="select" @click="fillInput(name)" v-for="name in suggest" :key="name.id"><img v-if="name.picture_ref" v-bind:src="name.picture_ref" id="icon"/>  {{name.user_name}}</li>
               </ul>
               <ul style="list-style-type:none;" v-else-if="(suggest.length < 1) && (search.length > 0)">
                 <li>NO MATCH</li>
@@ -27,7 +27,7 @@
               <div class="card-body">
                 <div class="table row no-gutters justify-content-md-center">
                   <div class="col col-lg-2 center">
-                    <img v-if="member.picture_ref" v-bind:src="'/images/upload_images/' + member.picture_ref" id="profileThumbnail"/>
+                    <img v-if="member.picture_ref" v-bind:src="member.picture_ref" id="profileThumbnail"/>
                   </div>
                   <div class="col col-lg-8 title-container">
                     <h3 class="card-title text-center">{{member.user_name}}</h3>
