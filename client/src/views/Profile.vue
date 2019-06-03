@@ -66,12 +66,6 @@
                   </div>
 
                   <div class="form-label-group">
-                    
-                    
-                    <label for="inputPicture">Picture</label>
-                  </div>
-
-                  <div class="form-label-group">
                     <input
                       type="password"
                       id="inputPassword"
@@ -82,11 +76,6 @@
                       autocomplete="on"
                     >
                     <label for="inputPassword">Password</label>
-                  </div>
-
-                  <div class="custom-control custom-checkbox mb-3">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                    <label class="custom-control-label" for="customCheck1">Remember password</label>
                   </div>
 
                   <div v-if="checkWindowNotification" class="custom-control custom-checkbox mb-3">
@@ -206,10 +195,11 @@ export default {
     updateProfile: function() {
       let formData = {
         picture_ref: this.picture_ref,
-        user_name: this.user_name,
+        user_name: this.name,
         email: this.email,
-        phone_number: this.phone_number,
-        text_enabled: this.text_enabled,
+        phone_number: this.phoneNumber,
+        text_enabled: this.textEnabled,
+        password: this.password
       }
       axios.put(`/api/user/${this.userData.id}`,formData).then(res => {
         this.$emit('userData');
