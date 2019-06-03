@@ -116,7 +116,7 @@ export default {
       console.log('status clear')
       clearTimeout(this.timer);
       this.timer = ""
-      this.userData.minutes = null;
+      this.userData.minutes = "";
       axios.put(`/api/minutes/${this.userData.id}`,{minutes: this.userData.minutes}).then(res => console.log(res))
       if(this.groupsArray){
         this.groupsArray.forEach(chanel =>{
