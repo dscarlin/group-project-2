@@ -145,8 +145,7 @@ export default {
         });
       let self = this;
       this.socket.on("message", function(message) {
-        console.log('NOTIFY from ',message.user, ' i am ', self.userData.user_name)
-          notify(message,self.userData.user_name,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
+          notify(message,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
       });
       
       

@@ -1,15 +1,12 @@
 import axios from 'axios'
-export function notify(message,receiverName,textEnabled,phoneNumber) {
+export function notify(message,textEnabled,phoneNumber) {
     
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
-      console.log('***********1')
       if(textEnabled){
-        console.log('***********2')
         console.log(phoneNumber)
 
-        let messageConcat = `Hey ${receiverName}! I'm free until ${message.time}. ${message.body}`
-        axios.post('/api/twilio',{message: messageConcat,number: phoneNumber}).then(response => console.log(3))
+        axios.post('/api/twilio',{message: message.body,number: phoneNumber}).then(response => console.log(3))
       }
       else{
         alert(
@@ -24,13 +21,7 @@ export function notify(message,receiverName,textEnabled,phoneNumber) {
     // Let's check whether notification permissions have already been granted
     else if (Notification.permission === "granted") {
       // If it's okay let's create a notification
-      var notification = new Notification(`Hey ${receiverName}! I'm free until ${message.time}`,{
-        body: message.body,
-        vibrate: 200,
-        badge: 'https://img.icons8.com/dusk/64/000000/phonelink-ring.png',
-        icon: message.icon
-      });
-      
+      var notification = new Notification(message.body);
     }
 
     // Otherwise, we need to ask the user for permission
@@ -38,13 +29,7 @@ export function notify(message,receiverName,textEnabled,phoneNumber) {
       Notification.requestPermission().then(function (permission) {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
-          var notification = new Notification(`Hey ${message.myName}! I'm free until ${message.time}`,{
-            body: message.body,
-            vibrate: 200,
-            badge: 'https://img.icons8.com/dusk/64/000000/phonelink-ring.png',
-            icon: message.icon
-          });
-          
+          var notification = new Notification(message.body);
         }
         else{
             console.log('not denied or granted')
