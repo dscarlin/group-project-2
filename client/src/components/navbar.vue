@@ -84,6 +84,7 @@ export default {
     logMeOut: function() {
       axios.get("/logout").then(res => {
         console.log(res);
+        this.$emit('clearStatus');
         this.$emit("loggedOut", { loggedIn: res.data, id: null });
       });
     }

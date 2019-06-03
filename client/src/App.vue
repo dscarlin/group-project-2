@@ -3,6 +3,7 @@
     <div id="nav">
       <navbar 
       @loggedOut="logMeInOrOut" 
+      @clearStatus="clearStatus"
       v-bind:userData="userData" 
       v-bind:loggedIn="loggedIn" ></navbar>
     </div>
