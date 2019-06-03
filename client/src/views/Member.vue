@@ -69,8 +69,10 @@ export default {
       let groupId = this.$route.params.grpid;
       let userId = this.$route.params.mid;
       axios.delete(`/api/user/group/${userId}/${groupId}`).then(res => {
-        if(res)
+        if(res){
+          this.$emit('getGroups')
           this.$router.go(-1)
+        }
       });
     },
      listenForUpdates: function() {

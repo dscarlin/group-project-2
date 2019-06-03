@@ -5,7 +5,7 @@
         <h1>{{name}}</h1>
           <form @submit.prevent="add(search)">
           <div class="">
-            <label for="search">Add a Member</label>
+            <label for="search" class="btn-block">Add a Member</label>
             <input type="text" id="search" v-model="search" placeholder="Search" class="round" autocomplete="off">
             
             <div id="suggest" class="round" >
@@ -142,6 +142,7 @@ export default {
       let groupId = this.$route.params.grpid
       axios.post(`/api/user/${groupId}`,{userId}).then(res => {
         this.search = '';
+        this.$emit('getGroups');
         this.fillPage();
       })
     },
@@ -203,7 +204,10 @@ li {
 }
 
 #search {
-  margin-left: 5px;
+  /* margin-left: 5px; */
+  text-align: center;
+  width: fit-content;
+  min-width: 10em;
 }
 
 #suggest {
@@ -235,7 +239,8 @@ h5 {
 #profileThumbnail {
   height: 100%;
   width: 100%;
-  max-width: 3em;
+  max-width: 5em;
+  min-width: 3em;
   margin: auto;
   border-radius: 10em;
 }

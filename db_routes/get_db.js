@@ -171,16 +171,21 @@ module.exports = (app, db, aws, S3_BUCKET) => {
                 include: {
                     model: db.UserGroup,
                     attributes: ['GroupId','status'],
-                    where: {
-                        UserId: {
-                            [Op.ne] : id
-                        }
+                    include:{
+                      model: db.User,
+                      attributes: ['id'],
+                      where: {
+                          id: {
+                              [Op.ne] : id
+                          }
+                      }
                     }
                 }
             } 
         })
         .then(result => {
             let groupsArray = new Array;
+            console.log(result)
             result.forEach(item => {
                 let statusArray = new Array;
                 item.Group.UserGroups.forEach(userGroup => {
