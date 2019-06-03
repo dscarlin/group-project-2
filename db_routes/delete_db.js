@@ -22,19 +22,14 @@ module.exports = (app, db) => {
         GroupId : id
       }
     }).then( (result) => {
-      if (result) {
-        console.log(result);
-
         db.Group.destroy({
           where: {
             id: id
           }
         }).then( (result) => {
-          result ? res.status(200).send(true) : res.status(400).send(false);
-        });
-      } else {
-        res.status(400).send(false);
-      }
+          console.log(result)
+          res.json(result)
+        })
     }); // end then()
   }); // end delete()
 

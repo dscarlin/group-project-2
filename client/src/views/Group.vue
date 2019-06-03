@@ -148,8 +148,10 @@ export default {
     },
     removeGroup: function() {
       axios.delete(`/api/group/${this.$route.params.grpid}`).then(res => {
-        if(res) 
+        if(res){
+          this.$emit('getGroups')
           this.$router.go(-1);
+        } 
       })
     },
     listenForUpdates: function() {
