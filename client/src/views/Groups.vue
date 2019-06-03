@@ -160,8 +160,8 @@ export default {
   props: {
     groupsArray: Array,
     userData: Object,
-    socket: Object
-
+    socket: Object,
+    formattedTelNumber: Function
   },
   data: function() {
     return {
@@ -173,11 +173,15 @@ export default {
   watch: {
     range: function() {
       this.displayTime();
+    },
+    userData: function() {
+      this.$emit('getGroups');
+
     }
   },
   computed: {},
   created: function() {
-    this.$emit('getGroups')
+    
   },
   methods: {
     checkOutGroup: function(i) {
@@ -249,9 +253,7 @@ export default {
       this.$emit('clearStatus')
       
     },
-    formattedTelNumber: function(number) {
-      return number.split('').filter(char => char.match(/[0-9]/g)).unshift('+','1').join('')
-    },
+   
 
     
     

@@ -14,6 +14,7 @@
     v-bind:groupsArray="groupsArray" 
     v-bind:userData="userData"
     v-bind:socket="socket" 
+    v-bind:formattedTelNumber="formattedTelNumber"
   
 
     />
@@ -39,10 +40,11 @@ export default {
       groupsArray: null,
       timer: '',
       socket: io(),
+      userDataLoaded: false
     }
   },
   watch: {
-    groupsArray: function() {
+    userDataLoaded: function() {
       if(this.userData.minutes){
         // if(this.userData.minutes){
           let timeDiff = moment(this.userData.minutes, 'h:mm A').unix() - moment().unix() 
@@ -50,7 +52,7 @@ export default {
               console.log('setting timer')
               this.UnixTimerSetting = timeDiff
               this.setTimer(timeDiff);
-              this.reJoin();
+              
             }
             else
               this.clearStatus()
@@ -85,8 +87,9 @@ export default {
       this.userData = res.data || null
       this.loggedIn = res.data ? true : false
       if(res.data){
+        this.userDataLoaded = true
         console.log('get groups')
-        // this.getGroups();
+        this.getGroups();
       }
       else
         this.$router.push({ name: 'landing'})
@@ -139,15 +142,17 @@ export default {
             chanel: chanel.id,
             name: chanel.name
           });
-      });
+        });
       let self = this;
       this.socket.on("message", function(message) {
         console.log('NOTIFY from ',message.user, ' i am ', self.userData.user_name)
           notify(message,self.userData.user_name,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
       });
+      
+      
     },
-    formattedTelNumber: function(number) {
-      return number.split('').filter(char => char.match(/[0-9]/g)).unshift('+','1').join('')
+   formattedTelNumber: function(number) {
+      return `+1${number.split('').filter(char => char.match(/[0-9]/g)).join('')}`
     },
   }
 };

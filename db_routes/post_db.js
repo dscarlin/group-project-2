@@ -129,11 +129,14 @@ module.exports = (passport, app, db, bcrypt,trialNumber,twilio) => {
     
       let body = req.body.message;
       let number = req.body.number
-    twilio.messages.create({
+      twilio.messages.create({
       body: body,
       from: trialNumber,
       to: number
-      }).then(message => res.json(message.sid))
+      }).then(message => {
+        console.log("Twilio Success")
+        res.json(message.sid)
+      });
   });
 
 }; // end export{}
