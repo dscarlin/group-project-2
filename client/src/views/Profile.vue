@@ -7,7 +7,7 @@
             <div class="card wide-card mb-5 mb-lg-0">
               <div class="card-body">
                 <div class="img-wrapper ">
-                  <img v-if="picture_ref" v-bind:src="'/images/upload_images/' + picture_ref" id="profileThumbnail"/>
+                  <img id="profileThumbnail" v-if="picture_ref" v-bind:src="picture_ref"/>
                   <div class="fileUploadWrapper">
                     <input
                       type="file"
@@ -161,32 +161,59 @@ export default {
   methods: {
     handleFileUpload: function() {
       this.file = this.$refs.picture.files[0];
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `/sign-s3?file-name=${this.userData.id}&file-type=${this.file.type}`);
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            const response = JSON.parse(xhr.responseText);
+            this.uploadFile(this.file, response.signedRequest, response.url);
+          }
+          else{
+            alert('Could not get signed URL.');
+          }
+        }
+      };
+      xhr.send();
+    },
+    uploadFile: function(file, signedRequest, url) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', signedRequest);
+      xhr.onreadystatechange = () => {
+        if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            this.picture_ref = url
+          }
+          else{
+            alert('Could not upload file.');
+          }
+        }
+      };
+      xhr.send(file);
     },
     fillPage: function() {
-        this.name = this.userData.user_name;
-        this.email = this.userData.email;
-        this.phoneNumber = this.userData.phone_number;
-        this.picture_ref = this.userData.picture_ref;
-        this.textEnabled = this.userData.text_enabled;
+      this.name = this.userData.user_name;
+      this.email = this.userData.email;
+      this.phoneNumber = this.userData.phone_number;
+      this.picture_ref = this.userData.picture_ref;
+      this.textEnabled = this.userData.text_enabled;
     },
     updateProfile: function() {
-      let formData = new FormData();
-      formData.append('picture',this.file)
-      formData.append('user_name',this.name)
-      formData.append('email',this.email)
-      formData.append('phone_number',this.phoneNumber)
-      formData.append('picture_ref',this.picture_ref)
-      formData.append('text_enabled', this.text_enabled)
-      let headers = {headers: { 'content-type': 'multipart/form-data' } };
-      axios.put(`/api/user/${this.$route.params.id}`,formData,headers).then(res => {
+      let formData = {
+        picture_ref: this.picture_ref,
+        user_name: this.user_name,
+        email: this.email,
+        phone_number: this.phone_number,
+        text_enabled: this.text_enabled,
+      }
+      axios.put(`/api/user/${this.userData.id}`,formData).then(res => {
         this.$emit('userData');
         this.$router.push({ name: 'groups', params: this.userData.id});
         console.log(res)
       });
-    },
-
-    
+    }
   }
+  
 };
 </script>
 <style>

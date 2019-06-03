@@ -8,7 +8,7 @@
             <div class="card mb-5 mb-lg-0 mem-profile">
               <div class="card-body">
                 <div class="row no-gutters justify-content-md-center">
-                    <img v-if="picture_ref" v-bind:src="'/images/upload_images/' + picture_ref" id="profileImage"/>
+                    <img v-if="picture_ref" v-bind:src="picture_ref"/>
                   <div class="col-lg-12 title-container">
                     <h1 class="card-title h1 text-center">{{name}}</h1>
                   </div>

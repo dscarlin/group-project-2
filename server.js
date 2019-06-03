@@ -16,6 +16,12 @@ const SessionStore = require("express-session-sequelize")(session.Store);
 const sequelizeSessionStore = new SessionStore({
   db: db.sequelize
 })
+
+// AWS s3 contianer vars
+const aws = require('aws-sdk');
+const S3_BUCKET = process.env.S3_BUCKET;
+aws.config.region = 'us-east-1';
+
 //socket vars
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -49,10 +55,6 @@ io.on('connection', function(socket) {
 
 // Hash Encryption Package
 const bcrypt = require("bcrypt");
-
-// File Upload Pakage
-const fileUpload = require("express-fileupload");
-app.use(fileUpload());
 
 // Twilio Package
 require("dotenv").config();
@@ -91,7 +93,7 @@ app.use((req, res, next) => {
 
 require("./config/auth.js")(LocalStrategy, passport, bcrypt, db);
 
-require("./db_routes/get_db.js")(app, db);
+require("./db_routes/get_db.js")(app, db, aws, S3_BUCKET);
 require("./db_routes/post_db.js")(passport, app, db, bcrypt,trialNumber,twilio);
 require("./db_routes/put_db.js")(app, db, bcrypt);
 require("./db_routes/delete_db.js")(app, db);
