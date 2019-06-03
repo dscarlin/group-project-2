@@ -15,7 +15,7 @@
                 </div>
                 <hr>
                 <p :style="status ? 'color: green' : 'color: red; opacity: .5'">{{ status ? 'available to talk' : 'not available'}}</p>
-                <p><a :style="status ? '' : 'color: grey; opacity: .5'" :href='"tel:+1"+formattedTelNumber(phoneNumber)'> {{phoneNumber}}</a></p>
+                <p><a :style="status ? '' : 'color: grey; opacity: .5'" :href="'tel:'+formattedTelNumber(phoneNumber)"> {{phoneNumber}}</a></p>
                 <p><a :style="status ? '' : 'opacity: .7'" :href='"mailto:"+ email'> {{email}}</a></p>
                 <hr>
                 <a @click="remove()" class="btn remove-member-btn btn-block text-uppercase">Remove Member</a>
@@ -32,7 +32,8 @@ import axios from 'axios';
 export default {
   name: "member",
   props: {
-    socket: Object
+    socket: Object,
+    formattedTelNumber: Function
   },
   data: function() {
     return {
@@ -63,9 +64,6 @@ export default {
         this.status = res.data.UserGroups[0].status;
         this.date = res.data.createdAt  
       })
-    },
-    formattedTelNumber: function(number) {
-      return number.split('').filter(char => char.match(/[0-9]/g)).join('')
     },
     remove: function() {
       let groupId = this.$route.params.grpid;

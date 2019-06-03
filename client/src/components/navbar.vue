@@ -66,13 +66,18 @@ export default {
   name: "navbar",
   props: {
     loggedIn: Boolean,
-    userData: Object
+    userData: Object,
+   
   },
   watch: {
+    userData: function() {
+      if(this.userData)
+        this.userId = this.userData.id
+    }
   },
   data: function() {
     return {
-      userId: this.userData ? userData.id : 0
+      userId: null
     };
   },
   methods: {

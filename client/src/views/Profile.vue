@@ -115,6 +115,9 @@ export default {
   computed: {
     
   },
+  props: {
+    userData: Object
+  },
   data: function() {
     return {
       file: '',
@@ -127,7 +130,8 @@ export default {
     }
   },
   created: function() {
-    this.fillPage();
+    if(this.userData)
+      this.fillPage();
   },
   watch: {
     phoneNumber: function() {
@@ -139,6 +143,10 @@ export default {
         this.phoneNumber.splice(9,0,'-');
       }
       this.phoneNumber = this.phoneNumber.join('').slice(0,14);
+    },
+    userData: function() {
+      if(this.userData)
+        this.fillPage();
     }
   },
   computed: {
@@ -155,15 +163,11 @@ export default {
       this.file = this.$refs.picture.files[0];
     },
     fillPage: function() {
-      let id = this.$route.params.id
-      axios.get(`/api/user/${id}`).then(res => {
-        console.log(res)
-        this.name = res.data.user_name;
-        this.email = res.data.email;
-        this.phoneNumber = res.data.phone_number;
-        this.picture_ref = res.data.picture_ref;
-        this.textEnabled = res.data.text_enabled;
-    })
+        this.name = this.userData.user_name;
+        this.email = this.userData.email;
+        this.phoneNumber = this.userData.phone_number;
+        this.picture_ref = this.userData.picture_ref;
+        this.textEnabled = this.userData.text_enabled;
     },
     updateProfile: function() {
       let formData = new FormData();
@@ -175,8 +179,10 @@ export default {
       formData.append('text_enabled', this.text_enabled)
       let headers = {headers: { 'content-type': 'multipart/form-data' } };
       axios.put(`/api/user/${this.$route.params.id}`,formData,headers).then(res => {
-      this.fillPage()
-      console.log(res)})
+        this.$emit('userData');
+        this.$router.push({ name: 'groups', params: this.userData.id});
+        console.log(res)
+      });
     },
 
     
