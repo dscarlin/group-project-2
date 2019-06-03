@@ -166,6 +166,8 @@ export default {
       xhr.onreadystatechange = () => {
         if(xhr.readyState === 4){
           if(xhr.status === 200){
+            console.log('xhr ', typeof(xhr.responseText));
+            console.log('xhr ', xhr.responseText);
             const response = JSON.parse(xhr.responseText);
             this.uploadFile(this.file, response.signedRequest, response.url);
           }
