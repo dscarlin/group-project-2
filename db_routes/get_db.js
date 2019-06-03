@@ -26,7 +26,7 @@ module.exports = (app, db, aws, S3_BUCKET) => {
       };
       console.log('### data ',data)
       res.send(JSON.stringify(returnData));
-      res.end()
+      // res.end()
       
     });
   });

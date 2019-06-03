@@ -162,12 +162,15 @@ export default {
     handleFileUpload: function() {
       this.file = this.$refs.picture.files[0];
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', `/sign-s3?file-name=${this.userData.id}&file-type=${this.file.type}`);
+      xhr.open('GET', `/sign-s3?file-name=${this.userData.id}${Date.now()}&file-type=${this.file.type}`);
       xhr.onreadystatechange = () => {
         if(xhr.readyState === 4){
           if(xhr.status === 200){
+
+            console.log('xhr ', xhr.response);
             console.log('xhr ', typeof(xhr.responseText));
             console.log('xhr ', xhr.responseText);
+
             const response = JSON.parse(xhr.responseText);
             this.uploadFile(this.file, response.signedRequest, response.url);
           }
