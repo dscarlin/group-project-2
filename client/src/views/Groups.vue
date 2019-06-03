@@ -221,12 +221,7 @@ export default {
         this.$emit('getGroups')
         this.socket.emit('updateGroups', this.groupsArray.map(group => group.id))
         let message = {
-          body: `Call me at ${res.data.phone_number} - ${
-            res.data.user_name
-          } \n Let's Reconnect! I can't wait to hear from you!`,
-          time: this.input,
-          user: res.data.user_name,
-          icon: `/images/upload_images/phoneDefault.png`
+          body: `${res.data.user_name} is avaliable until ${this.input} at ${res.data.phone_number}`,
         };
 
         let self = this
@@ -241,8 +236,7 @@ export default {
         });
 
         this.socket.on("message", function(message) {
-          console.log('NOTIFY from ',message.user, ' i am ', self.userData.user_name)
-          notify(message,self.userData.user_name,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
+          notify(message,self.userData.text_enabled,self.formattedTelNumber(self.userData.phone_number))
         });
       })
     },
