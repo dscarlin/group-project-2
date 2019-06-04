@@ -75,7 +75,7 @@
         </div>
       </div>
         <!-- create group link -->
-        <p
+        <p @click="clearGroupInput"
           class="create-group-link"
           data-toggle="modal"
           data-target="#createGroupModal"
@@ -208,6 +208,10 @@ export default {
         this.groupInput = "";
         this.$emit('getGroups')
       });
+    },
+    clearGroupInput: function() {
+      //pointless function hoping mobile click will work
+      this.groupInput = ''
     },
     setStatus: function() {
       let uid = this.userData.id
