@@ -16,7 +16,7 @@ module.exports = (app, db, bcrypt) => {
     let userInfo = {
       user_name: r.user_name,
       email: r.email,
-      tex_enabled: r.text_enabled,
+      text_enabled: r.text_enabled,
       phone_number: r.phone_number,
       picture_ref: r.picture_ref
     };
