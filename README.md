@@ -1,4 +1,5 @@
 # Reconnect
+[View the Live App](https://team-pizza-slice.herokuapp.com)
 
 ## Overview
 This is an application to help people take advantage of free time to connect on the phone.
@@ -31,3 +32,4 @@ Text communication is a convenient method of staying in contact, but does not fu
 - MySQL
 - Sequelize
 - Passport.js
+
