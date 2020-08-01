@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/dscarlin/group-project-2#readme",
   "dependencies": {
-    "aws-sdk": "^2.466.0",
+    "aws-sdk": "^2.725.0",
     "bcrypt": "^3.0.6",
     "dotenv": "^8.0.0",
     "eslint": "^5.16.0",
