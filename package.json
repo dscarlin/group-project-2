@@ -31,7 +31,7 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "bdd-lazy-var": "^2.5.2",
-    "concurrently": "^4.1.2",
+    "concurrently": "^6.2.0",
     "nodemon": "^1.18.7"
   },
   "bugs": {
